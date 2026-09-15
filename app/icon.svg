@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Lampsill">
+  <title>Lampsill</title>
+  <!--
+    THE MICRO CUT. A favicon is 16px, and the size ladder in
+    brand/v2/COLOUR-AND-TYPE.md is explicit about what survives there:
+
+      - No mullions at all. At this size two extra lines close the interior up
+        and the window reads as a grid, not a house.
+      - A heavier frame, 6.5, because thin strokes disappear against a tab.
+      - The LIT PANE does the mullions' work — its own edges are read as the
+        glazing division, so the window still divides without a line drawn.
+
+    The arch is the one detail that must never be squared off: it is the only
+    thing making this a house rather than a dialog box at this size.
+
+    Colours are hard-coded rather than currentColor. A favicon has no page to
+    inherit from, and a currentColor mark rendered standalone resolves to black.
+  -->
+  <g fill="none" stroke="#8FBCE0" stroke-width="6.5" stroke-linejoin="round">
+    <path d="M16 52 L16 28 A16 16 0 0 1 48 28 L48 52 Z"/>
+  </g>
+  <rect x="21" y="37" width="10" height="11" rx="1.5" fill="#F5C97B"/>
+</svg>

@@ -1,0 +1,241 @@
+/* ===========================================================================
+   LAMPSILL — tokens, base, and the one idea the whole site hangs on.
+
+   THE LIGHT FIELD. Every surface on this page is lit by a single warm source
+   that follows the pointer, and that is not decoration — the product is a lamp
+   in a window, so the site behaves like a room with a lamp in it. It is also
+   the cheapest possible way to make a flat page feel like it has surfaces:
+   nothing here is a "card", everything is a plane catching light at an angle.
+
+   The trick that makes it work at zero cost is `background-attachment: fixed`
+   on the specular layer. The gradient is then positioned against the VIEWPORT
+   rather than the element, so every lit surface shows exactly the slice of one
+   big light that happens to fall across it. One light, many surfaces, no
+   per-element measurement and no JavaScript in the paint path — only two CSS
+   variables updated on a rAF.
+   =========================================================================== */
+
+:root {
+  --bg: #0A1014;
+  --surface: #111A20;
+  --surfaceHi: #18242B;
+  --line: #22303A;
+  --ink: #EDF3F5;
+  --ink2: #AFC0C7;
+  --ink3: #8A9BA3;
+  --lamp: #F5C97B;
+  --lampHot: #FFE7BC;
+  --vesper: #8FBCE0;
+  --ember: #F0A184;
+  --alarm: #FF919D;
+
+  /* written by <LightField>; the fallback keeps the page lit sensibly for
+     anyone who never moves a pointer, and for the first paint */
+  --lxp: 50%;
+  --lyp: 32%;
+  --lit: 1;
+
+  --measure: 34rem;
+  --pad: clamp(1.25rem, 5vw, 2.5rem);
+  --radius: 18px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #FBF9F5;
+    --surface: #F4F0E9;
+    --surfaceHi: #EBE5DA;
+    --line: #DED7C9;
+    --ink: #11181B;
+    --ink2: #3F5058;
+    --ink3: #4A5A63;
+    --lamp: #6B4A0A;
+    --lampHot: #8A6412;
+    --vesper: #1B5178;
+    --ember: #873B13;
+    --alarm: #991625;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Lenis drives the scrolling. `scroll-behavior: smooth` fights it — the
+     browser animates to the anchor while Lenis animates its own inertia, and
+     the page judders between two authorities. */
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 500;
+  line-height: 1.08;
+  margin: 0;
+  letter-spacing: -0.008em;
+}
+h1 { font-size: clamp(2.7rem, 7.2vw, 4.7rem); }
+h2 { font-size: clamp(2rem, 4.6vw, 3rem); }
+h3 { font-size: 1.22rem; }
+
+p { margin: 0 0 1rem; }
+a { color: inherit; }
+
+.wrap { max-width: 64rem; margin: 0 auto; padding-inline: var(--pad); }
+.narrow { max-width: 44rem; }
+.section { padding-block: clamp(5rem, 13vw, 9rem); position: relative; }
+
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lamp);
+  margin-bottom: 1rem;
+}
+
+.lede {
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  color: var(--ink2);
+  max-width: var(--measure);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- THE LIGHT ---------------------------------------------------------- */
+
+/* the source itself: a soft warm bloom over the whole page */
+.lightfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    46rem circle at var(--lxp) var(--lyp),
+    rgba(245, 201, 123, 0.075),
+    rgba(245, 201, 123, 0.02) 38%,
+    transparent 68%
+  );
+  transition: opacity 0.6s var(--ease);
+  opacity: var(--lit);
+}
+@media (prefers-color-scheme: light) {
+  .lightfield { opacity: calc(var(--lit) * 0.55); }
+}
+
+/* any surface that should catch it */
+.lit {
+  position: relative;
+  isolation: isolate;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.045) inset, 0 18px 44px rgba(0, 0, 0, 0.3);
+}
+.lit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: radial-gradient(
+    34rem circle at var(--lxp) var(--lyp),
+    rgba(245, 201, 123, 0.13),
+    rgba(143, 188, 224, 0.05) 40%,
+    transparent 64%
+  );
+  background-attachment: fixed;
+}
+@media (prefers-color-scheme: light) {
+  .lit { box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 14px 34px rgba(90, 78, 56, 0.12); }
+  .lit::after { opacity: 0.5; }
+}
+
+/* --- buttons ------------------------------------------------------------- */
+
+.btn {
+  --shift: 0px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.4rem;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 0.94rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  transform: translateY(var(--shift));
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), background 0.2s;
+}
+.btn:active { --shift: 1px; }
+
+.btn.lamp {
+  background: linear-gradient(180deg, var(--lampHot), var(--lamp));
+  color: #2A1E08;
+  box-shadow: 0 8px 22px rgba(245, 201, 123, 0.24), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+}
+.btn.lamp:hover { --shift: -2px; box-shadow: 0 14px 32px rgba(245, 201, 123, 0.32), 0 1px 0 rgba(255,255,255,.5) inset; }
+
+.btn.ghost {
+  background: var(--surfaceHi);
+  border-color: var(--line);
+  color: var(--ink);
+}
+.btn.ghost:hover { --shift: -2px; border-color: color-mix(in srgb, var(--vesper) 45%, var(--line)); }
+
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+
+/* --- reveal on scroll ---------------------------------------------------- */
+
+/* :where(html[data-js]) — hidden only once we know JavaScript is running; the
+   :where adds zero specificity, so the reveal rules below win as they always did */
+:where(html[data-js]) .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+/* an attribute rather than a class, so React re-rendering a className can
+   never un-reveal something — see Reveals() in components/Chrome.tsx */
+.reveal[data-seen] { opacity: 1; transform: none; }
+
+/* Reduced motion: the CSS below handles anything CSS-driven. Every perpetual
+   GSAP timeline on this site checks the media query itself, because a CSS
+   `animation-duration: 0` has no opinion whatsoever about a tween. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
