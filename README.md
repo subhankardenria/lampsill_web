@@ -586,8 +586,8 @@ pane    x 20  y 37.5  w 9  h 10.5  rx 1
 ```
 
 Both bars, four panes, the lit one **inset in its quadrant**, not filling it.
-Only `app/icon.svg` is allowed to differ — it drops the bars, and its own
-comment says why.
+Only `app/icon.svg` is allowed to differ, and its own comment argues the case
+at length — see below.
 
 Three files hold a copy of those paths rather than importing them: `Mark` in
 `components/Chrome.tsx`, `app/icon.svg`, and `assets/og/card.html`. A favicon
@@ -596,9 +596,44 @@ unavoidable — but it means a change to the geometry is a change to three
 files, and a mark that matches in two of them is worse than one that matches in
 none, because nobody notices.
 
-The viewBox is cropped to the ink (`13.5 9.5 37 45`). In the asset's native
-`0 0 64 64` a "30px" mark is 21px of drawing inside 9px of nothing, which makes
-it look tiny, and the dead space down its left edge indents it against the `h1`.
+On screen the viewBox is cropped to the ink (`13.5 9.5 37 45`). In the asset's
+native `0 0 64 64` a "30px" mark is 21px of drawing inside 9px of nothing, which
+makes it look tiny, and the dead space down its left edge indents it against
+the `h1`. The favicon is the exception and uses the full square box, because it
+is drawing a tile rather than placing a mark in a layout.
+
+### The favicon is a tile, and has a ground
+
+`app/icon.svg` was transparent, on the reasoning that a transparent icon adapts
+to whatever tab strip it lands on. **Browsers do not honour that.** Chrome and
+the Chromium shells composite a transparent favicon onto a light backing plate,
+so the mark arrived sitting on a white rounded square in a dark tab — looking
+like a bug and nothing like the app icon. Painting our own ground is the only
+way to decide what is behind the mark.
+
+It fixed a second thing that was already wrong and harder to spot: on a *light*
+tab strip, the pale Vesper frame was pale blue on near-white and the icon all
+but vanished. That is the light-ground trap in `COLOUR-AND-TYPE.md` §5 arriving
+by the back door.
+
+The ground is `#0C1317` and the radius is `14.25` on 64 — `brand/v2/icon-app.svg`'s
+values to the decimal, because a favicon is a miniature of the app icon and
+should match it. Deliberately **not** the site's own `--bg` (`#0A1014`); a tile
+is not a patch of page.
+
+The tile costs the mark about a fifth of its height, so the cut had to change
+with it. At a 16px favicon the standard 4.8 frame renders at 1.2 device pixels
+and greys out. Both alternatives on the ladder were rendered and looked at:
+`mark-micro.svg` empties the interior and reads as a **padlock**, and
+`mark-compact.svg`'s single mullion is mush at 16px with an oddly bare top
+half. What ships is standard geometry at **compact weights** — 6 and 4, both
+mullions kept, pane re-inset to 1.25 gaps for the heavier frame.
+
+That 6∶4 is the point. `COLOUR-AND-TYPE.md`'s "do not push the frame past
+about 5" is not a ceiling the ladder itself respects — compact is 6 and micro
+is 7.5. What the ladder never does is change the **ratio**, which is 3∶2 in
+every cut, and 6∶4 is 3∶2 exactly. An earlier attempt at 5.6∶3.4 looked fine
+and was 1.65∶1, which is the rule that actually matters being broken quietly.
 
 ---
 

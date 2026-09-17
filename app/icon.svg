@@ -1,34 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="13.5 9.5 37 45" role="img" aria-label="Lampsill">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Lampsill">
   <title>Lampsill</title>
   <!--
-    THE SAME MARK AS THE MASTHEAD. Geometry, viewBox, stroke weights and the
-    half opacity mullions are copied from `Mark` in components/Chrome.tsx.
-    Change one, change both, or the tab stops matching the page.
+    THE FAVICON, AND IT IS A TILE, not a bare mark.
 
-    The opacity belongs on the GROUP, not on each stroke: a group is composited
-    once, so the two mullions don't double up into a darker knot where they
-    cross. That knot is visible at 16px; this way there isn't one.
+    WHY THERE IS A GROUND IN HERE AT ALL. This file used to be transparent, on
+    the reasoning that a transparent icon adapts to whatever tab strip it lands
+    on. Browsers do not honour that: Chrome and the Chromium shells composite a
+    transparent favicon onto a light backing plate, so the mark arrived sitting
+    on a white rounded square in a dark tab, which looks like a bug and looks
+    nothing like the app icon. Painting our own ground is the only way to
+    decide what is behind the mark.
 
-    The one unavoidable difference is colour. These are hard coded instead of
-    the CSS custom properties the masthead uses, because a favicon has no page
-    to inherit from and a currentColor mark rendered standalone resolves to
-    black. The values are the light theme ones from app/globals.css.
+    It also fixes a second thing that was already wrong and harder to see: on a
+    LIGHT tab strip the pale Vesper frame was pale blue on near white, and the
+    icon all but vanished. That is the light ground trap in
+    brand/v2/COLOUR-AND-TYPE.md section 5, arriving by the back door.
 
-    ⚠️ NO DOUBLE HYPHEN ANYWHERE IN THIS COMMENT. XML forbids it, and an
-    unparseable icon.svg is not a broken line or a wrong colour, it is a blank
-    square in every tab. Naming a CSS variable in the usual way is enough to do
-    it, which is how this file was briefly broken.
+    THE GROUND IS #0C1317, the same as brand/v2/icon-app.svg, and for the
+    reason that file gives: it separates from a true black tab strip, and on a
+    white one it does not read as a hole punched in the screen. Note this is
+    NOT the site's own bg (#0A1014). A favicon is a tile like the app icon, not
+    a patch of page, and it should match the thing it is a miniature of.
+    Corner radius 14.25 on 64 is icon-app.svg's 228 on 1024, to the decimal.
 
-    An earlier version dropped both mullions on the grounds that they close the
-    interior up at tab size. They don't: the cross still reads as a window at
-    16px, and the arch without it reads as a padlock.
+    THE CUT: standard geometry at COMPACT weights, both mullions kept.
+
+    A tile costs the mark about a fifth of its height, so at a 16px favicon the
+    drawing is around 12px and the standard 4.8 frame renders at 1.2 device
+    pixels, which greys out. The ladder's answer at that size is
+    mark-micro.svg, and it was tried: with no mullions the interior empties and
+    the thing reads as a padlock, exactly as this file's previous comment
+    warned. mark-compact.svg was tried too; its single mullion is mush at 16px
+    and leaves the top half oddly bare.
+
+    So the weights come from the compact cut (6 and 4) and the mullion count
+    from the standard one. The RATIO is what matters and it is exactly 3:2, as
+    brand/v2/COLOUR-AND-TYPE.md requires. Do not read the "do not push the
+    frame past about 5" rule as forbidding this: the ladder itself goes to 6
+    and then 7.5, scaling both strokes together. Breaking the ratio is the
+    thing that is not allowed.
+
+    THE PANE IS RE INSET, NOT COPIED. A heavier frame eats into the opening, so
+    the pane from the standard cut would overlap the sill and merge with it.
+    Every gap around this one is 1.25: interior edge at 19, mullions at 30 and
+    36, sill at 49. Re inset it again if the weights ever change.
+
+    The mullion ends are tucked a unit under the frame and the crown on purpose,
+    so they meet it with no seam.
+
+    Colours are hard coded because a favicon has no page to inherit from, and a
+    currentColor mark rendered standalone resolves to black.
+
+    IF YOU CHANGE THE GEOMETRY, change it in components/Chrome.tsx and
+    assets/og/card.html too. Three files hold a copy and none of them can
+    import the others.
+
+    NO DOUBLE HYPHEN ANYWHERE IN THIS COMMENT. XML forbids it, and an
+    unparseable icon.svg is not a wrong colour, it is a blank square in every
+    tab. Naming a CSS variable the usual way is enough to do it, which is how
+    this file was once briefly broken.
   -->
-  <g fill="none" stroke="#8FBCE0" stroke-width="4.8" stroke-linejoin="round">
-    <path d="M16 52 L16 28 A16 16 0 0 1 48 28 L48 52 Z"/>
+  <rect width="64" height="64" rx="14.25" fill="#0C1317"/>
+  <g transform="translate(32,32) scale(1.1) translate(-32,-32)">
+    <g fill="none" stroke="#8FBCE0" stroke-width="6" stroke-linejoin="round">
+      <path d="M16 52 L16 28 A16 16 0 0 1 48 28 L48 52 Z"/>
+    </g>
+    <g fill="none" stroke="#8FBCE0" stroke-width="4" stroke-linecap="round" opacity="0.5">
+      <path d="M32 14 L32 52"/>
+      <path d="M18 34 L46 34"/>
+    </g>
+    <rect x="20.25" y="37.25" width="8.5" height="10.5" rx="1" fill="#F5C97B"/>
   </g>
-  <g fill="none" stroke="#8FBCE0" stroke-width="3.2" stroke-linecap="round" opacity="0.5">
-    <path d="M32 13 L32 52"/>
-    <path d="M17 34 L47 34"/>
-  </g>
-  <rect x="20" y="37.5" width="9" height="10.5" rx="1" fill="#F5C97B"/>
 </svg>
