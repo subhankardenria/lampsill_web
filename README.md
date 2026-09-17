@@ -589,9 +589,90 @@ Both bars, four panes, the lit one **inset in its quadrant**, not filling it.
 Only `app/icon.svg` is allowed to differ — it drops the bars, and its own
 comment says why.
 
+Three files hold a copy of those paths rather than importing them: `Mark` in
+`components/Chrome.tsx`, `app/icon.svg`, and `assets/og/card.html`. A favicon
+and a screenshotted card cannot import a React component, so the duplication is
+unavoidable — but it means a change to the geometry is a change to three
+files, and a mark that matches in two of them is worse than one that matches in
+none, because nobody notices.
+
 The viewBox is cropped to the ink (`13.5 9.5 37 45`). In the asset's native
 `0 0 64 64` a "30px" mark is 21px of drawing inside 9px of nothing, which makes
 it look tiny, and the dead space down its left edge indents it against the `h1`.
+
+---
+
+## The share card
+
+`public/og.jpg` — the hero cut of the mark on the dark ground, the headline in
+Newsreader. It is what Facebook, LinkedIn, X, Slack, WhatsApp and iMessage draw
+when someone posts a link here.
+
+**1200×630 of layout, shipped as 2400×1260 of pixels, as a 185KB JPEG.** All
+three of those numbers were argued rather than picked, so before changing any
+of them:
+
+- **1.91:1** is the one ratio all six platforms agree on. `card.html` is laid
+  out at 1200×630 and the CSS assumes it.
+- **2×** because 1200 is the platforms' *floor*, not a target, and every one of
+  them is read on a retina display, where a 1200px card is upscaled and the
+  serif goes soft. The first cut of this rendered at 2× and then resized back
+  down to 1200 — which spends the entire 2× render on antialiasing and throws
+  the rest away.
+- **JPEG, at quality 92 with 4:4:4 chroma**, on a flat dark graphic where PNG
+  is the obvious choice. 2400×1260 as PNG is 756KB, and WhatsApp stops
+  rendering a rich preview somewhere around 300KB — so the PNG buys sharpness
+  on five platforms by losing the picture entirely on the sixth. The JPEG is
+  185KB at 47dB PSNR and a 1:1 crop of the headline against the PNG is
+  indistinguishable. `build.sh` fails the build if the file creeps past 290KB.
+
+Banding was the other worry and isn't one: Chrome dithers its gradients, and a
+50× contrast stretch over the glow shows dither texture rather than contour
+rings. That is why there is no grain layer in the card.
+
+It is **committed, not generated at build time**. To change it:
+
+```
+edit assets/og/card.html   (or assets/og/alt.txt)
+./assets/og/build.sh
+```
+
+That renders the card in headless Chrome with the site's real webfonts inlined
+as data URIs — so there is no network round trip racing the screenshot, which
+is how a card ends up shipping in Times New Roman — and rewrites `lib/og.ts`, a
+generated constant holding the URL, the size and the alt text, which
+`app/layout.tsx` feeds to both the `og:` and `twitter:` tags. The `?v=` on the
+URL is the image's content hash: every one of those platforms caches a share
+image **by URL and does not come back to check**, so a card whose bytes changed
+under a stable URL is a card that never updates anywhere.
+
+One thing in `card.html` is not a copy of the shipped brand asset and says so
+at length in its own comment: the mark's glow. `brand/v2/mark-hero.svg` is
+drawn to be correct from 128px up, where its widest wash spans about 90px. At
+the 420px this card uses it spans 300px, and 13% gold spread that thin over
+that much area stops reading as light and becomes a flat grey lift across a
+third of the card — the same "grey haze that reads as a rendering fault" that
+file warns about at the *other* end of the size ladder. The card rebuilds it as
+a falloff instead: a hot core at the pane, a spill on the sill, a faint room
+behind. Same colour, same offsets, same idea.
+
+Two decisions in there are worth knowing about before anyone tidies them up,
+and both are argued in full in the header of `assets/og/build.sh`:
+
+- **Not `next/og`'s `ImageResponse`.** It would move the card's rendering into
+  every production build, where a font fetch turns into a failed deploy. The
+  card changes about twice a year. (`rsvg-convert`, which `brand/v2` uses, is
+  out for a different reason: it sets type from fontconfig, and Newsreader and
+  Atkinson Hyperlegible are `next/font` downloads rather than system fonts, so
+  the card would come out in a fallback serif and look deliberate.)
+- **Not `app/opengraph-image.png`**, which is the idiomatic Next convention and
+  was tried first. Next 16 builds on Turbopack, and Turbopack does not read
+  `opengraph-image.alt.txt` — only the webpack loader does. The file convention
+  also shadows `metadata.openGraph.images`, so the alt text cannot be supplied
+  by hand either, and `og:image:alt` is silently never emitted. On a site that
+  picked Atkinson Hyperlegible for readers with cataracts, that is not a
+  detail to shrug at. If Turbopack ever reads the file, this all collapses back
+  into the convention and `lib/og.ts` goes.
 
 ---
 
@@ -805,8 +886,6 @@ which is why this project must not be given a wildcard.
 
 ## Not done
 
-- **`og.png`** — 1200×630, dark ground, the hero cut of the mark. Referenced in
-  metadata, not drawn, so social previews fall back to no image.
 - **`hello@lampsill.com` does not exist.** It is the fallback in the pricing
   section and the footer link, so every call to action currently goes nowhere.
   Make the mailbox before launch.

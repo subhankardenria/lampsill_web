@@ -4,6 +4,7 @@ import './globals.css';
 import './sections.css';
 import LightField from '@/components/LightField';
 import SmoothScroll from '@/components/SmoothScroll';
+import { OG_IMAGE } from '@/lib/og';
 
 /* next/font downloads and self-hosts these at build time, which is what lets
    the CSP drop fonts.googleapis.com and fonts.gstatic.com entirely. It also
@@ -37,6 +38,26 @@ export const metadata: Metadata = {
     description: `Their phone rings first. If they don't answer, you're told.`,
     type: 'website',
     url: 'https://lampsill.com',
+    siteName: 'Lampsill',
+    locale: 'en_GB',
+    /* The share card. It is drawn by assets/og/build.sh, which also writes
+       lib/og.ts; that script's header says why the image is a public/ asset
+       and a constant rather than app/opengraph-image.png, and the short answer
+       is that Turbopack never emits og:image:alt from the file convention. */
+    images: [OG_IMAGE],
+  },
+  /* X reads og: tags when the twitter: ones are missing, so this block exists
+     for exactly one tag that has no Open Graph equivalent: without
+     summary_large_image, X shows the little square thumbnail and crops this
+     1.91:1 card to its middle, which cuts the headline in half. The title,
+     description and image are repeated because a partial twitter: block is
+     read as a whole card by some scrapers — X's own is not one of them, but
+     Slack and Teams both are. */
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Lampsill — If their phone goes quiet, Lampsill tells you',
+    description: `Their phone rings first. If they don't answer, you're told.`,
+    images: [OG_IMAGE],
   },
   robots: { index: true, follow: true },
 };

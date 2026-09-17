@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Lampsill — social share card</title>
+
+<!-- ===========================================================================
+     THE SOURCE OF app/opengraph-image.png. Edit this, then run ./build.sh.
+     Nothing here is served: Next never sees this folder, and the only artefact
+     that ships is the flattened PNG.
+
+     WHY AN HTML FILE RENDERED IN CHROME, and not next/og's ImageResponse or an
+     SVG through rsvg-convert — the two things this repo already reaches for:
+
+       - ImageResponse (satori) would put the card's generation inside every
+         production build, where a font fetch or a satori CSS gap becomes a
+         broken deploy. A social card changes about twice a year. Paying a
+         build-time risk for it every deploy is the wrong trade.
+       - rsvg-convert renders SVG beautifully but sets type with whatever
+         fontconfig has installed. Newsreader and Atkinson Hyperlegible are
+         next/font downloads — they are not system fonts on anybody's machine,
+         so the export would silently come out in a fallback serif. That is
+         precisely the class of failure brand/v2/export-png.sh warns about:
+         artwork that looks deliberate and is wrong.
+
+     Chrome renders the real typefaces, which build.sh inlines as data URIs so
+     there is no network race between layout and the screenshot.
+
+     COLOURS ARE THE SITE'S DARK TOKENS, copied from app/globals.css — not
+     brand/v2/COLOUR-AND-TYPE.md's, which differ slightly (#0C1317 vs #0A1014).
+     The card is a preview of THIS page, so it matches this page. Change one,
+     change both, or the link preview stops looking like where it lands.
+     =========================================================================== -->
+
+<link rel="stylesheet" href="./fonts.css">
+<style>
+  :root {
+    --bg: #0A1014;
+    --line: #22303A;
+    --ink: #EDF3F5;
+    --ink2: #AFC0C7;
+    --lamp: #F5C97B;
+    --vesper: #8FBCE0;
+  }
+
+  * { box-sizing: border-box; margin: 0; }
+
+  html, body { width: 1200px; height: 630px; }
+
+  body {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* THE LIGHT FIELD, held still. The live page moves this with the pointer;
+     a still image gets the one position that reads as light coming OUT of the
+     window.
+
+     ⚠️ WARM ONLY. The first version laid a second, wider VESPER wash over the
+     same spot, reasoning that the page has both colours in it. On a screen
+     covering half the card, gold at 8% under blue-grey at 4% does not read as
+     two lights — it averages to a dirty olive, and the whole right-hand side
+     looked like a smudge on the lens rather than a lit room. One light, one
+     temperature. If this ever needs cooling, cool the GROUND, not the glow. */
+  .light {
+    position: absolute;
+    inset: 0;
+    /* Centred on the lit pane (79% 57%) but lifted to 50%: light leaves a
+       window upward and outward, and a wash centred ON the pane reads as a
+       ring drawn around the mark. Same reasoning as the aura offset in
+       brand/v2/mark-hero.svg, which that file's comment spells out. */
+    background: radial-gradient(620px circle at 79% 50%, rgba(245, 201, 123, 0.07), transparent 66%);
+  }
+
+  /* A floor for the light to land on, so the lower third is not flat black.
+     Without it the card's bottom edge and a dark-mode timeline background
+     become the same colour and the image loses its boundary.
+
+     Shallower and weaker than it first was: at 300px and .55 it climbed into
+     the glow and that overlap was half of the olive problem above. */
+  .floor {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 210px;
+    background: linear-gradient(to bottom, transparent, rgba(22, 33, 40, 0.5));
+  }
+
+  .card { position: relative; width: 100%; height: 100%; padding: 64px 72px; }
+
+  /* --- masthead lockup --------------------------------------------------- */
+
+  .lockup { display: flex; align-items: center; gap: 13px; }
+  .lockup svg { width: 32px; height: 39px; display: block; }
+  .wordmark {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 500;
+    font-size: 31px;
+    letter-spacing: -0.012em;
+  }
+
+  /* --- copy -------------------------------------------------------------- */
+
+  .copy { position: absolute; left: 72px; top: 150px; width: 690px; }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 15px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--lamp);
+    margin-bottom: 22px;
+  }
+
+  /* THREE LINES, BROKEN BY HAND, and the same break the hero uses. Left to
+     wrap on its own the second line lands on "Lampsill", which splits the
+     product name off from the promise and reads as two sentences. */
+  h1 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 500;
+    font-size: 62px;
+    line-height: 1.08;
+    letter-spacing: -0.008em;
+  }
+
+  .lede {
+    margin-top: 24px;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink2);
+    max-width: 600px;
+  }
+
+  /* --- footer rule ------------------------------------------------------- */
+
+  .foot {
+    position: absolute;
+    left: 72px;
+    right: 72px;
+    bottom: 64px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 17px;
+    color: var(--ink2);
+  }
+  /* ink2, not ink3. ink3 is RESTRICTED to information repeated elsewhere in
+     ink or ink2 (COLOUR-AND-TYPE.md §4), and a link preview is often the only
+     thing a reader ever sees — nothing on it is "repeated elsewhere". */
+  .foot .dot { color: rgba(175, 192, 199, 0.45); padding: 0 12px; }
+  .foot .url {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    color: var(--vesper);
+  }
+
+  /* --- the mark ---------------------------------------------------------- */
+
+  /* THE HERO CUT — the only one permitted to glow (COLOUR-AND-TYPE.md §1), and
+     at 420px it is far past the 128px floor that cut requires.
+
+     The viewBox is -18 -18 100 100 rather than the 0 0 64 64 that
+     brand/v2/mark-hero.svg ships with, and that is deliberate: the aura is a
+     circle of radius 46 centred at (27,36), so the shipped box CLIPS it and
+     leaves a faint straight edge of gold down the right side. Invisible on a
+     phone screen, obvious at 420px on a dark card. This box contains the whole
+     circle, so the wash fades to nothing on every side. Geometry, stroke
+     weights and opacities are otherwise byte-for-byte the shipped mark. */
+  .mark {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 420px;
+    height: 420px;
+  }
+</style>
+</head>
+<body>
+  <div class="light"></div>
+  <div class="floor"></div>
+
+  <svg class="mark" viewBox="-18 -18 100 100" aria-hidden="true">
+    <defs>
+      <!-- THREE WASHES, NOT THE SHIPPED TWO, and the reason is scale.
+
+           brand/v2/mark-hero.svg is drawn to be correct from 128px up, where
+           its widest wash spans perhaps 90px and the eye reads the whole thing
+           as one soft halo. At 420px that same wash spans 300px, and a 13%
+           gold spread that thin over that much area stops being light: it is
+           a flat grey lift across a third of the card, which is exactly the
+           "grey haze that reads as a rendering fault" the shipped file's own
+           comment warns about at the other end of the ladder.
+
+           So the light is rebuilt as a falloff rather than a blanket — a hot
+           core at the pane, a spill on the sill, and a faint room behind. Same
+           colour, same offsets, same idea; the energy is concentrated where a
+           real lamp's would be instead of smeared evenly.
+
+           CORE is the one that does the work and the one to touch first if
+           this ever needs to be louder or quieter. -->
+      <radialGradient id="core" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%"   stop-color="#FFE7BC" stop-opacity="0.34"/>
+        <stop offset="45%"  stop-color="#F5C97B" stop-opacity="0.14"/>
+        <stop offset="100%" stop-color="#F5C97B" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="spill" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%"   stop-color="#F5C97B" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#F5C97B" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="room" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%"   stop-color="#F5C97B" stop-opacity="0.055"/>
+        <stop offset="100%" stop-color="#F5C97B" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <!-- the wide one first, so the core sits on top of it -->
+    <circle cx="27" cy="36" r="46" fill="url(#room)"/>
+    <circle cx="24.5" cy="52" r="23" fill="url(#spill)"/>
+    <circle cx="24.5" cy="42.5" r="17" fill="url(#core)"/>
+    <g fill="none" stroke="#8FBCE0" stroke-width="4.8" stroke-linejoin="round">
+      <path d="M16 52 L16 28 A16 16 0 0 1 48 28 L48 52 Z"/>
+    </g>
+    <g fill="none" stroke="#8FBCE0" stroke-width="3.2" stroke-linecap="round" opacity="0.5">
+      <path d="M32 13 L32 52"/>
+      <path d="M17 34 L47 34"/>
+    </g>
+    <rect x="20" y="37.5" width="9" height="10.5" rx="1" fill="#F5C97B"/>
+  </svg>
+
+  <div class="card">
+    <div class="lockup">
+      <!-- the standard cut, as in components/Chrome.tsx -->
+      <svg viewBox="13.5 9.5 37 45" aria-hidden="true">
+        <g fill="none" stroke="#8FBCE0" stroke-width="4.8" stroke-linejoin="round">
+          <path d="M16 52 L16 28 A16 16 0 0 1 48 28 L48 52 Z"/>
+        </g>
+        <g fill="none" stroke="#8FBCE0" stroke-width="3.2" stroke-linecap="round" opacity="0.5">
+          <path d="M32 13 L32 52"/>
+          <path d="M17 34 L47 34"/>
+        </g>
+        <rect x="20" y="37.5" width="9" height="10.5" rx="1" fill="#F5C97B"/>
+      </svg>
+      <span class="wordmark">Lampsill</span>
+    </div>
+
+    <div class="copy">
+      <p class="eyebrow">For anyone you love who lives alone</p>
+      <h1>If their phone<br>goes quiet, Lampsill<br>tells you.</h1>
+      <!-- BROKEN BY HAND, like the headline. Left to wrap, the second line is
+           the three words "someone nearby to knock." hanging under a full one,
+           and a rag that uneven is the first thing the eye reads as sloppy.
+           Broken at the dash, the two lines are within four characters of each
+           other and the break lands on a clause boundary. -->
+      <p class="lede">It rings them first. No answer? You&rsquo;re told &mdash;<br>and one tap asks someone nearby to knock.</p>
+    </div>
+
+    <div class="foot">
+      <span>Nothing for them to set up<span class="dot">&middot;</span>No maps. No reports. One word.</span>
+      <span class="url">lampsill.com</span>
+    </div>
+  </div>
+</body>
+</html>
