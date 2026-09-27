@@ -841,16 +841,26 @@ launching the form — and are one line:
   else was told plainly on the page that theirs starts at the normal price, so
   don't quietly give it to them either; if the offer is widened, say so in the
   email rather than letting the two groups find out from each other.
-- Set `NEXT_PUBLIC_CHECKOUT_OPEN=1` so the pricing button becomes a real
-  checkout again (see "Payments").
-- Before the list is used for anything else, add a privacy page. The consent
-  line on the form promises *only* the launch email (`consent_version`
-  `2026-09-15`; the earlier `2026-09-14` wording also promised free months,
-  because at that point everybody got them).
+- **Payments come after the beta, not on launch day** — see "Payments". Until
+  then `NEXT_PUBLIC_CHECKOUT_OPEN` stays unset.
+- The consent line on the form promises *only* the launch email
+  (`consent_version` `2026-09-15`; the earlier `2026-09-14` wording also
+  promised free months, because at that point everybody got them). Anything
+  more needs fresh consent — and the privacy page updated first.
 
 ---
 
 ## Payments: Dodo Payments, priced per country
+
+> **DECISION, 26 Sep 2026: the beta runs free.** Nobody is charged and no card
+> is asked for until the beta is over, and the payment provider is not settled
+> — Dodo is what's built, but "Dodo or any payment" is still open. Nothing on
+> the site charges today: `NEXT_PUBLIC_CHECKOUT_OPEN` is unset, so the pricing
+> button goes to the early-access form. The prices on the page are what
+> Lampsill *will* cost, and `/privacy` says in so many words that nothing is
+> charged yet. **Before any checkout opens**, whichever provider it is: add it
+> to "Who else handles it" on `/privacy`, bump that page's date, and email the
+> list — the page promises exactly that.
 
 **Why Dodo.** It is the merchant of record: it collects and pays VAT, GST and
 US sales tax in each country, so selling abroad doesn't mean registering for
@@ -898,6 +908,75 @@ So the page and the dashboard must agree, row for row.
 
 ---
 
+## The privacy page
+
+`/privacy` (`app/privacy/page.tsx`) is the notice UK GDPR Article 13 requires
+**at the moment details are collected** — so it had to exist the day the form
+went live, not "before the list is used". The form links to it under the
+button, and the footer links to it on every page. The controller is named as
+**Lampsill**; if you are trading as a sole trader or through a company, add the
+legal name next to it — the law asks for your identity, not just a brand.
+
+**Every sentence is a claim about the code**, and the file's header lists which
+code keeps each one true. The ones most likely to break:
+
+| The page says | True because | Breaks if |
+|---|---|---|
+| No cookies, analytics or tracking | Nothing sets any | Analytics are added (see "Not done") |
+| Every file comes from our own domain | The CSP is `'self'` | A third-party script, font or embed is added |
+| The IP hash is deleted after a day | `forgetOldIps()` in `app/api/join/route.ts` | Someone removes it, or the flood check needs longer |
+| The list is stored in the United States | Neon project in `us-east-2` | **You move it to Frankfurt — then say the EU instead, and good** |
+| No payments; nobody is charged in the beta | `NEXT_PUBLIC_CHECKOUT_OPEN` unset | Any checkout opens |
+| Emails to us are kept by Zoho in India | The Zoho account is in its India data centre (`zoho.in`) | You move mail elsewhere |
+| Vercel, Neon and Zoho | That's everyone who handles it | Anyone new touches the data |
+
+**Promises it makes that are yours to keep, not the code's:**
+
+- **Removal within a month**, usually the same day, for any request to
+  hello@lampsill.com — which means that mailbox has to exist (see "Not done").
+- **Every email carries a way off the list.** Also a legal requirement for
+  marketing email in the UK (PECR).
+- **Six months after the launch email**, delete everyone who hasn't started
+  using Lampsill. **If Lampsill doesn't launch**, delete the whole list.
+- **Material changes are emailed to the list before they take effect.**
+
+Also check whether you owe the ICO the data protection fee (ico.org.uk/fee).
+Organisations whose only processing is marketing their own business are often
+exempt, but it's a two-minute self-assessment and the fine for getting it wrong
+is not.
+
+The app will need its own, separate notice — it processes when someone's
+phone is used, which is a different order of sensitivity. The page says so.
+
+---
+
+## Email: hello@lampsill.com
+
+Zoho Mail, set up 26 Sep 2026, in Zoho's **India** data centre (`zoho.in`) —
+Zoho assigns that at sign-up and can't move it, so `/privacy` says emails are
+kept in India. The DNS at Cloudflare:
+
+| Record | Value |
+|---|---|
+| MX `@` | `mx.zoho.in` 10, `mx2.zoho.in` 20, `mx3.zoho.in` 50 |
+| TXT `@` | `v=spf1 include:zoho.in ~all` — the only SPF record allowed |
+| TXT `zmail._domainkey` | Zoho's DKIM key |
+| TXT `@` | `zoho-verification=…` — keep it; Zoho re-checks |
+| TXT `_dmarc` | `v=DMARC1; p=none; rua=mailto:hello@lampsill.com; ruf=mailto:hello@lampsill.com; sp=none; adkim=r; aspf=r` |
+
+Don't turn on Cloudflare Email Routing: it replaces the MX records and mail
+stops reaching Zoho. Removal requests arrive here, and `/privacy` promises an
+answer within a month.
+
+**DMARC is at `p=none`** (added 26 Sep 2026), which changes nothing about
+delivery and only asks receivers to report. **Around late October**, once the
+daily reports show your own mail passing SPF and DKIM, change `p=none` to
+`p=quarantine` in that one record — it's what stops someone sending
+"Lampsill" email that isn't from you. Keep exactly one `_dmarc` record; with
+two, receivers ignore both.
+
+---
+
 ## Deploying
 
 Vercel, root directory `lampsill_web`, preset **Next.js**, no overrides.
@@ -921,9 +1000,6 @@ which is why this project must not be given a wildcard.
 
 ## Not done
 
-- **`hello@lampsill.com` does not exist.** It is the fallback in the pricing
-  section and the footer link, so every call to action currently goes nowhere.
-  Make the mailbox before launch.
 - **Dodo webhooks, in lampsill_api.** Creating a checkout is not a subscription
   system. The API needs `subscription.active`, `subscription.renewed`,
   `subscription.on_hold`/`failed` and `subscription.cancelled` (Standard

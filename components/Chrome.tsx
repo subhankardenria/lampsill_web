@@ -27,8 +27,13 @@ export function Mark({ className = 'mark' }: { className?: string }) {
  * The bar frosts once you have left the hero rather than being frosted from
  * the start, so the first screen is uninterrupted and the bar earns its
  * background by being needed.
+ *
+ * `base` is for pages other than the home page (the privacy page). The links
+ * there have to be "/#how", but on the home page they must stay a bare "#how":
+ * SmoothScroll only takes over links that START with "#", so "/#how" at home
+ * would jump instead of glide.
  */
-export function Masthead() {
+export function Masthead({ base = '' }: { base?: string }) {
   const [stuck, setStuck] = useState(false);
   const bar = useRef<HTMLDivElement>(null);
 
@@ -58,15 +63,15 @@ export function Masthead() {
   return (
     <header className={`masthead${stuck ? ' stuck' : ''}`}>
       <div className="wrap masthead-in">
-        <a className="lockup" href="#main" aria-label="Lampsill, back to top">
+        <a className="lockup" href={base ? '/' : '#main'} aria-label={base ? 'Lampsill, home' : 'Lampsill, back to top'}>
           <Mark />
           <span className="wordmark">Lampsill</span>
         </a>
         <nav className="mast-nav">
-          <a href="#how">How it works</a>
-          <a href="#story">A story</a>
-          <a href="#faq">Questions</a>
-          <a className="btn lamp mast-cta" href="#join">
+          <a href={`${base}#how`}>How it works</a>
+          <a href={`${base}#story`}>A story</a>
+          <a href={`${base}#faq`}>Questions</a>
+          <a className="btn lamp mast-cta" href={`${base}#join`}>
             {EARLY_ACCESS.freeSpots} free places
           </a>
         </nav>
@@ -95,8 +100,9 @@ export function Footer() {
           Lampsill is not an emergency service. It can&rsquo;t detect a fall or a
           medical problem. In an emergency, call your local emergency number.
         </p>
-        <p className="footer-small">
+        <p className="footer-small footer-links">
           <a href="mailto:hello@lampsill.com">hello@lampsill.com</a>
+          <a href="/privacy">Privacy</a>
         </p>
       </div>
     </footer>

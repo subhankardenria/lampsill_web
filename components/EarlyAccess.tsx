@@ -281,6 +281,11 @@ export default function EarlyAccess() {
                 when Lampsill opens. After that it&rsquo;s <Price plan="month" /> a month or{' '}
                 <Price plan="year" /> a year, only if you choose to carry on.
               </p>
+              {/* Here and not inside the consent label: a link in a <label>
+                  can tick the box on its way to opening the page. */}
+              <p className="join-small">
+                What we keep and why, in plain English: <a href="/privacy">our privacy notice</a>.
+              </p>
             </form>
           )}
         </div>

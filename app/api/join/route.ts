@@ -35,7 +35,11 @@ export const dynamic = 'force-dynamic';
  * questions the pilot most needs answered — see "Is this worth doing"), whether
  * they'd help test, the country, the consent wording they agreed to, and a
  * salted hash of the IP address used only to stop one address flooding the
- * table. Never the raw IP.
+ * table, and wiped after a day (`forgetOldIps`). Never the raw IP.
+ *
+ * ⚠️ EVERYTHING ABOVE IS ALSO PROMISED ON /privacy (app/privacy/page.tsx). Add a
+ * column, keep something longer, or send it somewhere new, and that page is
+ * wrong until it is updated too.
  */
 
 const LOOKING_AFTER = ['parent', 'child', 'self'] as const;
@@ -76,6 +80,19 @@ function ensureTable(sql: NeonQueryFunction<false, false>) {
   return tableReady;
 }
 
+/**
+ * THE IP HASH IS KEPT FOR A DAY, and /privacy says so. It is only ever compared
+ * against the last hour of sign-ups (the flood check below), so there is no
+ * reason for it to outlive that — and a privacy notice that says "a day" has
+ * to be true by construction, not by someone remembering to run a query.
+ * Runs on every sign-up and every counter fetch; either is frequent enough.
+ */
+function forgetOldIps(sql: NeonQueryFunction<false, false>) {
+  return sql`
+    UPDATE early_access SET ip_hash = NULL
+    WHERE ip_hash IS NOT NULL AND updated_at < now() - interval '1 day'`;
+}
+
 /** How many of the free places are still going. */
 async function placesLeft(sql: NeonQueryFunction<false, false>) {
   const rows = (await sql`SELECT count(*)::int AS n FROM early_access`) as { n: number }[];
@@ -105,7 +122,7 @@ export async function GET() {
   try {
     const sql = neon(url);
     await ensureTable(sql);
-    const { left } = await placesLeft(sql);
+    const [{ left }] = await Promise.all([placesLeft(sql), forgetOldIps(sql)]);
     return NextResponse.json(
       { ...none, spotsLeft: left },
       // Up to half a minute stale is fine for a counter, and it keeps a busy
@@ -207,6 +224,8 @@ export async function POST(req: Request) {
         ip_hash       = EXCLUDED.ip_hash,
         updated_at    = now()
       RETURNING spot, free_months`) as { spot: number | null; free_months: number }[];
+
+    await forgetOldIps(sql);
 
     const mine = rows[0];
     return NextResponse.json({
