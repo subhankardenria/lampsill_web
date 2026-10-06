@@ -329,46 +329,6 @@
 .price-figure { animation: fadeUp .45s var(--ease) both; }
 .price-sub { margin: .5rem 0 0; color: var(--ink3); font-size: .92rem; }
 
-.market-picker { display: inline-flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
-/* A REAL <select>, DRESSED (6 Oct 2026). Left to the browser it was as wide as
-   its longest option — which had just become "Pakistan, Bangladesh, Nigeria &
-   others (USD)", so "India (INR)" sat at the left of a box the width of the
-   card — with the platform's own arrow jammed against the edge and its double
-   white-and-blue focus ring, the one thing on the page not drawn in the
-   page's colours.
-
-   Still a native select underneath: keyboard, screen readers and a phone's
-   own picker all work, and none of that is worth trading for a prettier menu.
-   `field-sizing: content` sizes it to the country chosen; where a browser
-   does not know that yet, `max-width` stops it running the width of the card. */
-.market-picker select {
-  appearance: none; -webkit-appearance: none;
-  field-sizing: content;
-  font: inherit; font-size: .88rem; color: var(--ink);
-  max-width: min(100%, 17rem); min-height: 2.4rem;
-  padding: .35rem 2.1rem .35rem .8rem;
-  border: 1px solid var(--line); border-radius: 10px;
-  background-color: var(--surfaceHi);
-  /* the arrow, in the page's own grey, with room either side of it */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%238A9BA3' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1.5 1.5 6 6l4.5-4.5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right .75rem center; background-size: .7rem auto;
-  text-overflow: ellipsis; cursor: pointer;
-  transition: border-color .15s ease, box-shadow .15s ease;
-}
-.market-picker select:hover { border-color: color-mix(in srgb, var(--vesper) 55%, var(--line)); }
-/* One ring, in the brand's blue — and never none: someone tabbing to this has
-   to be able to see where they are. */
-.market-picker select:focus-visible {
-  outline: none; border-color: var(--vesper);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--vesper) 28%, transparent);
-}
-/* The open list, where the browser lets a page colour it — and told which
-   theme it is in, so the platform's own menu is not white on a dark page. */
-.market-picker select { color-scheme: dark; }
-@media (prefers-color-scheme: light) { .market-picker select { color-scheme: light; } }
-.market-picker option { background: var(--surface); color: var(--ink); }
-@media (max-width: 46rem) { .market-picker select { min-height: 2.75rem; font-size: .92rem; } }
-
 /* --- early access -------------------------------------------------------- */
 .join-head { text-align: center; }
 .join-head .lede { margin-inline: auto; }

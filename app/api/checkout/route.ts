@@ -53,8 +53,8 @@ export async function POST(req: Request) {
   } catch {
     /* an empty or malformed body just means the defaults below */
   }
-  // The visitor's pick first (they may be paying from another country's card),
-  // then the request's own country. Only a pre-fill: the customer can change it.
+  // The country the page sent (the one whose price it showed), else the
+  // request's own. Only a pre-fill: the customer can change it.
   const country = isCountryCode(body.country)
     ? body.country.toUpperCase()
     : countryFromHeaders(req.headers);

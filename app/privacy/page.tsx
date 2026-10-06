@@ -3,7 +3,8 @@ import { headers } from 'next/headers';
 import { Masthead, Footer, Reveals } from '@/components/Chrome';
 import { PriceProvider } from '@/components/Price';
 import { EARLY_ACCESS, FREE_UNTIL } from '@/lib/copy';
-import { countryFromHeaders, marketForCountry } from '@/lib/pricing';
+import { marketForCountry } from '@/lib/pricing';
+import { visitorCountry } from '@/lib/geo';
 
 /**
  * THE PRIVACY NOTICE for the website and the early-access list.
@@ -19,7 +20,7 @@ import { countryFromHeaders, marketForCountry } from '@/lib/pricing';
  *   the IP hash goes after a day     forgetOldIps() in the same file
  *   no cookies, no analytics         nothing sets any; README "No analytics"
  *   nothing from anyone else's server  the CSP in next.config.mjs is 'self'
- *   the price region stays on device localStorage in components/Price.tsx
+ *   nothing kept on your device      components/Price.tsx writes no storage
  *   stored in the US                 the Neon project's region (us-east-2)
  *   email kept in India              the Zoho account's data centre (zoho.in),
  *                                    which Zoho cannot move after sign-up
@@ -41,12 +42,14 @@ export const metadata: Metadata = {
 };
 
 export default async function PrivacyPage() {
-  const country = countryFromHeaders(await headers());
+  const seen = await visitorCountry(await headers());
+  const country = seen.country;
+  const guessed = !seen.certain;
   const market = marketForCountry(country);
   const spots = EARLY_ACCESS.freeSpots;
 
   return (
-    <PriceProvider initialMarket={market.key} country={country}>
+    <PriceProvider initialMarket={market.key} country={country} guessed={guessed}>
       <Masthead base="/" />
       <Reveals />
       <main id="main" className="section legal">
@@ -99,10 +102,6 @@ export default async function PrivacyPage() {
             prices in your currency. We don&rsquo;t store that unless you join the list. Like any web
             host, it keeps short-lived technical logs, which include IP addresses, to keep the site
             running and secure.
-          </p>
-          <p>
-            If you change the price region, your browser remembers your choice on your own device.
-            It isn&rsquo;t sent to us.
           </p>
 
           <h2>If you join the early-access list</h2>

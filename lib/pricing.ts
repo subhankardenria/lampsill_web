@@ -94,7 +94,7 @@ export const MARKETS: Market[] = [
   },
 ];
 
-/** Anywhere not listed pays the US dollar price, and can pick another row. */
+/** Anywhere not listed pays the US dollar price. */
 export const FALLBACK = MARKETS.find((m) => m.key === 'us')!;
 
 export const marketByKey = (key: string | null | undefined): Market | undefined =>
@@ -108,21 +108,64 @@ export const marketForCountry = (country: string | null | undefined): Market => 
 const ISO2 = /^[A-Za-z]{2}$/;
 
 /**
- * The visitor's country, from whatever the host puts on the request.
+ * The country the HOST says the request came from.
  *
  * Vercel, Cloudflare and CloudFront each add a country header; whichever runs
- * the site, one of them is there. Locally none is, so the region in
- * Accept-Language ("en-IN", "en-GB") stands in — good enough to see your own
- * price in development, and never trusted for anything but display.
+ * the site, one of them is there. Locally none is.
  */
-export function countryFromHeaders(h: Headers): string | null {
+export function countryFromHost(h: Headers): string | null {
   for (const name of ['x-vercel-ip-country', 'cf-ipcountry', 'cloudfront-viewer-country', 'x-country-code']) {
     const v = h.get(name);
     // Cloudflare sends XX for unknown and T1 for Tor
     if (v && ISO2.test(v) && v.toUpperCase() !== 'XX') return v.toUpperCase();
   }
+  return null;
+}
+
+/**
+ * The visitor's country: the host's header, else the region in Accept-Language
+ * ("en-IN", "en-GB"). The language is only a guess — "en-US" is what most
+ * browsers send whatever the country — so a page that had to guess lets the
+ * device's time zone have the last word (`countryFromTimeZone`). Never trusted
+ * for anything but display.
+ */
+export function countryFromHeaders(h: Headers): string | null {
+  const host = countryFromHost(h);
+  if (host) return host;
   const lang = h.get('accept-language')?.match(/^[a-z]{2,3}-([A-Za-z]{2})\b/);
   return lang ? lang[1].toUpperCase() : null;
 }
+
+/**
+ * A country from the device's time zone, for when the host sent none. Only the
+ * zones that settle a price are listed; anything else returns null and the
+ * page keeps what it had.
+ */
+const ZONES: Record<string, string> = {
+  'Asia/Kolkata': 'IN', 'Asia/Calcutta': 'IN',
+  'Europe/London': 'GB', 'Europe/Isle_of_Man': 'IM', 'Europe/Jersey': 'JE', 'Europe/Guernsey': 'GG',
+  'America/New_York': 'US', 'America/Chicago': 'US', 'America/Denver': 'US', 'America/Los_Angeles': 'US',
+  'America/Phoenix': 'US', 'America/Anchorage': 'US', 'Pacific/Honolulu': 'US', 'America/Detroit': 'US',
+  'America/Toronto': 'CA', 'America/Vancouver': 'CA', 'America/Edmonton': 'CA', 'America/Winnipeg': 'CA',
+  'America/Halifax': 'CA', 'America/St_Johns': 'CA', 'America/Regina': 'CA',
+  'Australia/Sydney': 'AU', 'Australia/Melbourne': 'AU', 'Australia/Brisbane': 'AU', 'Australia/Perth': 'AU',
+  'Australia/Adelaide': 'AU', 'Australia/Hobart': 'AU', 'Australia/Darwin': 'AU',
+  'Pacific/Auckland': 'NZ', 'Asia/Singapore': 'SG', 'Asia/Dubai': 'AE', 'Asia/Riyadh': 'SA',
+  'America/Mexico_City': 'MX', 'America/Sao_Paulo': 'BR', 'Africa/Johannesburg': 'ZA',
+  'Asia/Manila': 'PH', 'Asia/Jakarta': 'ID', 'Asia/Karachi': 'PK', 'Asia/Dhaka': 'BD',
+  'Asia/Colombo': 'LK', 'Asia/Kathmandu': 'NP', 'Asia/Katmandu': 'NP', 'Africa/Lagos': 'NG',
+  'Africa/Nairobi': 'KE', 'Africa/Cairo': 'EG', 'Asia/Ho_Chi_Minh': 'VN', 'Asia/Saigon': 'VN',
+  'Europe/Dublin': 'IE', 'Europe/Paris': 'FR', 'Europe/Berlin': 'DE', 'Europe/Madrid': 'ES',
+  'Europe/Rome': 'IT', 'Europe/Amsterdam': 'NL', 'Europe/Brussels': 'BE', 'Europe/Vienna': 'AT',
+  'Europe/Zurich': 'CH', 'Europe/Luxembourg': 'LU', 'Europe/Helsinki': 'FI', 'Europe/Malta': 'MT',
+  'Atlantic/Reykjavik': 'IS', 'Asia/Nicosia': 'CY',
+  'Europe/Lisbon': 'PT', 'Europe/Athens': 'GR', 'Europe/Warsaw': 'PL', 'Europe/Prague': 'CZ',
+  'Europe/Bratislava': 'SK', 'Europe/Ljubljana': 'SI', 'Europe/Zagreb': 'HR', 'Europe/Budapest': 'HU',
+  'Europe/Bucharest': 'RO', 'Europe/Sofia': 'BG', 'Europe/Tallinn': 'EE', 'Europe/Riga': 'LV',
+  'Europe/Vilnius': 'LT', 'Europe/Stockholm': 'SE', 'Europe/Oslo': 'NO', 'Europe/Copenhagen': 'DK',
+};
+
+export const countryFromTimeZone = (zone: string | null | undefined): string | null =>
+  (zone && ZONES[zone]) || null;
 
 export const isCountryCode = (v: unknown): v is string => typeof v === 'string' && ISO2.test(v);

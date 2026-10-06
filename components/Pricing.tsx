@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ALWAYS_FREE, FREE_UNTIL, STANDARD, TRIAL_MONTHS } from '@/lib/copy';
-import { MarketPicker, Price, TaxNote, usePrice } from './Price';
+import { Price, TaxNote, usePrice } from './Price';
 
 /* WHO PAYS, AND FOR WHAT (decided 6 Oct 2026). Whoever is TOLD pays: being
    told about someone else is Standard, one month free and then paid. One
@@ -205,9 +205,6 @@ export default function Pricing() {
           <p className="price-small">
             Nothing is charged before {FREE_UNTIL}, and only if you choose to carry on.
             Coming to iPhone and Android.
-          </p>
-          <p className="price-small">
-            <MarketPicker />
           </p>
         </div>
       </div>

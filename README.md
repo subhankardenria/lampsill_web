@@ -921,8 +921,9 @@ Indonesia, where the yearly discount is deeper). Monthly is one tap away.
 **How the price reaches the visitor.** `app/page.tsx` reads the country header
 the host adds (`x-vercel-ip-country`, `cf-ipcountry`, `cloudfront-viewer-country`;
 locally, the region in Accept-Language), picks the row from `lib/pricing.ts`, and
-renders it on the first paint. The visitor can pick another country in the
-pricing section (kept in localStorage). `?country=IN` forces one, for checking.
+renders it on the first paint. There is no country picker (a choice nobody
+needs is decision fatigue); with no host header the device's time zone corrects
+the browser-language guess. `?country=IN` forces one, for checking.
 Countries not in the table get the US dollar price.
 
 **How the price reaches checkout.** It doesn't, deliberately. `/api/checkout`

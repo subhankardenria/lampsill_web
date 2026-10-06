@@ -11,7 +11,8 @@ import EarlyAccess from '@/components/EarlyAccess';
 import { PersonaProvider } from '@/components/Persona';
 import { PriceProvider } from '@/components/Price';
 import { headers } from 'next/headers';
-import { countryFromHeaders, isCountryCode, marketForCountry } from '@/lib/pricing';
+import { isCountryCode, marketForCountry } from '@/lib/pricing';
+import { visitorCountry } from '@/lib/geo';
 
 /**
  * THE PAGE IS ABOUT THREE PEOPLE.
@@ -59,11 +60,15 @@ export default async function Page({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const override = (await searchParams).country;
-  const country = isCountryCode(override) ? override.toUpperCase() : countryFromHeaders(await headers());
+  const seen = await visitorCountry(await headers());
+  const country = isCountryCode(override) ? override.toUpperCase() : seen.country;
+  // Only a country the host (or ?country=) gave is certain; a language-based
+  // guess lets the device's time zone correct it after load.
+  const guessed = !isCountryCode(override) && !seen.certain;
   const market = marketForCountry(country);
 
   return (
-    <PriceProvider initialMarket={market.key} country={country}>
+    <PriceProvider initialMarket={market.key} country={country} guessed={guessed}>
       <Masthead />
       <Reveals />
       <main id="main">
