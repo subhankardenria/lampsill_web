@@ -268,6 +268,38 @@ Two honest gaps the FAQ states, and must keep stating:
 The store listing's keywords are all older-parent (`elderly parent`, `ageing in
 place`). If the young-adult case is being sold, they need adding there too.
 
+### Free until January 2027 (decided 5 Oct 2026)
+
+Nobody is charged before then. `FREE_UNTIL` in `lib/copy.ts` is the one place
+the month is written; the price section, hero, footer, FAQ, early-access form
+and privacy notice all read it. The prices in `lib/pricing.ts` are what it costs
+**from** then, and the page shows them straight under "Free".
+
+The early-access promise is not shrunk: the first 100 on the list get their two
+free months **after** the free period, not alongside it. Two things to settle
+before this is public: whether "January" means the 1st or the 31st, and the
+store listing, which must say the same thing.
+
+### The page says what the app does (5 Oct 2026)
+
+The copy was first written from `Lampsill — Worked Example.md`, which describes
+a detector the app does not have. It now follows the app:
+
+- **The window is chosen, not learned.** 12, 24 or 48 hours, 48 unless they say
+  otherwise. No "at least 6 waking hours", no rhythm learned in a first week, no
+  sleep hours. `FAMILY.quietHours` (12) is only the window this page's stories
+  are told with, and the page says it is one of three wherever the number shows.
+- **The words are the app's:** Normal, Paused, Permission lost, Phone gone quiet
+  (`FAMILY.states`). Not "learning" or "escalating".
+- **The picture is the app's:** `components/StateWindow.tsx` is the mark, small
+  and without its light — lit for normal, dark for paused, warning-coloured for
+  quiet, crown open for permission lost. Same numbers as `PersonWindow` in
+  `lampsill_app/lib/widgets/flow_pictures.dart`. Change one, change both.
+- **An alert can come at any hour.** There is no "their daytime".
+
+If the app's windows, words or picture change, change `lib/copy.ts` and
+`StateWindow.tsx` with them.
+
 ### Before this goes live
 
 - [ ] **Push notifications exist.** Plan item 1.9 is not built; the payer alarm
@@ -297,11 +329,12 @@ place`). If the young-adult case is being sold, they need adding there too.
 
 ### The solo version on this page
 
-`ForYourself` offers two honest options: ask someone to be the one who's
-notified (the real family flow, with you as "Mum"), or set it up just for
-yourself — in which case **it rings you and tells nobody else**, matching the
-app's no-texting build. It must never say "your person hears" for the solo
-version: with no SMS service there is no one to send that message.
+The "Myself" tab offers two honest options: ask someone to be the one who's
+notified (the real family flow, with you as "Mum"), or set it up yourself —
+which is **free**, and tells whoever types your code into their own Lampsill.
+(Until 6 Oct 2026 this said the solo version told nobody. That was true of the
+app when it could only text and had no texts to send; it has told people in
+their own app since 3 Oct.)
 
 ---
 
@@ -852,6 +885,14 @@ launching the form — and are one line:
 
 ## Payments: Dodo Payments, priced per country
 
+> **5 Oct 2026: free until January 2027, Dodo is settled, and the owner is based
+> in India.** The plan for getting to the first paid day — Dodo's current fees,
+> what each price keeps after them, the price changes recommended, the India
+> set-up and what still has to be built — is in
+> `../Lampsill - Pricing and Payments Plan.md`. Where that plan and this section
+> disagree (base currency, the fee per payment, payouts in rupees), the plan is
+> the newer one.
+
 > **DECISION, 26 Sep 2026: the beta runs free.** Nobody is charged and no card
 > is asked for until the beta is over, and the payment provider is not settled
 > — Dodo is what's built, but "Dodo or any payment" is still open. Nothing on
@@ -868,8 +909,11 @@ tax everywhere. At these prices it is also cheaper than Paddle or Lemon Squeezy
 (4% + 40¢ base, vs 5% + 50¢). Stripe would be cheaper for UK-only sales, but
 leaves the tax registration with you.
 
-**The fee that shapes the page.** Dodo adds +0.5% for subscriptions and +1.5%
-for non-US cards, so a typical customer costs **~6% + 40¢**. The 40¢ is ~15% of
+**The fee that shapes the page.** Dodo adds +0.5% for subscriptions, +1.5%
+for non-US cards, and — the part this section used to miss — a 4% conversion
+fee, taken from us, whenever a local price is set. So a typical customer costs
+**~10% + 40¢**, and one in India **~10% + 15¢**. (Older figure, for the
+record: ~6% + 40¢.) The 40¢ is ~15% of
 a £1.99 monthly charge and ~1.5% of a £19.99 yearly one. That is why **yearly
 is preselected** and badged "2 months free" (4 in India, the Philippines and
 Indonesia, where the yearly discount is deeper). Monthly is one tap away.
@@ -888,22 +932,36 @@ So the page and the dashboard must agree, row for row.
 
 ### Set up in Dodo, before the button can work
 
-- [ ] Business verified; payouts set up (check whether payouts under $1,000
-      carry a fee — the pricing page and a 2026 review disagree).
-- [ ] **Base currency GBP.** Non-GBP payments cost ~4% more in conversion,
-      deducted from your settlement.
-- [ ] Two subscription products: **monthly** and **yearly**, base price £1.99
-      and £19.99. Their ids go in `DODO_PRODUCT_MONTHLY` / `DODO_PRODUCT_YEARLY`.
+The account is held in India (decided 6 Oct 2026). Full reasoning and Dodo's
+fees as read that week: `../Lampsill - Pricing and Payments Plan.md`.
+
+- [ ] **Account created and verified from India**, as an individual or a
+      registered business. This is the slow step; start it first.
+- [ ] **Base currency USD.** Dodo pays out in USD, GBP or EUR only — rupee
+      payouts were discontinued — and USD spares US customers the conversion
+      and international fees. (This section used to say GBP.)
+- [ ] Two subscription products: **monthly** and **yearly**. Their ids go in
+      `DODO_PRODUCT_MONTHLY` / `DODO_PRODUCT_YEARLY`.
+- [ ] **Tax-Inclusive Pricing on, on both.** Dodo's localized amounts are
+      *pre-tax* unless it is, and then the page's "Tax included" is false. UK,
+      EU and Australian law require consumer prices to include tax.
 - [ ] On both, **Localized Pricing → By Country**, one rule per country in
-      `lib/pricing.ts`, same amounts.
-- [ ] ⚠️ **Tax-inclusive check.** Dodo documents localized amounts as *pre-tax*.
-      Run a test checkout from a UK, an EU and an Indian address: if VAT/GST is
-      added on top of £1.99 / €2.49 / ₹99, the page's "Tax included" is false.
-      Fix it in Dodo (tax-inclusive pricing) or enter net amounts there. UK, EU
-      and Australian law require consumer prices to include tax.
+      `lib/pricing.ts`, same amounts. The yearly-only row (`yr`) gets a rule on
+      the yearly product and **none on the monthly one**.
+- [ ] **India is billed in INR**, which is what makes UPI and Indian cards
+      appear. `/api/checkout` already sends `mandate_min_amount_inr_paise` set
+      to the plan's own price, so the customer's bank shows ₹99 or ₹799 and not
+      Dodo's default "up to ₹15,000". Check that on a real UPI app.
+- [ ] **Test checkouts** from a UK, an EU, a US and an Indian address: the
+      amount charged must equal the page's, to the penny. Then, and only then,
+      set `taxIncluded: true` for `us` and `ca` in `lib/pricing.ts`.
+- [ ] **Payout threshold about $500.** A payout under $1,000 costs $5: 1% at
+      $500, 5% at the default $100.
 - [ ] Statement descriptor reads "LAMPSILL" — a $30 dispute costs over a year
       of that subscriber's revenue, and unrecognised charges are how disputes start.
 - [ ] Webhooks pointed at **lampsill_api**, not this site (see "Not done").
+      Grant access on `payment.succeeded` only: an Indian renewal completes
+      about 48 hours after its date.
 - [ ] Cancellation is short and human (spec §8.1) in Dodo's customer portal.
 
 ---

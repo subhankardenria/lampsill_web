@@ -2,6 +2,16 @@
 
 import { useEffect, useRef } from 'react';
 import { FAMILY } from '@/lib/copy';
+import StateWindow, { type WindowState } from './StateWindow';
+
+/* The four things the app can show about someone, each with its window —
+   exactly as it draws them beside a person's name. */
+const STATES: [WindowState, string][] = [
+  ['normal', 'Normal'],
+  ['paused', 'Paused'],
+  ['lost', 'Permission lost'],
+  ['quiet', 'Phone gone quiet'],
+];
 
 /**
  * "You see one word, not her day", drawn as a swarm of dots against a single
@@ -93,8 +103,8 @@ export default function DataModel() {
             Not their day.
           </h2>
           <p className="lede">
-            Lampsill tells you if things are normal. Never where they went, who they
-            saw, or when they woke up. They keep their freedom. You stop wondering.
+            A lit window and one word. Never where they went, who they saw, or when
+            they woke up.
           </p>
         </div>
 
@@ -108,23 +118,30 @@ export default function DataModel() {
           </figure>
 
           <figure className="dm-panel lit dm-one">
-            <div className="dm-single" aria-hidden="true">
-              <span className="dm-word">normal</span>
+            <div className="dm-single">
+              <StateWindow state="normal" size={64} />
+              <span className="dm-word">Normal</span>
             </div>
             <figcaption>
               <span className="dm-label">What Lampsill shows you</span>
-              <span className="dm-sub">
-                Just one of four words: {FAMILY.states.join(', ')}
-              </span>
+              <span className="dm-sub">One window, one of {FAMILY.states.length} words</span>
             </figcaption>
           </figure>
         </div>
 
-        <p className="lede reveal" style={{ marginTop: '2.5rem' }}>
-          That word comes from their phone&rsquo;s usual rhythm, learned in the first
-          week. So &ldquo;normal&rdquo; means normal <em>for them</em> &mdash; late nights
-          and all. You never see the details. No timeline, no report, no map. Lampsill
-          doesn&rsquo;t even ask for location.
+        {/* The whole vocabulary, as the app draws it. A lit window is the only
+            one that needs no reading. */}
+        <ul className="dm-states reveal" aria-label="Everything Lampsill can show you about someone">
+          {STATES.map(([state, word]) => (
+            <li key={state} data-state={state}>
+              <StateWindow state={state} size={34} />
+              <span>{word}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p className="lede reveal" style={{ marginTop: '2rem' }}>
+          No timeline, no report, no map. Lampsill doesn&rsquo;t even ask for location.
         </p>
       </div>
     </section>

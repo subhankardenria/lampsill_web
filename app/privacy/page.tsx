@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { Masthead, Footer, Reveals } from '@/components/Chrome';
 import { PriceProvider } from '@/components/Price';
-import { EARLY_ACCESS } from '@/lib/copy';
+import { EARLY_ACCESS, FREE_UNTIL } from '@/lib/copy';
 import { countryFromHeaders, marketForCountry } from '@/lib/pricing';
 
 /**
@@ -148,7 +148,8 @@ export default async function PrivacyPage() {
                 <tr>
                   <td>Your place in the queue, and whether it came with free months</td>
                   <td>
-                    The first {spots} people get their first {EARLY_ACCESS.freeMonths} months free.
+                    The first {spots} people get {EARLY_ACCESS.freeMonths} more months free once
+                    paid plans start.
                     This is our record of who was promised what.
                   </td>
                 </tr>
@@ -192,8 +193,8 @@ export default async function PrivacyPage() {
 
           <h2>No payments yet</h2>
           <p>
-            Lampsill doesn&rsquo;t take payments yet. Nobody is charged during the beta, and we never
-            ask for card details. Before paid plans start, we&rsquo;ll update this page to say who
+            Lampsill is free until {FREE_UNTIL} and doesn&rsquo;t take payments yet. Nobody is
+            charged before then, and we never ask for card details. Before paid plans start, we&rsquo;ll update this page to say who
             handles payments, and email everyone on the list.
           </p>
 
@@ -290,7 +291,7 @@ export default async function PrivacyPage() {
           </p>
         </div>
       </main>
-      <Footer />
+      <Footer base="/" />
     </PriceProvider>
   );
 }

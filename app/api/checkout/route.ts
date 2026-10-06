@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
-import { countryFromHeaders, isCountryCode, type Plan } from '@/lib/pricing';
+import { countryFromHeaders, isCountryCode, marketForCountry, type Plan } from '@/lib/pricing';
+
+/** "₹799" → 79900. India's prices are whole rupees; this is only ever asked
+ *  of the India row. */
+const paise = (display: string) => Number(display.replace(/[^0-9]/g, '')) * 100;
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -49,7 +53,17 @@ export async function POST(req: Request) {
   } catch {
     /* an empty or malformed body just means the defaults below */
   }
-  const plan: Plan = body.plan === 'month' ? 'month' : 'year';
+  // The visitor's pick first (they may be paying from another country's card),
+  // then the request's own country. Only a pre-fill: the customer can change it.
+  const country = isCountryCode(body.country)
+    ? body.country.toUpperCase()
+    : countryFromHeaders(req.headers);
+  const market = marketForCountry(country);
+
+  // Where there is no monthly plan, a request for one is a request for the
+  // year: the monthly product has no price for that country, and Dodo would
+  // charge its base price in dollars.
+  const plan: Plan = body.plan === 'month' && market.month !== null ? 'month' : 'year';
   const product = products[plan];
 
   if (!key || !product) {
@@ -59,18 +73,22 @@ export async function POST(req: Request) {
     );
   }
 
-  // The visitor's pick first (they may be paying from another country's card),
-  // then the request's own country. Only a pre-fill: the customer can change it.
-  const country = isCountryCode(body.country)
-    ? body.country.toUpperCase()
-    : countryFromHeaders(req.headers);
-
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://lampsill.com';
   const base = process.env.DODO_ENV === 'live' ? 'https://live.dodopayments.com' : 'https://test.dodopayments.com';
 
   const payload = {
     product_cart: [{ product_id: product, quantity: 1 }],
     ...(country ? { billing_address: { country } } : {}),
+    // INDIA: THE BANK'S SCREEN SHOWS A CEILING, NOT A PRICE. A recurring
+    // payment by UPI or an Indian card is a mandate the customer approves with
+    // their bank, for `max(this floor, the amount billed)`. Dodo's default
+    // floor is ₹15,000 — so someone agreeing to ₹99 a month would be asked to
+    // authorise "up to ₹15,000", and would be right to refuse. Set to the
+    // plan's own price, the mandate is for exactly what is charged. A later
+    // price rise means asking again, which is how it should be.
+    ...(country === 'IN'
+      ? { mandate_min_amount_inr_paise: paise((plan === 'month' ? market.month : null) ?? market.year) }
+      : {}),
     return_url: `${site}/?subscribed=1`,
     cancel_url: `${site}/#price`,
     feature_flags: { allow_discount_code: true },

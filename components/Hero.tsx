@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { Price } from './Price';
-import { EARLY_ACCESS } from '@/lib/copy';
+import { PerPrice } from './Price';
+import { FREE_UNTIL } from '@/lib/copy';
 import Diorama from './Diorama';
 
 /* Both directions of the relationship, in words every English reader shares.
@@ -191,7 +191,7 @@ export default function Hero() {
             <li>Nothing for them to set up</li>
             <li>No maps. No reports. One word.</li>
             <li>
-              <Price plan="month" /> a month &middot; first {EARLY_ACCESS.freeSpots} start free
+              Free until {FREE_UNTIL} &middot; then <PerPrice />
             </li>
           </ul>
         </div>

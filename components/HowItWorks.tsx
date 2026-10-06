@@ -1,8 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { FAMILY } from '@/lib/copy';
+import { FAMILY, WINDOW_CHOICE } from '@/lib/copy';
 import { PersonaTabs, usePersona } from './Persona';
+import StateWindow from './StateWindow';
 
 type Phase =
   | 'idle' | 'quiet' | 'ringing' | 'notified'
@@ -15,7 +16,7 @@ type Outcome = 'none' | 'missed' | 'declined' | 'talked';
  *  `on` is where the story is, `done` has been passed, `off` not reached yet */
 type Lit = 'idle' | 'on' | 'done' | 'off';
 
-const QUIET_MS = 4200; // stands in for 12 hours
+const QUIET_MS = 4200; // stands in for the window: 12 hours here
 const RING_MS = 5000; // stands in for 10 minutes
 const CALL_MS = 4500; // your call to them, ringing out if nobody touches it
 const TALK_S = 6; // a call that's picked up ends by itself after this
@@ -258,9 +259,11 @@ export default function HowItWorks() {
         <div className="reveal how-head">
           <p className="eyebrow">How it works &middot; 20 seconds</p>
           <h2>Three phones. One quiet day.</h2>
+          {/* The number is a choice, and says so: the app offers three, and
+              nothing about it is learned. */}
           <p className="lede">
-            Most days, nothing happens. Here&rsquo;s what happens if {P.theirPhone} sits
-            untouched for {FAMILY.quietHours} hours &mdash; played out in front of you.
+            Most days, nothing happens. You choose how long is too long: {WINDOW_CHOICE}{' '}
+            hours. Here, {P.theirPhone} sits untouched for {FAMILY.quietHours}.
           </p>
         </div>
 
@@ -430,8 +433,11 @@ export default function HowItWorks() {
                 <div className="phone-screen">
                   {(phase === 'idle' || phase === 'quiet' || phase === 'ringing' || phase === 'answered') && (
                     <div className="scr">
+                      {/* as the app shows it: their window with the lamp on,
+                          their name, one word */}
+                      <StateWindow state="normal" size={46} />
                       <p className="foot">{P.demo.stateOf}</p>
-                      <div className="state-word">normal</div>
+                      <div className="state-word">Normal</div>
                       <p className="foot">{P.demo.stateCaption}</p>
                     </div>
                   )}
@@ -460,13 +466,16 @@ export default function HowItWorks() {
                   )}
                   {(phase === 'talked' || phase === 'declined') && (
                     <div className="scr st-back">
+                      <StateWindow state="normal" size={46} />
                       <p className="foot">{P.demo.stateOf}</p>
-                      <div className="state-word">normal</div>
+                      <div className="state-word">Normal</div>
                       <p className="foot">{P.demo.inUse}</p>
                     </div>
                   )}
                   {(phase === 'notified' || phase === 'called' || phase === 'hungup') && (
                     <div className="scr st-alert">
+                      {/* the lamp out, in the warning colour */}
+                      <StateWindow state="quiet" size={34} />
                       <div className="mp-notif">
                         <span className="mp-app">LAMPSILL · now</span>
                         <span className="mp-ntitle">{P.notif.title}</span>

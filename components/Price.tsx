@@ -74,10 +74,25 @@ export function PriceProvider({
 
 export const usePrice = () => useContext(PriceContext);
 
-/** "£1.99", "₹799" … the visitor's price for one plan */
+/** "£1.99", "₹799" … the visitor's price for one plan. Where there is no
+ *  monthly plan, asking for it gives the yearly price rather than nothing. */
 export function Price({ plan }: { plan: Plan }) {
   const { market } = usePrice();
-  return <>{plan === 'month' ? market.month : market.year}</>;
+  return <>{plan === 'month' ? (market.month ?? market.year) : market.year}</>;
+}
+
+/** "£1.99 a month" — or "$9.99 a year" where yearly is the only plan. The one
+ *  line to use wherever the page says what it costs in passing. */
+export function PerPrice() {
+  const { market } = usePrice();
+  return <>{market.month ? `${market.month} a month` : `${market.year} a year`}</>;
+}
+
+/** "£1.99 a month or £19.99 a year" — or just the year, where that is all
+ *  there is. */
+export function PlanPrices() {
+  const { market } = usePrice();
+  return <>{market.month ? `${market.month} a month or ${market.year} a year` : `${market.year} a year`}</>;
 }
 
 /** "incl. VAT" style small print for the visitor's market */

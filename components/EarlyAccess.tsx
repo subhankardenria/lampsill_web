@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { EARLY_ACCESS } from '@/lib/copy';
-import { Price, usePrice } from './Price';
+import { EARLY_ACCESS, FREE_UNTIL } from '@/lib/copy';
+import { PerPrice, PlanPrices, usePrice } from './Price';
 
 type Who = 'parent' | 'child' | 'self';
 type Phone = 'iphone' | 'android' | 'unsure';
@@ -136,13 +136,11 @@ export default function EarlyAccess() {
       <div className="wrap narrow">
         <div className="reveal join-head">
           <p className="eyebrow">Early access</p>
-          <h2>
-            The first {spots} get {months} months free.
-          </h2>
+          <h2>Free until {FREE_UNTIL}.</h2>
           <p className="lede">
             Lampsill isn&rsquo;t open yet. Leave your email and we&rsquo;ll tell you the day it
-            is. The first {spots} people on the list start with {months} months free &mdash;
-            the form says straight away whether you&rsquo;re one of them.
+            is. Everyone gets a month of Standard free; the first {spots} people on the list
+            get {months} more &mdash; the form says straight away whether you&rsquo;re one of them.
           </p>
         </div>
 
@@ -156,7 +154,8 @@ export default function EarlyAccess() {
                     You&rsquo;re in{got.spot ? <> &mdash; number {got.spot}</> : null}.
                   </h3>
                   <p>
-                    Your first {months} months are free. We&rsquo;ll email <strong>{email}</strong> the
+                    Free until {FREE_UNTIL}, and {months} more months after that. We&rsquo;ll email{' '}
+                    <strong>{email}</strong> the
                     day Lampsill opens{test ? ', and before that about helping us test it' : ''}.
                   </p>
                 </>
@@ -164,8 +163,9 @@ export default function EarlyAccess() {
                 <>
                   <h3>You&rsquo;re on the list{got.spot ? <> &mdash; number {got.spot}</> : null}.</h3>
                   <p>
-                    The {spots} free places had gone, so yours starts at the usual{' '}
-                    <Price plan="month" /> a month. We&rsquo;ll still email <strong>{email}</strong>{' '}
+                    The {spots} places with extra months had gone. Yours is still free
+                    until {FREE_UNTIL}, then <PerPrice />. We&rsquo;ll email{' '}
+                    <strong>{email}</strong>{' '}
                     the day Lampsill opens{test ? ', and before that about helping us test it' : ''}.
                   </p>
                 </>
@@ -248,11 +248,11 @@ export default function EarlyAccess() {
                 <p className="join-spots" role="status">
                   {gone ? (
                     <>
-                      The {spots} free places have gone &mdash; the list is still open.
+                      The {spots} places with extra months have gone &mdash; the list is still open.
                     </>
                   ) : (
                     <>
-                      <strong>{left}</strong> of {spots} free places left
+                      <strong>{left}</strong> of {spots} places with {months} extra months left
                     </>
                   )}
                 </p>
@@ -276,10 +276,10 @@ export default function EarlyAccess() {
               )}
 
               <p className="join-small">
-                No card needed, and nothing is charged. Places go in the order people sign up
-                &mdash; if yours is one of the first {spots}, your first {months} months are free
-                when Lampsill opens. After that it&rsquo;s <Price plan="month" /> a month or{' '}
-                <Price plan="year" /> a year, only if you choose to carry on.
+                No card needed, and nothing is charged before {FREE_UNTIL}. Places go in the
+                order people sign up &mdash; if yours is one of the first {spots}, your first{' '}
+                {months} months after that are free too. Then it&rsquo;s <PlanPrices />, only if
+                you choose to carry on.
               </p>
               {/* Here and not inside the consent label: a link in a <label>
                   can tick the box on its way to opening the page. */}

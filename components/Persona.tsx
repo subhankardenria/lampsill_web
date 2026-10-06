@@ -99,7 +99,7 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
       phoneLabel: 'Anna’s phone',
     },
     middle: {
-      name: 'You', initial: 'You', role: 'Set it up · pay for it', isVisitor: true,
+      name: 'You', initial: 'You', role: 'Set it up · get the alert', isVisitor: true,
       h3: 'No answer? You’re told',
       body: 'Your phone makes a sound. Two buttons: call her, or text her neighbour.',
       phoneLabel: 'Your phone',
@@ -163,7 +163,7 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
       phoneLabel: 'Adam’s phone',
     },
     middle: {
-      name: 'You', initial: 'You', role: 'Set it up · pay for it', isVisitor: true,
+      name: 'You', initial: 'You', role: 'Set it up · get the alert', isVisitor: true,
       h3: 'No answer? You’re told',
       body: 'Your phone makes a sound. Two buttons: call him, or text his friend down the hall.',
       phoneLabel: 'Your phone',
@@ -211,8 +211,9 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
 
   // THE READER IS THE ONE WHO LIVES ALONE. The honest full chain for them is the
   // family flow with someone else in the middle: that person installs Lampsill
-  // and is notified; the reader taps twice to say yes. With no SMS service the
-  // solo-only version tells nobody, which is what `panelNote` says.
+  // and is notified; the reader says yes on their own phone. Setting it up for
+  // oneself is free and rings the reader; having someone TOLD is that person's
+  // Standard, whichever of them started it — which is what `panelNote` says.
   self: {
     key: 'self',
     tab: 'Myself',
@@ -229,7 +230,7 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
     middle: {
       name: 'Lena', initial: 'L', role: 'Your sister · looks out for you', isVisitor: false,
       h3: 'No answer? Lena is told',
-      body: 'She set it up, and you tapped twice to say yes. Her phone makes a sound. Two buttons: call you, or text your neighbour.',
+      body: 'She set it up, and you said yes on your own phone. Her phone makes a sound. Two buttons: call you, or text your neighbour.',
       phoneLabel: 'Lena’s phone',
     },
     // Neutral on purpose: this is Lena's view of the READER, and nothing on the
@@ -246,7 +247,7 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
     message: "Hi Nina, it's Lena. I can't get an answer next door and the phone's been quiet all day. Could you knock? You've got the key.",
     reply: 'Going over now 👍',
     panelNote:
-      'Rather keep it to yourself? Set it up just for you. Pick 12, 24 or 48 hours. If your phone sits untouched that long, it rings to check on you. That version doesn’t tell anyone else.',
+      'Just for yourself? That’s free: pick 12, 24 or 48 hours and it rings you. To have someone told, give them your code; being told is their Standard, with a month free.',
     demo: {
       answerBtn: 'I answer',
       stateOf: 'You',

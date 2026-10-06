@@ -1,5 +1,5 @@
-import { EARLY_ACCESS, FAMILY, MAX_PAUSE_DAYS } from '@/lib/copy';
-import { Price, TaxNote } from './Price';
+import { EARLY_ACCESS, FAMILY, FREE_UNTIL, GRACE_DAYS, MAX_PAUSE_DAYS, WINDOW_CHOICE } from '@/lib/copy';
+import { PlanPrices, TaxNote } from './Price';
 
 /**
  * The questions people actually stall on, answered in a sentence or two.
@@ -8,7 +8,11 @@ import { Price, TaxNote } from './Price';
  * work with no JavaScript, and an accordion is the one widget where rolling
  * your own reliably makes it worse.
  *
- * EVERY ANSWER IS FROM `Lampsill — Worked Example.md`. This is the section
+ * EVERY ANSWER IS WHAT THE APP DOES (checked against it, 5 Oct 2026): the
+ * window is chosen, not learned; there are no sleep hours; an alert can come
+ * at any hour; and the words are the app's own. They were first written from
+ * `Lampsill — Worked Example.md`, which described a detector the app does not
+ * have. This is the section
  * people read at the moment they decide whether to trust it, so a confident
  * wrong answer costs more here than anywhere else on the page.
  *
@@ -19,7 +23,7 @@ import { Price, TaxNote } from './Price';
 const QA: { q: string; a: React.ReactNode }[] = [
   {
     q: 'Do they have to do anything?',
-    a: 'Two taps, once, to say yes. After that, nothing. They use their phone as normal and never need to open Lampsill.',
+    a: 'Once: they type in a code you give them and tap Yes. After that, nothing. They use their phone as normal and never need to open Lampsill.',
   },
   {
     q: 'Does it work for a son or daughter away for study or work?',
@@ -34,17 +38,16 @@ const QA: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: 'Can I see where they are?',
-    a: 'No. Lampsill never asks for location, on either phone. You only see one of four words: normal, learning, permission lost, or escalating (an alert is under way). Never their messages, where they go, or when they get in.',
+    a: 'No. Lampsill never asks for location, on either phone. You see a small window and one of four words: normal, paused, permission lost, or phone gone quiet. Never their messages, where they go, or when they get in.',
   },
   {
     q: 'Won’t late nights and lie-ins set it off?',
     a: (
       <>
-        It needs {FAMILY.quietHours} hours of their phone sitting untouched, with at
-        least {FAMILY.wakingHours} of them in their usual waking hours &mdash; so a
-        night&rsquo;s sleep doesn&rsquo;t count. It learns their rhythm in the first
-        week. You can set sleep hours, and either of you can add away time for up to{' '}
-        {MAX_PAUSE_DAYS} days.
+        You choose how long is too long: {WINDOW_CHOICE} hours. 48 suits most
+        people. A shorter one can go off after a long sleep &mdash; but their own
+        phone asks first, and one tap ends it. They can change it, or pause it for
+        up to {MAX_PAUSE_DAYS} days when they&rsquo;re away.
       </>
     ),
   },
@@ -56,9 +59,9 @@ const QA: { q: string; a: React.ReactNode }[] = [
     q: 'Who texts their nearest person?',
     a: (
       <>
-        You do, in one tap. Your notification has Call, Text and WhatsApp buttons.
-        Tap Text and your messages app opens with the note already written. It comes
-        from your number, so they know it&rsquo;s you.
+        You do, in one tap. The alert opens on Call. If there&rsquo;s no answer,
+        their nearest person is right under it, with Call, Text and WhatsApp. Text
+        opens your messages app with the note already written, from your number.
       </>
     ),
   },
@@ -75,19 +78,46 @@ const QA: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: 'What if we live in different time zones?',
-    a: 'Lampsill uses their clock, not yours — “daytime” means their daytime. So if they live abroad, it might wake you at night. Let Lampsill through Do Not Disturb: if you sleep through it, nobody else is told.',
+    a: 'It counts hours on their phone, whatever the time is for you. So an alert can arrive at night. Let Lampsill through Do Not Disturb: if you sleep through it, nobody else is told.',
   },
   {
     q: 'Is this an emergency service?',
     a: 'No. It can’t detect a fall or a medical problem, and it works in hours, not minutes. In an emergency, call your local emergency number.',
   },
   {
+    q: 'What is free, and what is Standard?',
+    a: (
+      <>
+        Free, for good: Lampsill for yourself, which rings you if your phone goes
+        quiet, with reminders, notes and steps. Being looked out for is free too.
+        Standard is for the one looking out: you are told if their phone goes quiet,
+        for everyone on your account, with how each of them is at a glance, one-tap
+        Call and the people nearby, and an alert that keeps sounding until you open
+        it.
+      </>
+    ),
+  },
+  {
+    q: 'What happens if I stop paying?',
+    a: (
+      <>
+        You&rsquo;re told well before, then you have {GRACE_DAYS} days&rsquo; grace.
+        After that you are no longer told &mdash; and both of you are told that, so
+        nobody thinks they&rsquo;re covered when they aren&rsquo;t. Their own phone
+        still rings them. Nothing is deleted: pay again and it carries on.
+      </>
+    ),
+  },
+  {
     q: 'How much is it?',
     a: (
       <>
-        <Price plan="month" /> a month, or <Price plan="year" /> a year, for one person — with
-        everything included. <TaxNote /> Cancel any time. The first {EARLY_ACCESS.freeSpots} people
-        on the early-access list start with {EARLY_ACCESS.freeMonths} months free.
+        Everything is free until {FREE_UNTIL}. After that, looking out for someone is
+        Standard: <PlanPrices /> for one account, however many people you look out for.{' '}
+        <TaxNote /> Every new account gets a month of Standard free first, with no card
+        needed. The person you look out for never pays. The first{' '}
+        {EARLY_ACCESS.freeSpots} people on the early-access list get{' '}
+        {EARLY_ACCESS.freeMonths} more months on top.
       </>
     ),
   },

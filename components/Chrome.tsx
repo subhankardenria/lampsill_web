@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Price } from './Price';
-import { EARLY_ACCESS } from '@/lib/copy';
+import { PerPrice } from './Price';
+import { FREE_UNTIL } from '@/lib/copy';
 
 /** The standard cut of the mark. Same paths, widths and opacities everywhere
  *  it appears; only favicon.svg is allowed to differ, and it says why. */
@@ -72,7 +72,7 @@ export function Masthead({ base = '' }: { base?: string }) {
           <a href={`${base}#story`}>A story</a>
           <a href={`${base}#faq`}>Questions</a>
           <a className="btn lamp mast-cta" href={`${base}#join`}>
-            {EARLY_ACCESS.freeSpots} free places
+            Free until January
           </a>
         </nav>
       </div>
@@ -83,27 +83,70 @@ export function Masthead({ base = '' }: { base?: string }) {
   );
 }
 
-export function Footer() {
+/**
+ * The footer: where things are, how to reach us, and the one caution.
+ *
+ * It was a paragraph. The page's pitch said over again, a line of small print
+ * and two underlined links, all down the left edge with the rest of the width
+ * empty — nothing a person scrolls to the foot of a page to find. What they
+ * come here for is the way to a section, an address to write to and the
+ * privacy notice, so that is what it is now: the mark and one line, three
+ * short lists, and the caution on its own rule at the bottom.
+ *
+ * THE PRICE STAYS IN IT. "Free until …" without what comes after would be
+ * the one place on the page a free period hid its price.
+ *
+ * `base` as on the masthead: "/#how" from the privacy page, a bare "#how" at
+ * home, where SmoothScroll takes over links that start with "#".
+ */
+export function Footer({ base = '' }: { base?: string }) {
   return (
     <footer className="footer">
       <div className="wrap">
-        <div className="lockup">
-          <Mark />
-          <span className="wordmark">Lampsill</span>
+        <div className="footer-top">
+          <div className="footer-brand">
+            <a className="lockup" href={base ? '/' : '#main'} aria-label={base ? 'Lampsill, home' : 'Lampsill, back to top'}>
+              <Mark />
+              <span className="wordmark">Lampsill</span>
+            </a>
+            <p className="footer-line">If their phone goes quiet, you&rsquo;re told.</p>
+            <p className="footer-price">
+              Free until {FREE_UNTIL}, then <PerPrice />.
+            </p>
+            <a className="btn lamp footer-cta" href={`${base}#join`}>
+              Join early access
+            </a>
+          </div>
+
+          <nav className="footer-nav" aria-label="Footer">
+            <div>
+              <p className="footer-h">Lampsill</p>
+              <a href={`${base}#how`}>How it works</a>
+              <a href={`${base}#story`}>A story</a>
+              <a href={`${base}#privacy`}>What you see</a>
+              <a href={`${base}#what-this-isnt`}>What it doesn&rsquo;t do</a>
+            </div>
+            <div>
+              <p className="footer-h">Get it</p>
+              <a href={`${base}#price`}>Price</a>
+              <a href={`${base}#join`}>Early access</a>
+              <a href={`${base}#faq`}>Questions</a>
+            </div>
+            <div>
+              <p className="footer-h">Contact</p>
+              <a href="mailto:hello@lampsill.com">hello@lampsill.com</a>
+              <a href="/privacy">Privacy</a>
+            </div>
+          </nav>
         </div>
-        <p>
-          For anyone you love who lives alone. If their phone goes quiet, it rings
-          them first. No answer? You&rsquo;re told, and one tap asks someone nearby
-          to check. From <Price plan="month" /> a month.
-        </p>
-        <p className="footer-small">
-          Lampsill is not an emergency service. It can&rsquo;t detect a fall or a
-          medical problem. In an emergency, call your local emergency number.
-        </p>
-        <p className="footer-small footer-links">
-          <a href="mailto:hello@lampsill.com">hello@lampsill.com</a>
-          <a href="/privacy">Privacy</a>
-        </p>
+
+        <div className="footer-bottom">
+          <p>
+            Not an emergency service. Lampsill can&rsquo;t detect a fall or a medical
+            problem. In an emergency, call your local emergency number.
+          </p>
+          <p className="footer-copy">&copy; 2026 Lampsill</p>
+        </div>
       </div>
     </footer>
   );

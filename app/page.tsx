@@ -38,11 +38,12 @@ import { countryFromHeaders, isCountryCode, marketForCountry } from '@/lib/prici
  * not a separate section: it used to sit after the price, where the
  * people who needed it had to read the whole page to find out they were welcome.
  *
- * WHY THERE IS NO "WHY IT WON'T WAKE YOU" SECTION. It said three things: twelve
- * quiet hours with six in waking hours, their phone rings first, and you decide
- * what happens next. The phones show the second and third, the FAQ answers the
- * first ("Won't late nights set it off?"), and on a phone it cost a screen and
- * a half to say them a third time. The page was 20 screens long on a phone
+ * WHY THERE IS NO "WHY IT WON'T WAKE YOU" SECTION. It said three things: how
+ * long is too long, their phone rings first, and you decide what happens next.
+ * The phones show the second and third, the FAQ answers the first ("Won't late
+ * nights set it off?" — you choose the time; nothing is learned, and there are
+ * no sleep hours), and on a phone it cost a screen and a half to say them a
+ * third time. The page was 20 screens long on a phone
  * with the price on screen 17.
  *
  * The facts behind every section are in lib/copy.ts under FAMILY, taken from

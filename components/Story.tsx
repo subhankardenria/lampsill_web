@@ -143,7 +143,7 @@ const STORIES: Record<PersonaKey, StoryData> = {
         body: (
           <>
             <p>
-              Twelve quiet hours, most of them in the day. So before anyone else is told,
+              Twelve quiet hours: the time they chose. So before anyone else is told,
               Anna&rsquo;s own phone asks: <em>Still there?</em>
             </p>
             <p>
@@ -293,7 +293,7 @@ const STORIES: Record<PersonaKey, StoryData> = {
         body: (
           <>
             <p>
-              Twelve quiet hours, most of them in the day. So before anyone else is told,
+              Twelve quiet hours: the time they chose. So before anyone else is told,
               Adam&rsquo;s phone asks: <em>Still there?</em>
             </p>
             <p>
@@ -439,7 +439,7 @@ const STORIES: Record<PersonaKey, StoryData> = {
         body: (
           <>
             <p>
-              Twelve quiet hours, most of them in the day. So before anyone else is told,
+              Twelve quiet hours: the time they chose. So before anyone else is told,
               your own phone asks: <em>Still there?</em>
             </p>
             <p>

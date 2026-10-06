@@ -28,17 +28,39 @@ export type Market = {
   /** shown in the country picker */
   label: string;
   currency: string;
-  month: string;
+  /** null where there is no monthly plan at all — see YEARLY ONLY below */
+  month: string | null;
   year: string;
   /** what twelve monthly payments would cost, for the "save" line */
-  monthTimes12: string;
-  /** 12 − year ÷ month, rounded: what the yearly plan's badge may honestly say */
+  monthTimes12: string | null;
+  /** 12 − year ÷ month: what the yearly plan's badge may honestly say. Rows
+   *  repriced on 6 Oct 2026 are rounded DOWN, so none claims more than the
+   *  saving really is. */
   freeMonths: number;
   taxIncluded: boolean;
   /** ISO 3166-1 alpha-2 codes that get this row */
   countries: string[];
 };
 
+/*
+ * REPRICED 6 Oct 2026, for what Dodo actually charges (`Lampsill - Pricing and
+ * Payments Plan.md`, at the project root). Dodo takes about 10% + 40¢ of every
+ * payment outside the US once a local price is set — 10% + 15¢ in India — so
+ * a monthly charge under about $2.67 loses a third or more to fees while the
+ * same market's yearly charge loses about an eighth.
+ *
+ *   - Five rows had their MONTHLY price raised and their yearly price left
+ *     alone: central & southern Europe, Brazil, South Africa, the Philippines,
+ *     Indonesia. The yearly price is the real local price; the badge beside it
+ *     grew because the saving did.
+ *   - India is untouched. ₹99 works because its fixed fee is 15¢.
+ *
+ * YEARLY ONLY. The last row is for countries that used to fall through to the
+ * US dollar price — over three times what the same product costs in India. A
+ * monthly plan cheap enough for them would hand half of itself to the payment
+ * provider, so there is one price, $9.99 a year, and `month` is null. Every
+ * place the page shows a price asks `usePrice().market.month` first.
+ */
 export const MARKETS: Market[] = [
   { key: 'gb', label: 'United Kingdom', currency: 'GBP', month: '£1.99', year: '£19.99', monthTimes12: '£23.88', freeMonths: 2, taxIncluded: true, countries: ['GB', 'IM', 'JE', 'GG'] },
   { key: 'us', label: 'United States', currency: 'USD', month: '$2.99', year: '$29.99', monthTimes12: '$35.88', freeMonths: 2, taxIncluded: false, countries: ['US', 'PR'] },
@@ -47,7 +69,7 @@ export const MARKETS: Market[] = [
     countries: ['AT', 'BE', 'DE', 'FI', 'FR', 'IE', 'IT', 'LU', 'MT', 'NL', 'ES', 'CY', 'CH', 'LI', 'MC', 'AD', 'IS'],
   },
   {
-    key: 'eu2', label: 'Central & southern Europe', currency: 'EUR', month: '€1.49', year: '€14.99', monthTimes12: '€17.88', freeMonths: 2, taxIncluded: true,
+    key: 'eu2', label: 'Central & southern Europe', currency: 'EUR', month: '€1.99', year: '€14.99', monthTimes12: '€23.88', freeMonths: 4, taxIncluded: true,
     countries: ['PT', 'GR', 'PL', 'CZ', 'SK', 'SI', 'HR', 'HU', 'RO', 'BG', 'EE', 'LV', 'LT'],
   },
   { key: 'se', label: 'Sweden', currency: 'SEK', month: '29 kr', year: '290 kr', monthTimes12: '348 kr', freeMonths: 2, taxIncluded: true, countries: ['SE'] },
@@ -61,11 +83,15 @@ export const MARKETS: Market[] = [
   { key: 'ae', label: 'United Arab Emirates', currency: 'AED', month: 'AED 9.99', year: 'AED 99', monthTimes12: 'AED 119.88', freeMonths: 2, taxIncluded: true, countries: ['AE'] },
   { key: 'sa', label: 'Saudi Arabia', currency: 'SAR', month: 'SAR 9.99', year: 'SAR 99', monthTimes12: 'SAR 119.88', freeMonths: 2, taxIncluded: true, countries: ['SA'] },
   { key: 'mx', label: 'Mexico', currency: 'MXN', month: 'MX$39', year: 'MX$390', monthTimes12: 'MX$468', freeMonths: 2, taxIncluded: true, countries: ['MX'] },
-  { key: 'br', label: 'Brazil', currency: 'BRL', month: 'R$9,90', year: 'R$99', monthTimes12: 'R$118,80', freeMonths: 2, taxIncluded: true, countries: ['BR'] },
-  { key: 'za', label: 'South Africa', currency: 'ZAR', month: 'R29.99', year: 'R299', monthTimes12: 'R359.88', freeMonths: 2, taxIncluded: true, countries: ['ZA'] },
+  { key: 'br', label: 'Brazil', currency: 'BRL', month: 'R$12,90', year: 'R$99', monthTimes12: 'R$154,80', freeMonths: 4, taxIncluded: true, countries: ['BR'] },
+  { key: 'za', label: 'South Africa', currency: 'ZAR', month: 'R39.99', year: 'R299', monthTimes12: 'R479.88', freeMonths: 4, taxIncluded: true, countries: ['ZA'] },
   { key: 'in', label: 'India', currency: 'INR', month: '₹99', year: '₹799', monthTimes12: '₹1,188', freeMonths: 4, taxIncluded: true, countries: ['IN'] },
-  { key: 'ph', label: 'Philippines', currency: 'PHP', month: '₱79', year: '₱599', monthTimes12: '₱948', freeMonths: 4, taxIncluded: true, countries: ['PH'] },
-  { key: 'id', label: 'Indonesia', currency: 'IDR', month: 'Rp19.000', year: 'Rp149.000', monthTimes12: 'Rp228.000', freeMonths: 4, taxIncluded: true, countries: ['ID'] },
+  { key: 'ph', label: 'Philippines', currency: 'PHP', month: '₱119', year: '₱599', monthTimes12: '₱1,428', freeMonths: 6, taxIncluded: true, countries: ['PH'] },
+  { key: 'id', label: 'Indonesia', currency: 'IDR', month: 'Rp35.000', year: 'Rp149.000', monthTimes12: 'Rp420.000', freeMonths: 7, taxIncluded: true, countries: ['ID'] },
+  {
+    key: 'yr', label: 'Pakistan, Nigeria & others', currency: 'USD', month: null, year: '$9.99', monthTimes12: null, freeMonths: 0, taxIncluded: false,
+    countries: ['PK', 'BD', 'LK', 'NP', 'NG', 'KE', 'EG', 'VN'],
+  },
 ];
 
 /** Anywhere not listed pays the US dollar price, and can pick another row. */
