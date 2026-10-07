@@ -1,4 +1,4 @@
-import { countryFromHeaders, countryFromHost } from './pricing';
+import { countryFromHeaders, countryFromHost, isCountryCode } from './pricing';
 
 /*
  * The visitor's country, worked out on the server.
@@ -40,4 +40,16 @@ export async function visitorCountry(h: Headers): Promise<{ country: string | nu
     if (mine) return { country: mine, certain: true };
   }
   return { country: countryFromHeaders(h), certain: false };
+}
+
+/**
+ * The same, but `?country=GB` wins when it is a country code, so any market's
+ * wording and prices can be checked from anywhere. Display only, never trusted.
+ */
+export async function visitorCountryWith(
+  override: string | string[] | undefined,
+  h: Headers,
+): Promise<{ country: string | null; certain: boolean }> {
+  if (isCountryCode(override)) return { country: override.toUpperCase(), certain: true };
+  return visitorCountry(h);
 }

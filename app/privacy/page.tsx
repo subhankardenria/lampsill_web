@@ -4,7 +4,8 @@ import { Masthead, Footer, Reveals } from '@/components/Chrome';
 import { PriceProvider } from '@/components/Price';
 import { EARLY_ACCESS, FREE_UNTIL } from '@/lib/copy';
 import { marketForCountry } from '@/lib/pricing';
-import { visitorCountry } from '@/lib/geo';
+import { visitorCountryWith } from '@/lib/geo';
+import { Complaint } from '@/components/Complaint';
 
 /**
  * THE PRIVACY NOTICE for the website and the early-access list.
@@ -41,8 +42,12 @@ export const metadata: Metadata = {
   alternates: { canonical: '/privacy' },
 };
 
-export default async function PrivacyPage() {
-  const seen = await visitorCountry(await headers());
+export default async function PrivacyPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const seen = await visitorCountryWith((await searchParams).country, await headers());
   const country = seen.country;
   const guessed = !seen.certain;
   const market = marketForCountry(country);
@@ -258,14 +263,10 @@ export default async function PrivacyPage() {
             Email <a href="mailto:hello@lampsill.com">hello@lampsill.com</a> from the address
             you signed up with. It&rsquo;s free, and we&rsquo;ll reply within a month.
           </p>
-          <p>
-            If you&rsquo;re unhappy with how we&rsquo;ve handled your details, please tell us first.
-            You can also complain to the{' '}
-            <a href="https://ico.org.uk/make-a-complaint/" rel="noopener">
-              Information Commissioner&rsquo;s Office
-            </a>{' '}
-            in the UK, or to the data protection authority where you live.
-          </p>
+          <Complaint
+            country={country}
+            lead="If you’re unhappy with how we’ve handled your details, please tell us first."
+          />
 
           <h2>The Lampsill app</h2>
           <p>

@@ -3,7 +3,8 @@ import { headers } from 'next/headers';
 import { Masthead, Footer, Reveals } from '@/components/Chrome';
 import { PriceProvider } from '@/components/Price';
 import { marketForCountry } from '@/lib/pricing';
-import { visitorCountry } from '@/lib/geo';
+import { visitorCountryWith } from '@/lib/geo';
+import { Complaint } from '@/components/Complaint';
 
 /**
  * THE PRIVACY NOTICE FOR THE APP. The website and the early-access list have
@@ -37,8 +38,12 @@ export const metadata: Metadata = {
   alternates: { canonical: '/privacy/app' },
 };
 
-export default async function AppPrivacyPage() {
-  const seen = await visitorCountry(await headers());
+export default async function AppPrivacyPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const seen = await visitorCountryWith((await searchParams).country, await headers());
   const market = marketForCountry(seen.country);
 
   return (
@@ -244,14 +249,10 @@ export default async function AppPrivacyPage() {
             address. It&rsquo;s free, and we&rsquo;ll reply within a month. We don&rsquo;t have an
             automatic export yet, so a copy is sent to you by hand.
           </p>
-          <p>
-            If you&rsquo;re unhappy with how we&rsquo;ve handled your details, tell us first. You
-            can also complain to the{' '}
-            <a href="https://ico.org.uk/make-a-complaint/" rel="noopener">
-              Information Commissioner&rsquo;s Office
-            </a>{' '}
-            in the UK, or to the data protection authority where you live.
-          </p>
+          <Complaint
+            country={seen.country}
+            lead="If you’re unhappy with how we’ve handled your details, tell us first."
+          />
 
           <h2>Children</h2>
           <p>Lampsill is for adults. Please don&rsquo;t use it if you&rsquo;re under 18.</p>
