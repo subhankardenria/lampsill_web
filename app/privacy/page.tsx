@@ -270,8 +270,8 @@ export default async function PrivacyPage() {
           <h2>The Lampsill app</h2>
           <p>
             This notice is about the website and the list. The app works differently, because it
-            looks at when a phone is used, so it will have its own privacy notice. You&rsquo;ll see
-            it before you set anything up.
+            looks at when a phone is used, so it has its own: read{' '}
+            <a href="/privacy/app">what the app knows about you</a>.
           </p>
 
           <h2>Children</h2>
