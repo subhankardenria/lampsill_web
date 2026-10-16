@@ -22,6 +22,12 @@ import { Complaint } from '@/components/Complaint';
  *                                     on, "How people are told" is wrong.
  *   push says only "news"             PushPayloads; Firebase Cloud Messaging,
  *                                     no Analytics
+ *   an iPhone checks in, hourly       silence_configs.phone_checked_at
+ *                                     (SilenceService::checkedIn, 16 Oct 2026)
+ *   battery: a yes or no              silence_configs.battery_low_at, said in
+ *                                     an alert (SilenceNotices::battery)
+ *   her note for her people           silence_configs.note, shown to them only
+ *                                     while her phone has gone quiet
  *   hosting                           Google Cloud us-central1; encrypted
  *                                     nightly backup kept 30 days on Cloudflare
  *   deletion                          /delete-account, DELETE /v1/account
@@ -29,7 +35,7 @@ import { Complaint } from '@/components/Complaint';
  * Not decided here: the legal name and postal address of whoever runs Lampsill,
  * which UK and EU law want in a notice like this. Add them under "Who we are".
  */
-const UPDATED = '7 October 2026';
+const UPDATED = '17 October 2026';
 
 export const metadata: Metadata = {
   title: 'App privacy — Lampsill',
@@ -69,7 +75,8 @@ export default async function AppPrivacyPage({
               </li>
               <li>
                 <strong>We keep very little.</strong> Your account, the settings you choose, the
-                names you add, and one time: when your phone was last used.
+                names you add, a note for them if you write one, and one time: when your phone
+                was last used.
               </li>
               <li>
                 <strong>No location, microphone, camera, ads or tracking.</strong> Lampsill
@@ -92,6 +99,14 @@ export default async function AppPrivacyPage({
             Lampsill tells someone you chose when your phone has gone quiet for longer than you
             said. To know that, it notices when you use the phone: the screen coming on, the phone
             being unlocked, and, if you allow &ldquo;physical activity&rdquo;, your steps.
+          </p>
+          <p>
+            <strong>On an iPhone</strong>, which does not let an app hear the phone being used,
+            our server wakes Lampsill quietly about once an hour. In those few seconds the phone
+            looks at whether it was carried (its own step count, if you allow Motion &amp; Fitness)
+            or unlocked since it last looked, and if so tells us only &ldquo;still here&rdquo;. The
+            steps themselves never leave the phone. Opening Lampsill, or tapping its daily hello,
+            counts too.
           </p>
           <ul>
             <li>
@@ -128,7 +143,7 @@ export default async function AppPrivacyPage({
                   <td>To sign you in. A person who only agreed to be looked out for may have none of these, just a sign-in kept on their phone.</td>
                 </tr>
                 <tr>
-                  <td>Your Silence Alert settings: the time window you chose (12, 24 or 48 hours), on or off, any pause</td>
+                  <td>Your Lampsill settings: the time window you chose (1, 12, 24 or 48 hours), on or off, any pause</td>
                   <td>To run your clock.</td>
                 </tr>
                 <tr>
@@ -140,8 +155,27 @@ export default async function AppPrivacyPage({
                   <td>To know when your window has run out.</td>
                 </tr>
                 <tr>
+                  <td>
+                    Your sleeping hours, if you set them (two times), and your phone&rsquo;s time
+                    zone as a number of hours from UTC, refreshed each time your phone reports
+                  </td>
+                  <td>So the clock doesn&rsquo;t run out while you are asleep. The time zone is just a number, never where you are.</td>
+                </tr>
+                <tr>
                   <td>Whether your phone is allowed to show notifications</td>
                   <td>To tell you if an alert could not reach your own screen.</td>
+                </tr>
+                <tr>
+                  <td>Whether your phone&rsquo;s battery was nearly flat when it last reported: a yes or no, not a level</td>
+                  <td>So an alert can say your phone may simply have run out, and nobody imagines the worst.</td>
+                </tr>
+                <tr>
+                  <td>A note you write for the people you chose, if you write one (where the spare key is, who to ring)</td>
+                  <td>Shown to them only while your phone has gone quiet. You can change or delete it at any time.</td>
+                </tr>
+                <tr>
+                  <td>On an iPhone: when the phone last checked in. That is the phone being able to look, not you using it</td>
+                  <td>So that, if it stops, we can ask you once to open Lampsill again.</td>
                 </tr>
                 <tr>
                   <td>
@@ -154,6 +188,13 @@ export default async function AppPrivacyPage({
                   </td>
                 </tr>
                 <tr>
+                  <td>
+                    A window that someone who looks out for you has suggested, until you say yes or
+                    no
+                  </td>
+                  <td>So you can answer it with one tap. It changes nothing until you do.</td>
+                </tr>
+                <tr>
                   <td>The codes that link two accounts, and when each side agreed</td>
                   <td>So nobody is looked out for, or told, without having said yes.</td>
                 </tr>
@@ -163,10 +204,10 @@ export default async function AppPrivacyPage({
                 </tr>
                 <tr>
                   <td>
-                    On an Android phone that is someone&rsquo;s contact: a device token and the
-                    app&rsquo;s Firebase installation ID
+                    For each phone with Lampsill on it: a device token and the app&rsquo;s Firebase
+                    installation ID
                   </td>
-                  <td>To nudge that phone the moment there is news.</td>
+                  <td>To nudge a contact&rsquo;s phone the moment there is news, and on an iPhone to ask &ldquo;Still there?&rdquo; and to wake it for its quiet look.</td>
                 </tr>
               </tbody>
             </table>
@@ -175,9 +216,12 @@ export default async function AppPrivacyPage({
           <h2>Who sees what</h2>
           <ul>
             <li>
-              <strong>The people you choose</strong> see your name and one of four words:{' '}
-              <em>Normal</em>, <em>Paused</em>, <em>Permission lost</em> or <em>Phone gone quiet</em>.
-              Never when you used your phone, never what you did.
+              <strong>The people you choose</strong> see your name and a word or two:{' '}
+              <em>Normal</em>, <em>Paused</em>, <em>Phone gone quiet</em>, <em>Switched off</em>{' '}
+              or <em>Permission lost</em>.
+              Never when you used your phone, never what you did. Only if your phone has gone
+              quiet do they also see the note you left for them, and whether your battery was
+              nearly flat.
             </li>
             <li>
               <strong>You are only looked out for if you say yes</strong>, on your own phone, after
