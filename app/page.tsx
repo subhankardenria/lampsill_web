@@ -8,6 +8,7 @@ import WhatThisIsnt from '@/components/WhatThisIsnt';
 import Pricing from '@/components/Pricing';
 import Faq from '@/components/Faq';
 import EarlyAccess from '@/components/EarlyAccess';
+import Everyday from '@/components/Everyday';
 import { PersonaProvider } from '@/components/Persona';
 import { PriceProvider } from '@/components/Price';
 import { headers } from 'next/headers';
@@ -80,6 +81,7 @@ export default async function Page({
           <HowItWorks />
           <Story />
         </PersonaProvider>
+        <Everyday />
         <DataModel />
         <WhatThisIsnt />
         <Pricing />

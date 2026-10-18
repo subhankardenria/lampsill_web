@@ -284,6 +284,32 @@
 .dm-one { outline: 1px solid color-mix(in srgb, var(--lamp) 30%, transparent); }
 
 /* --- what this isn't ----------------------------------------------------- */
+/* --- useful every day, too (18 Oct 2026): a still life on the sill ------- */
+.everyday { --art: 8.5rem; }
+.everyday-head { text-align: center; }
+.everyday-head .lede { margin-inline: auto; }
+.everyday-sill { position: relative; margin-top: 3.2rem; }
+.everyday-light { position: absolute; left: 50%; top: calc(var(--art) * .55); width: min(46rem, 100%);
+  height: calc(var(--art) * 1.6); transform: translate(-50%, -50%); pointer-events: none;
+  background: radial-gradient(closest-side, rgba(245,201,123,.16), rgba(245,201,123,.05) 55%, transparent 78%); }
+.everyday-things { position: relative; list-style: none; margin: 0 auto; padding: 0; max-width: 46rem;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center; }
+/* The sill they all stand on, under the pictures and above the words. */
+.everyday-things::before { content: ''; position: absolute; left: 0; right: 0; top: calc(var(--art) * .833 - 1px); height: 2px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--ink3) 60%, transparent) 18%, color-mix(in srgb, var(--ink3) 60%, transparent) 82%, transparent); }
+.everyday-art { display: block; width: var(--art); height: var(--art); margin: 0 auto; fill: none;
+  stroke: var(--lamp); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+  filter: drop-shadow(0 0 14px rgba(245,201,123,.28)); }
+.everyday-art .ed-spark { stroke-width: 2; opacity: .55; }
+.everyday-things h3 { margin: .6rem 0 .3rem; }
+.everyday-things p { margin: 0 auto; max-width: 15rem; color: var(--ink2); font-size: .95rem; line-height: 1.45; }
+@media (max-width: 43.99rem) {
+  .everyday { --art: 5.6rem; }
+  .everyday-things { gap: .5rem; }
+  .everyday-things h3 { font-size: 1.05rem; margin-top: 1rem; }
+  .everyday-things p { font-size: .84rem; }
+}
+
 .isnt-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
 @media (min-width: 44rem) { .isnt-list { grid-template-columns: 1fr 1fr; } }
 .isnt-item { padding: 1.4rem; }
