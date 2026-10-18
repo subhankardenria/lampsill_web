@@ -42,6 +42,25 @@
 export const FREE_UNTIL = 'January 2027';
 
 /**
+ * PAYMENTS PAUSED — the owner's decision, 18 Oct 2026 ("for payment module can
+ * we pause a bit because we need to decide carefully so till january is
+ * completely free after that we might continue for free or we can introduce a
+ * small charges").
+ *
+ * While this is true the site says only that Lampsill is free until
+ * FREE_UNTIL, and promises nothing about after it: no price, no Standard, no
+ * month of Standard, no grace days. The checkout route refuses. Everything
+ * below (ALWAYS_FREE, STANDARD, the prices in lib/pricing.ts) is kept as it
+ * was, so that turning this off brings the 6 Oct pricing back unchanged.
+ *
+ * ⚠️ ONE PROMISE SURVIVES THE PAUSE: the first EARLY_ACCESS.freeSpots people
+ * on the list were told they get EARLY_ACCESS.freeMonths extra free months.
+ * While paused it is worded as "if Lampsill ever charges", which is the same
+ * promise, not a smaller one.
+ */
+export const PRICING_PAUSED = true;
+
+/**
  * FREE AND STANDARD — what is always free, and what is paid (decided 6 Oct
  * 2026; the whole rule is section 12 of `Lampsill - Pricing and Payments
  * Plan.md`). In one line:

@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useRef, useState } from 'react';
+import { PRICING_PAUSED } from '@/lib/copy';
 
 /**
  * WHO THE VISITOR IS LOOKING OUT FOR.
@@ -247,7 +248,9 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
     message: "Hi Nina, it's Lena. I can't get an answer next door and the phone's been quiet all day. Could you knock? You've got the key.",
     reply: 'Going over now 👍',
     panelNote:
-      'Just for yourself? That’s free: pick 12, 24 or 48 hours and it rings you. To have someone told, give them your code; being told is their Standard, with a month free.',
+      PRICING_PAUSED
+        ? 'Just for yourself? Pick 12, 24 or 48 hours and it rings you. To have someone told, give them your code. All of it is free until January 2027.'
+        : 'Just for yourself? That’s free: pick 12, 24 or 48 hours and it rings you. To have someone told, give them your code; being told is their Standard, with a month free.',
     demo: {
       answerBtn: 'I answer',
       stateOf: 'You',

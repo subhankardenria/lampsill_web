@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { PRICING_PAUSED } from '@/lib/copy';
 import { countryFromHeaders, isCountryCode, marketForCountry, type Plan } from '@/lib/pricing';
 
 /** "₹799" → 79900. India's prices are whole rupees; this is only ever asked
@@ -41,6 +42,11 @@ export const dynamic = 'force-dynamic';
  * the account they change — plan item 6.3.
  */
 export async function POST(req: Request) {
+  // Payments are paused (lib/copy.ts): refuse the same clean way as when the
+  // keys are missing, whatever the host's settings say.
+  if (PRICING_PAUSED) {
+    return NextResponse.json({ error: 'not open' }, { status: 503 });
+  }
   const key = process.env.DODO_API_KEY;
   const products: Record<Plan, string | undefined> = {
     month: process.env.DODO_PRODUCT_MONTHLY,

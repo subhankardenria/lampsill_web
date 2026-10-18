@@ -270,7 +270,7 @@ export default async function AppPrivacyPage({
           <h2>Payments</h2>
           <p>
             The app doesn&rsquo;t take payments, show prices or ask for card details. Lampsill is
-            free until January 2027. Anything paid is bought on our website.
+            free until January 2027, and nothing is sold, in the app or on our website.
           </p>
 
           <h2>How long we keep it</h2>

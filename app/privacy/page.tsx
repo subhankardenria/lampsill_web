@@ -103,8 +103,8 @@ export default async function PrivacyPage({
             other company learns that you visited from us.
           </p>
           <p>
-            Our hosting provider works out your rough country from your connection so we can show
-            prices in your currency. We don&rsquo;t store that unless you join the list. Like any web
+            Our hosting provider works out your rough country from your connection so we can show the
+            right details for your country, and prices in your currency if Lampsill ever charges. We don&rsquo;t store that unless you join the list. Like any web
             host, it keeps short-lived technical logs, which include IP addresses, to keep the site
             running and secure.
           </p>
@@ -147,13 +147,13 @@ export default async function PrivacyPage({
                 </tr>
                 <tr>
                   <td>Your country</td>
-                  <td>To know where to open first, and which prices apply to you.</td>
+                  <td>To know where to open first, and which prices would apply to you if Lampsill ever charges.</td>
                 </tr>
                 <tr>
                   <td>Your place in the queue, and whether it came with free months</td>
                   <td>
-                    The first {spots} people get {EARLY_ACCESS.freeMonths} more months free once
-                    paid plans start.
+                    The first {spots} people get {EARLY_ACCESS.freeMonths} more months free if
+                    Lampsill ever charges.
                     This is our record of who was promised what.
                   </td>
                 </tr>
@@ -197,9 +197,10 @@ export default async function PrivacyPage({
 
           <h2>No payments yet</h2>
           <p>
-            Lampsill is free until {FREE_UNTIL} and doesn&rsquo;t take payments yet. Nobody is
-            charged before then, and we never ask for card details. Before paid plans start, we&rsquo;ll update this page to say who
-            handles payments, and email everyone on the list.
+            Lampsill is free until {FREE_UNTIL} and doesn&rsquo;t take payments. Nobody is
+            charged before then, and we never ask for card details. If paid plans ever start,
+            we&rsquo;ll first update this page to say who handles payments, and email everyone on
+            the list.
           </p>
 
           <h2>Who else handles it</h2>

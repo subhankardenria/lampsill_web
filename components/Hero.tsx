@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { PerPrice } from './Price';
-import { FREE_UNTIL } from '@/lib/copy';
+import { FREE_UNTIL, PRICING_PAUSED } from '@/lib/copy';
 import Diorama from './Diorama';
 
 /* Both directions of the relationship, in words every English reader shares.
@@ -191,7 +191,13 @@ export default function Hero() {
             <li>Nothing for them to set up</li>
             <li>No maps. No reports. One word.</li>
             <li>
-              Free until {FREE_UNTIL} &middot; then <PerPrice />
+              {PRICING_PAUSED ? (
+                <>Free until {FREE_UNTIL}</>
+              ) : (
+                <>
+                  Free until {FREE_UNTIL} &middot; then <PerPrice />
+                </>
+              )}
             </li>
           </ul>
         </div>

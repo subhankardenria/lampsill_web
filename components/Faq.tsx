@@ -1,4 +1,4 @@
-import { EARLY_ACCESS, FAMILY, FREE_UNTIL, GRACE_DAYS, MAX_PAUSE_DAYS, WINDOW_CHOICE } from '@/lib/copy';
+import { EARLY_ACCESS, FAMILY, FREE_UNTIL, GRACE_DAYS, MAX_PAUSE_DAYS, PRICING_PAUSED, WINDOW_CHOICE } from '@/lib/copy';
 import { PlanPrices, TaxNote } from './Price';
 
 /**
@@ -84,43 +84,63 @@ const QA: { q: string; a: React.ReactNode }[] = [
     q: 'Is this an emergency service?',
     a: 'No. It can’t detect a fall or a medical problem, and it works in hours, not minutes. In an emergency, call your local emergency number.',
   },
-  {
-    q: 'What is free, and what is Standard?',
-    a: (
-      <>
-        Free, for good: Lampsill for yourself, which rings you if your phone goes
-        quiet, with reminders, notes and steps. Being looked out for is free too.
-        Standard is for the one looking out: you are told if their phone goes quiet,
-        for everyone on your account, with how each of them is at a glance, one-tap
-        Call and the people nearby, and an alert that keeps sounding until you open
-        it.
-      </>
-    ),
-  },
-  {
-    q: 'What happens if I stop paying?',
-    a: (
-      <>
-        You&rsquo;re told well before, then you have {GRACE_DAYS} days&rsquo; grace.
-        After that you are no longer told &mdash; and both of you are told that, so
-        nobody thinks they&rsquo;re covered when they aren&rsquo;t. Their own phone
-        still rings them. Nothing is deleted: pay again and it carries on.
-      </>
-    ),
-  },
-  {
-    q: 'How much is it?',
-    a: (
-      <>
-        Everything is free until {FREE_UNTIL}. After that, looking out for someone is
-        Standard: <PlanPrices /> for one account, however many people you look out for.{' '}
-        <TaxNote /> Every new account gets a month of Standard free first, with no card
-        needed. The person you look out for never pays. The first{' '}
-        {EARLY_ACCESS.freeSpots} people on the early-access list get{' '}
-        {EARLY_ACCESS.freeMonths} more months on top.
-      </>
-    ),
-  },
+  // Payments paused (lib/copy.ts): one plain answer, and no promise about
+  // what comes after January. The three answers it stands in for are kept.
+  ...(PRICING_PAUSED
+    ? [
+        {
+          q: 'Is it free?',
+          a: (
+            <>
+              Yes. All of Lampsill is free, for everyone, until {FREE_UNTIL}, with no card
+              needed. After that it may stay free, or there may be a small charge: we
+              haven&rsquo;t decided. If it changes, you&rsquo;ll be told well before, and
+              nobody is charged without choosing to. The first {EARLY_ACCESS.freeSpots}{' '}
+              people on the early-access list get {EARLY_ACCESS.freeMonths} extra months free
+              if Lampsill ever charges.
+            </>
+          ),
+        },
+      ]
+    : [
+        {
+          q: 'What is free, and what is Standard?',
+          a: (
+            <>
+              Free, for good: Lampsill for yourself, which rings you if your phone goes
+              quiet, with reminders, notes and steps. Being looked out for is free too.
+              Standard is for the one looking out: you are told if their phone goes quiet,
+              for everyone on your account, with how each of them is at a glance, one-tap
+              Call and the people nearby, and an alert that keeps sounding until you open
+              it.
+            </>
+          ),
+        },
+        {
+          q: 'What happens if I stop paying?',
+          a: (
+            <>
+              You&rsquo;re told well before, then you have {GRACE_DAYS} days&rsquo; grace.
+              After that you are no longer told &mdash; and both of you are told that, so
+              nobody thinks they&rsquo;re covered when they aren&rsquo;t. Their own phone
+              still rings them. Nothing is deleted: pay again and it carries on.
+            </>
+          ),
+        },
+        {
+          q: 'How much is it?',
+          a: (
+            <>
+              Everything is free until {FREE_UNTIL}. After that, looking out for someone is
+              Standard: <PlanPrices /> for one account, however many people you look out for.{' '}
+              <TaxNote /> Every new account gets a month of Standard free first, with no card
+              needed. The person you look out for never pays. The first{' '}
+              {EARLY_ACCESS.freeSpots} people on the early-access list get{' '}
+              {EARLY_ACCESS.freeMonths} more months on top.
+            </>
+          ),
+        },
+      ]),
 ];
 
 export default function Faq() {

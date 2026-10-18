@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { PerPrice } from './Price';
-import { FREE_UNTIL } from '@/lib/copy';
+import { FREE_UNTIL, PRICING_PAUSED } from '@/lib/copy';
 
 /** The standard cut of the mark. Same paths, widths and opacities everywhere
  *  it appears; only favicon.svg is allowed to differ, and it says why. */
@@ -111,7 +111,13 @@ export function Footer({ base = '' }: { base?: string }) {
             </a>
             <p className="footer-line">If their phone goes quiet, you&rsquo;re told.</p>
             <p className="footer-price">
-              Free until {FREE_UNTIL}, then <PerPrice />.
+              {PRICING_PAUSED ? (
+                <>Free until {FREE_UNTIL}.</>
+              ) : (
+                <>
+                  Free until {FREE_UNTIL}, then <PerPrice />.
+                </>
+              )}
             </p>
             <a className="btn lamp footer-cta" href={`${base}#join`}>
               Join early access

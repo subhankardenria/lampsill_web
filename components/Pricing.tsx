@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ALWAYS_FREE, FREE_UNTIL, STANDARD, TRIAL_MONTHS } from '@/lib/copy';
+import { ALWAYS_FREE, FREE_UNTIL, PRICING_PAUSED, STANDARD, TRIAL_MONTHS } from '@/lib/copy';
 import { Price, TaxNote, usePrice } from './Price';
 
 /* WHO PAYS, AND FOR WHAT (decided 6 Oct 2026). Whoever is TOLD pays: being
@@ -81,6 +81,8 @@ export default function Pricing() {
   }
 
   const periodWord = plan === 'year' ? 'year' : 'month';
+
+  if (PRICING_PAUSED) return <FreeForNow />;
 
   return (
     <section className="section pricing" id="price">
@@ -205,6 +207,65 @@ export default function Pricing() {
           <p className="price-small">
             Nothing is charged before {FREE_UNTIL}, and only if you choose to carry on.
             Coming to iPhone and Android.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Everything Lampsill does, all of it free until January. Written out here
+ *  rather than joined from ALWAYS_FREE and STANDARD: those say "never pays"
+ *  and "Standard", which are promises about after January that are paused. */
+const EVERYTHING = [
+  'Lampsill for yourself: it rings you if your phone goes quiet',
+  'Being told if someone you look out for goes quiet',
+  'Everyone you look out for on one account, at a glance',
+  'Call them, or someone nearby, in one tap',
+  'Reminders, notes and steps',
+] as const;
+
+/**
+ * The price while payments are paused (lib/copy.ts, 18 Oct 2026): free, and
+ * an honest line that after January is not decided. No price is shown, so
+ * none can be remembered as a promise.
+ */
+function FreeForNow() {
+  return (
+    <section className="section pricing" id="price">
+      <div className="wrap narrow">
+        <div className="reveal" style={{ textAlign: 'center' }}>
+          <p className="eyebrow">Price</p>
+          <h2 className="price-figure">
+            Free
+            <span className="per"> until {FREE_UNTIL}</span>
+          </h2>
+          <p className="lede" style={{ margin: '1rem auto 0' }}>
+            All of Lampsill, for everyone. No card, nothing to pay.
+          </p>
+        </div>
+        <div className="price-card lit reveal">
+          <ul className="incl">
+            {EVERYTHING.map((t) => (
+              <li key={t}>
+                <span className="incl-tick" aria-hidden="true">
+                  ✓
+                </span>
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="price-cta">
+            <a className="btn lamp" href="#join">
+              Take a free place <span aria-hidden="true">&darr;</span>
+            </a>
+            <a className="btn ghost" href="#how">
+              See it work first
+            </a>
+          </div>
+          <p className="price-small">
+            After {FREE_UNTIL} it may stay free, or there may be a small charge. You&rsquo;ll be
+            told well before anything changes, and nobody is charged without choosing to.
           </p>
         </div>
       </div>
