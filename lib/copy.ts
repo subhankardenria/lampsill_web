@@ -172,8 +172,9 @@ export const MAX_PAUSE_DAYS = 7;
  *     (WINDOW_OPTIONS), 48 unless they say otherwise — and the person it is
  *     about can change it on their own phone. Nothing is learned;
  *   - the count is plain hours of an untouched phone, day or night;
- *   - the words are the app's own: Normal, Paused, Permission lost, and
- *     "Phone gone quiet" (`statusInBrief` in the app's watching_screens.dart).
+ *   - the words are the app's own, as home shows them under each window:
+ *     On, Away, Off, Quiet, Needs fix, Removed (24 Oct 2026; they were
+ *     Normal, Paused, Permission lost and Phone gone quiet).
  *
  * `quietHours` is the window THIS PAGE'S STORIES use — the shortest one, so a
  * story fits in a day. It is one of three choices and the page says so
@@ -186,8 +187,9 @@ export const FAMILY = {
   ringMinutes: 10,
   /** your notification keeps sounding until you open it, for at most this long */
   soundMinutes: 15,
-  /** the only thing the person looking out ever sees, in the app's words */
-  states: ['normal', 'paused', 'permission lost', 'phone gone quiet'],
+  /** the only thing the person looking out ever sees, in the app's words:
+   *  the word under each window on home (24 Oct 2026) */
+  states: ['on', 'away · off', 'quiet', 'needs fix', 'removed'],
 } as const;
 
 /** "12, 24 or 48" — the choice, said the same way everywhere. */

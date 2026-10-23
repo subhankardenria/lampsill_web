@@ -9,7 +9,8 @@ import { PlanPrices, TaxNote } from './Price';
  * your own reliably makes it worse.
  *
  * EVERY ANSWER IS WHAT THE APP DOES (checked against it, 5 Oct 2026): the
- * window is chosen, not learned; there are no sleep hours; an alert can come
+ * window is chosen, not learned; Sleeping hours (since 7 Oct 2026) let the
+ * clock wait while someone sleeps; an alert can come
  * at any hour; and the words are the app's own. They were first written from
  * `Lampsill — Worked Example.md`, which described a detector the app does not
  * have. This is the section
@@ -30,15 +31,16 @@ const QA: { q: string; a: React.ReactNode }[] = [
     a: (
       <>
         Yes, the same way. It&rsquo;s their choice: they say yes on their own phone
-        and can turn it off any time. If they do, your screen says{' '}
-        <strong>permission lost</strong>, so you always know. Their nearest person
+        and can turn it off any time. If they do, their window on your screen
+        draws its curtains and says <strong>Off</strong>, so you always know.
+        Their nearest person
         is often a friend in the same building.
       </>
     ),
   },
   {
     q: 'Can I see where they are?',
-    a: 'No. Lampsill never asks for location, on either phone. You see a small window and one of four words: normal, paused, permission lost, or phone gone quiet. Never their messages, where they go, or when they get in.',
+    a: 'No. Lampsill never asks for location, on either phone. You see a small window and one word: On, Away, Off, Quiet, Needs fix or Removed. Never their messages, where they go, or when they get in.',
   },
   {
     q: 'Won’t late nights and lie-ins set it off?',
@@ -46,8 +48,9 @@ const QA: { q: string; a: React.ReactNode }[] = [
       <>
         You choose how long is too long: {WINDOW_CHOICE} hours. 48 suits most
         people. A shorter one can go off after a long sleep &mdash; but their own
-        phone asks first, and one tap ends it. They can change it, or pause it for
-        up to {MAX_PAUSE_DAYS} days when they&rsquo;re away.
+        phone asks first, and one tap ends it. They can change it, turn on{' '}
+        <strong>Sleeping hours</strong> so the clock waits while they sleep, or
+        pause it for up to {MAX_PAUSE_DAYS} days when they&rsquo;re away.
       </>
     ),
   },

@@ -1154,16 +1154,16 @@
 /* The whole vocabulary: four windows and four words, in a row. */
 .dm-states {
   list-style: none; margin: 1.4rem 0 0; padding: 0;
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .7rem;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .7rem;
 }
 .dm-states li {
   display: grid; justify-items: center; gap: .5rem;
   padding: 1rem .5rem; border: 1px solid var(--line); border-radius: 14px;
   background: var(--surface); font-size: .9rem; color: var(--ink2); text-align: center;
 }
-.dm-states li[data-state="quiet"], .dm-states li[data-state="lost"] { color: var(--ember); }
+.dm-states li[data-state="quiet"], .dm-states li[data-state="fix"] { color: var(--ember); }
 @media (max-width: 40rem) {
-  .dm-states { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dm-states { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .dm-states li { padding: .8rem .4rem; font-size: .82rem; }
   .dm-single .state-window { width: 2.6rem; height: auto; }
 }

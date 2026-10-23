@@ -4,13 +4,16 @@ import { useEffect, useRef } from 'react';
 import { FAMILY } from '@/lib/copy';
 import StateWindow, { type WindowState } from './StateWindow';
 
-/* The four things the app can show about someone, each with its window —
-   exactly as it draws them beside a person's name. */
+/* Everything the app can show about someone, each with its window, exactly
+   as it draws them on home with the word under each (24 Oct 2026: the
+   app's window rules; it was Normal, Paused, Permission lost and Phone gone
+   quiet, with off and removed drawn as faults). */
 const STATES: [WindowState, string][] = [
-  ['normal', 'Normal'],
-  ['paused', 'Paused'],
-  ['lost', 'Permission lost'],
-  ['quiet', 'Phone gone quiet'],
+  ['normal', 'On'],
+  ['away', 'Away · Off'],
+  ['quiet', 'Quiet'],
+  ['fix', 'Needs fix'],
+  ['removed', 'Removed'],
 ];
 
 /**
@@ -120,7 +123,7 @@ export default function DataModel() {
           <figure className="dm-panel lit dm-one">
             <div className="dm-single">
               <StateWindow state="normal" size={64} />
-              <span className="dm-word">Normal</span>
+              <span className="dm-word">On</span>
             </div>
             <figcaption>
               <span className="dm-label">What Lampsill shows you</span>
