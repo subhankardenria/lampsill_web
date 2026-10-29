@@ -144,7 +144,7 @@ const STORIES: Record<PersonaKey, StoryData> = {
           <>
             <p>
               Twelve quiet hours: the time they chose. So before anyone else is told,
-              Anna&rsquo;s own phone asks: <em>Still there?</em>
+              Anna&rsquo;s own phone asks: <em>Are you OK?</em>
             </p>
             <p>
               Usually, that&rsquo;s the end of it. She&rsquo;s in the garden, hears it, taps
@@ -294,7 +294,7 @@ const STORIES: Record<PersonaKey, StoryData> = {
           <>
             <p>
               Twelve quiet hours: the time they chose. So before anyone else is told,
-              Adam&rsquo;s phone asks: <em>Still there?</em>
+              Adam&rsquo;s phone asks: <em>Are you OK?</em>
             </p>
             <p>
               Usually, that&rsquo;s the end of it. He&rsquo;s in the library, sees it, taps
@@ -440,7 +440,7 @@ const STORIES: Record<PersonaKey, StoryData> = {
           <>
             <p>
               Twelve quiet hours: the time they chose. So before anyone else is told,
-              your own phone asks: <em>Still there?</em>
+              your own phone asks: <em>Are you OK?</em>
             </p>
             <p>
               Usually, that&rsquo;s the end of it. You&rsquo;re in the shower, hear it, tap

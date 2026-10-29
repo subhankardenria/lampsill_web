@@ -33,7 +33,7 @@ import WindowMark from './WindowMark';
 const STEPS: { t: number; time: string; text: string }[] = [
   { t: 0, time: '08:40', text: 'Tuesday morning. Anna puts her phone down on the windowsill.' },
   { t: 3500, time: '08:40', text: 'The day goes by. Nobody picks it up.' },
-  { t: 7800, time: '20:50', text: 'Twelve quiet hours. Her own phone asks first: “Still there?”' },
+  { t: 7800, time: '20:50', text: 'Twelve quiet hours. Her own phone asks first: “Are you OK?”' },
   { t: 11800, time: '21:00', text: 'No answer after 10 minutes. Your phone gets the alert.' },
   { t: 15200, time: '21:01', text: 'You tap “Text Leo”. The message goes to Leo, next door.' },
   { t: 18600, time: '21:02', text: 'Leo sees it and switches his lamp on.' },
@@ -492,7 +492,7 @@ export default function Diorama() {
         return { x: 0, y: 0, z: 0, dx: 0, dz: 1 };
       };
 
-      // "Still there?" — rings spreading out from her phone on the sill
+      // "Are you OK?" — rings spreading out from her phone on the sill
       const phonePos = new THREE.Vector3(wx + 0.28, wy + 0.06, front - 0.42);
       const rings = [0, 1, 2].map(() => {
         const m = new THREE.Mesh(
@@ -844,7 +844,7 @@ export default function Diorama() {
           m.scale.setScalar(1 + cyc * 3.2);
         });
 
-        // ----- "Still there?" bubble, pinned to the phone on screen -----
+        // ----- "Are you OK?" bubble, pinned to the phone on screen -----
         const bubble = bubbleRef.current;
         if (bubble) {
           const show = inStory && s > AT.ring + 500 && s < AT.alert;
@@ -1011,8 +1011,8 @@ export default function Diorama() {
         {/* pinned to her phone by the render loop */}
         <div className="dio-bubble" ref={bubbleRef} data-show="0" aria-hidden="true">
           <span className="dio-bubble-in">
-            <strong>Still there?</strong>
-            <em>I’m fine</em>
+            <strong>Are you OK?</strong>
+            <em>I’m OK</em>
           </span>
         </div>
 

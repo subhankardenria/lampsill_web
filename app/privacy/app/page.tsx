@@ -227,7 +227,7 @@ export default async function AppPrivacyPage({
                     For each phone with Lampsill on it: a device token and the app&rsquo;s Firebase
                     installation ID
                   </td>
-                  <td>To nudge a contact&rsquo;s phone the moment there is news, and on an iPhone to ask &ldquo;Still there?&rdquo; and to wake it for its quiet look.</td>
+                  <td>To nudge a contact&rsquo;s phone the moment there is news, and on an iPhone to ask &ldquo;Are you OK?&rdquo; and to wake it for its quiet look.</td>
                 </tr>
               </tbody>
             </table>

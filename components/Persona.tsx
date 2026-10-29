@@ -96,7 +96,7 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
     first: {
       name: 'Anna', initial: 'A', role: 'Your mother · lives alone',
       h3: 'Her phone rings first',
-      body: 'She taps “I’m fine” and it’s over. Nobody else is told. She has nothing to set up, and her life stays her own.',
+      body: 'She taps “I’m OK” and it’s over. Nobody else is told. She has nothing to set up, and her life stays her own.',
       phoneLabel: 'Anna’s phone',
     },
     middle: {
@@ -134,7 +134,7 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
         hungup: 'You hung up. Call again, or tap “Text Leo”.',
         called: 'No answer. Now tap “Text Leo”.',
         messaged: 'Leo’s on his way. Breathe.',
-        answered: 'Done. She tapped “I’m fine” — you were never even told.',
+        answered: 'Done. She tapped “I’m OK” — you were never even told.',
       },
       inUse: 'her phone’s in use again',
       note: 'she was in the garden, heard it, and tapped once',
@@ -160,7 +160,7 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
       h3: 'His phone rings first',
       // Verified: no location permission is requested on either platform
       // (Data Protection §8.2), and the payer only ever sees one of four states.
-      body: 'He taps “I’m fine” and it’s over. Nobody else is told. You never see where he is — Lampsill doesn’t even ask for location.',
+      body: 'He taps “I’m OK” and it’s over. Nobody else is told. You never see where he is — Lampsill doesn’t even ask for location.',
       phoneLabel: 'Adam’s phone',
     },
     middle: {
@@ -196,7 +196,7 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
         hungup: 'You hung up. Call again, or tap “Text Sam”.',
         called: 'No answer. Now tap “Text Sam”.',
         messaged: 'Sam’s knocking on his door. Breathe.',
-        answered: 'Done. He tapped “I’m fine” — you were never even told.',
+        answered: 'Done. He tapped “I’m OK” — you were never even told.',
       },
       inUse: 'his phone’s in use again',
       note: 'he’d slept in after a late night, heard it, and tapped once',
@@ -225,7 +225,7 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
     first: {
       name: 'You', initial: 'You', role: 'Live alone',
       h3: 'Your phone rings first',
-      body: 'You tap “I’m fine” and it’s over. Nobody else is told, and nobody sees where you are. You never have to open the app.',
+      body: 'You tap “I’m OK” and it’s over. Nobody else is told, and nobody sees where you are. You never have to open the app.',
       phoneLabel: 'Your phone',
     },
     middle: {
@@ -267,7 +267,7 @@ export const PERSONAS: Record<PersonaKey, Persona> = {
         hungup: 'Lena hung up. She can call again, or tap “Text Nina”.',
         called: 'No answer. Now tap “Text Nina”.',
         messaged: 'Nina’s on her way. Someone noticed.',
-        answered: 'Done. You tapped “I’m fine” — Lena was never even told.',
+        answered: 'Done. You tapped “I’m OK” — Lena was never even told.',
       },
       inUse: 'your phone’s in use again',
       note: 'you were in the garden, heard it, and tapped once',

@@ -35,10 +35,9 @@ Every "hidden until animated" rule is now scoped to `:where(html[data-js])`:
 new "starts hidden" style? Scope it the same way. Attributes, not classes, on
 `<html>`: React owns its `className`.
 
-This replaces `../archive/site-v1-static`, which was one static HTML file. That folder was
-moved to the archive on 30 Oct 2026. It is kept only as a record and is never
-published, because two sites that disagree about the price is exactly the kind
-of thing that gets shipped by accident.
+This replaced the first site, one static HTML file. It went to the Mac's Bin on
+30 Oct 2026 and must never come back: two sites that disagree about the price
+is exactly the kind of thing that gets shipped by accident.
 
 ---
 
@@ -82,7 +81,7 @@ understand and the one the owner is charging for:
 
 | Person | What they get |
 |---|---|
-| **The person who lives alone** (Mum) | Her own phone rings first — *"Still there?"* One tap ends it. |
+| **The person who lives alone** (Mum) | Her own phone rings first — *"Are you OK?"* One tap ends it. |
 | **You** — set it up, pay for it | After 10 minutes with no answer, a notification with a sound, opening onto Call / Text / WhatsApp. |
 | **Their nearest person** (Raj) | A message **from you**, sent from your own phone via your own messages app. |
 
@@ -574,7 +573,7 @@ turns it like a model on a table. **Play the story** (or tap the street) runs a
 
 1. 08:40, daylight — Anna puts her phone on the windowsill
 2. the clock races to evening, the lamps come on — "she doesn't pick it up all day"
-3. 20:50, close on the window — her phone rings red, "Still there?" pinned over it
+3. 20:50, close on the window — her phone rings red, "Are you OK?" pinned over it
 4. 21:00 — your phone's alert slides in; "Text Leo" is tapped
 5. the text flies across the street as a light to Leo's window
 6. Leo's floor lamp switches on

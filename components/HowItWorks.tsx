@@ -323,9 +323,9 @@ export default function HowItWorks() {
                   {phase === 'ringing' && (
                     <div className="scr">
                       <div className="scr-ring" aria-hidden="true">?</div>
-                      <h4>Still there?</h4>
+                      <h4>Are you OK?</h4>
                       <button className="pill" onClick={answer}>
-                        I&rsquo;m fine
+                        I&rsquo;m OK
                       </button>
                     </div>
                   )}
@@ -383,7 +383,7 @@ export default function HowItWorks() {
                   {(phase === 'notified' || phase === 'messaged') && outcome === 'none' && (
                     <div className="scr st-missed">
                       <div className="scr-ring" aria-hidden="true">?</div>
-                      <h4>Still there?</h4>
+                      <h4>Are you OK?</h4>
                       <p className="foot">missed</p>
                     </div>
                   )}

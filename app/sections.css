@@ -112,7 +112,7 @@
 .diorama[data-ready] .diorama-fallback { opacity: 0; }
 .diorama .diorama-stage { overflow: hidden; border-radius: 18px; }
 
-/* "Still there?" — pinned by the render loop to her phone's spot on screen */
+/* "Are you OK?" — pinned by the render loop to her phone's spot on screen */
 .dio-bubble { position: absolute; left: 0; top: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .35s var(--ease); }
 .dio-bubble[data-show='1'] { opacity: 1; }
 .dio-bubble-in {
