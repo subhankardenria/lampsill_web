@@ -35,10 +35,10 @@ Every "hidden until animated" rule is now scoped to `:where(html[data-js])`:
 new "starts hidden" style? Scope it the same way. Attributes, not classes, on
 `<html>`: React owns its `className`.
 
-This replaces `../lampsill_site`, which was one static HTML file. That folder is
-kept only as the reference for copy that has not been ported; **delete it once
-you are happy here**, because two sites that disagree about the price is exactly
-the kind of thing that gets shipped by accident.
+This replaces `../archive/site-v1-static`, which was one static HTML file. That folder was
+moved to the archive on 30 Oct 2026. It is kept only as a record and is never
+published, because two sites that disagree about the price is exactly the kind
+of thing that gets shipped by accident.
 
 ---
 
@@ -889,7 +889,7 @@ launching the form — and are one line:
 > in India.** The plan for getting to the first paid day — Dodo's current fees,
 > what each price keeps after them, the price changes recommended, the India
 > set-up and what still has to be built — is in
-> `../Lampsill - Pricing and Payments Plan.md`. Where that plan and this section
+> `../archive/plans/Lampsill - Pricing and Payments Plan.md`. Where that plan and this section
 > disagree (base currency, the fee per payment, payouts in rupees), the plan is
 > the newer one.
 
@@ -934,7 +934,7 @@ So the page and the dashboard must agree, row for row.
 ### Set up in Dodo, before the button can work
 
 The account is held in India (decided 6 Oct 2026). Full reasoning and Dodo's
-fees as read that week: `../Lampsill - Pricing and Payments Plan.md`.
+fees as read that week: `../archive/plans/Lampsill - Pricing and Payments Plan.md`.
 
 - [ ] **Account created and verified from India**, as an individual or a
       registered business. This is the slow step; start it first.

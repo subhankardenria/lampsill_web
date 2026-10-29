@@ -10,18 +10,29 @@ import { Complaint } from '@/components/Complaint';
  * THE PRIVACY NOTICE FOR THE APP. The website and the early-access list have
  * their own, at /privacy; Google Play's form takes this one.
  *
- * Written from the code, 7 Oct 2026, and true only while these are:
+ * Written from the code, 7 Oct 2026; brought up to date 30 Oct 2026. True only
+ * while these are (Data Protection §3 and §6 in the project root list them all):
  *
  *   nothing sensed leaves the phone   the trigger/report routes carry a time and
  *                                     a flag, no payload (Data Protection §2)
  *   one timestamp is held             silence_configs.last_interaction_at, reset
  *                                     at most every 10 minutes (ServerLink.kt)
  *   no location, mic, camera, ads     AndroidManifest.xml: one sensor permission
- *   no text messages or emails        config/lampsill.php 'texting' is false;
- *                                     MAIL_MAILER=log. If texting is switched
- *                                     on, "How people are told" is wrong.
- *   push says only "news"             PushPayloads; Firebase Cloud Messaging,
- *                                     no Analytics
+ *   no text messages                  config/lampsill.php 'texting' is false. If
+ *                                     it is switched on, "How people are told"
+ *                                     is wrong.
+ *   the only email is a code          App\Support\EmailCodes through Brevo:
+ *                                     forgot password, joining Apple/Google.
+ *                                     Kept hashed, cleared after a day
+ *                                     (lampsill:prune-codes) and on deletion
+ *   Apple / Google sign-in            users.apple_sub / google_sub; Apple's
+ *                                     token checked through Firebase Auth
+ *                                     (SignInTokens)
+ *   push says only "news"             PushPayloads; Firebase Cloud Messaging to
+ *                                     Android, and to iPhone through APNs; no
+ *                                     Analytics
+ *   names are not encrypted           only phone numbers are (the models'
+ *                                     'encrypted' casts)
  *   an iPhone checks in, hourly       silence_configs.phone_checked_at
  *                                     (SilenceService::checkedIn, 16 Oct 2026)
  *   battery: a yes or no              silence_configs.battery_low_at, said in
@@ -35,7 +46,7 @@ import { Complaint } from '@/components/Complaint';
  * Not decided here: the legal name and postal address of whoever runs Lampsill,
  * which UK and EU law want in a notice like this. Add them under "Who we are".
  */
-const UPDATED = '17 October 2026';
+const UPDATED = '30 October 2026';
 
 export const metadata: Metadata = {
   title: 'App privacy — Lampsill',
@@ -143,6 +154,14 @@ export default async function AppPrivacyPage({
                   <td>To sign you in. A person who only agreed to be looked out for may have none of these, just a sign-in kept on their phone.</td>
                 </tr>
                 <tr>
+                  <td>If you use Continue with Apple or Continue with Google: the account number Apple or Google gives us, and the email address they confirmed</td>
+                  <td>To sign you in with one tap. We never see your Apple or Google password.</td>
+                </tr>
+                <tr>
+                  <td>A six-digit code we email you when you ask for one, kept scrambled</td>
+                  <td>To prove the email address is yours, when you set a new password or join Apple or Google to your account. Deleted after a day.</td>
+                </tr>
+                <tr>
                   <td>Your Lampsill settings: the time window you chose (1, 12, 24 or 48 hours), on or off, any pause</td>
                   <td>To run your clock.</td>
                 </tr>
@@ -180,7 +199,8 @@ export default async function AppPrivacyPage({
                 <tr>
                   <td>
                     The names, and numbers if you type them, of the people you add as contacts,
-                    the person you look out for, and up to three people near them. Kept encrypted
+                    the person you look out for, and up to three people near them, and any name
+                    you give one of them yourself. The numbers are kept encrypted
                   </td>
                   <td>
                     To tell the right people, and for the Call and Text buttons. Lampsill never
@@ -189,8 +209,8 @@ export default async function AppPrivacyPage({
                 </tr>
                 <tr>
                   <td>
-                    A window that someone who looks out for you has suggested, until you say yes or
-                    no
+                    A window or a reminder that someone who looks out for you has suggested, until
+                    you say yes or no
                   </td>
                   <td>So you can answer it with one tap. It changes nothing until you do.</td>
                 </tr>
@@ -199,7 +219,7 @@ export default async function AppPrivacyPage({
                   <td>So nobody is looked out for, or told, without having said yes.</td>
                 </tr>
                 <tr>
-                  <td>A record of alerts: when a clock ran out, who was told, and when it was seen</td>
+                  <td>A record of alerts: when a clock ran out, who was told, when it was seen, who was checking, and who said you were OK</td>
                   <td>To show what happened, and what did not.</td>
                 </tr>
                 <tr>
@@ -235,9 +255,10 @@ export default async function AppPrivacyPage({
 
           <h2>How people are told</h2>
           <p>
-            Contacts are told inside their own Lampsill app. Today Lampsill doesn&rsquo;t send text
-            messages, make calls or send email on its own, and the Call and Text buttons open your
-            phone&rsquo;s own apps. If that changes, this notice changes first.
+            Contacts are told inside their own Lampsill app. Lampsill doesn&rsquo;t send text
+            messages or make calls, and the Call and Text buttons open your phone&rsquo;s own apps.
+            The only email it sends is a six-digit code you asked for. It never emails anyone
+            about you. If that changes, this notice changes first.
           </p>
           <p>
             Lampsill isn&rsquo;t an emergency service and can&rsquo;t detect a fall or a medical
@@ -255,10 +276,18 @@ export default async function AppPrivacyPage({
               which is deleted after 30 days.
             </li>
             <li>
-              <strong>Google (Firebase Cloud Messaging)</strong> carries the nudge to a
-              contact&rsquo;s Android phone. It says only that there is news. No name, no message,
-              nothing about anyone&rsquo;s phone use. The phone then asks our own server for it.
-              Analytics is not included in the app.
+              <strong>Google (Firebase Cloud Messaging)</strong> carries the nudge to a phone,
+              and on an iPhone passes it to <strong>Apple</strong>&rsquo;s push service. It says
+              only that there is news. No name, no message, nothing about anyone&rsquo;s phone use.
+              The phone then asks our own server for it. Analytics is not included in the app.
+            </li>
+            <li>
+              <strong>Apple and Google</strong>, if you use Continue with Apple or Google, to
+              confirm it&rsquo;s you. Google&rsquo;s Firebase checks an Apple sign-in for us.
+            </li>
+            <li>
+              <strong>Brevo</strong> sends the six-digit codes from hello@lampsill.com. It sees
+              your email address and the code.
             </li>
           </ul>
           <p>
