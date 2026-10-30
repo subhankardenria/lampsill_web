@@ -43,8 +43,8 @@ import { Complaint } from '@/components/Complaint';
  *                                     nightly backup kept 30 days on Cloudflare
  *   deletion                          /delete-account, DELETE /v1/account
  *
- * Not decided here: the legal name and postal address of whoever runs Lampsill,
- * which UK and EU law want in a notice like this. Add them under "Who we are".
+ * Who runs it: Subhankar Denria and Nitu Karan, as joint controllers (30 Oct
+ * 2026), under "Who we are". A postal address is not given; email is the contact.
  */
 const UPDATED = '30 October 2026';
 
@@ -101,8 +101,10 @@ export default async function AppPrivacyPage({
 
           <h2>Who we are</h2>
           <p>
-            Lampsill runs the app and decides what is done with your details. You can reach us at{' '}
-            <a href="mailto:hello@lampsill.com">hello@lampsill.com</a>.
+            Lampsill is run by Subhankar Denria and Nitu Karan, who together decide what is done
+            with your details (in data protection law, joint &ldquo;controllers&rdquo;). We share
+            the same duties, and you can use any of your rights with either of us. You can reach us
+            at <a href="mailto:hello@lampsill.com">hello@lampsill.com</a>.
           </p>
 
           <h2>What the app does on your phone</h2>
