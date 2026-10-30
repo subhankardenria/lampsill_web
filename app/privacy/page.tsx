@@ -91,8 +91,9 @@ export default async function PrivacyPage({
 
           <h2>Who we are</h2>
           <p>
-            Lampsill is run by Nitu Karan, who is responsible for your details (in data protection
-            law, the &ldquo;controller&rdquo;). You can reach us at{' '}
+            Lampsill is run by Subhankar Denria, who is responsible for your details (in data
+            protection law, the &ldquo;controller&rdquo;). On the App Store it is published under
+            Nitu Karan&rsquo;s developer account. You can reach us at{' '}
             <a href="mailto:hello@lampsill.com">hello@lampsill.com</a> about anything on this page.
           </p>
 

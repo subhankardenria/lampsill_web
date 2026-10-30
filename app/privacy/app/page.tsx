@@ -43,8 +43,9 @@ import { Complaint } from '@/components/Complaint';
  *                                     nightly backup kept 30 days on Cloudflare
  *   deletion                          /delete-account, DELETE /v1/account
  *
- * Who runs it: Nitu Karan, the controller (owners' choice, 30 Oct 2026; the same
- * name as the App Store seller), under "Who we are". Email is the contact.
+ * Who runs it: Subhankar Denria, the controller (30 Oct 2026), under "Who we are".
+ * The App Store seller is Nitu Karan's account, which the notice says. Email is
+ * the contact.
  */
 const UPDATED = '30 October 2026';
 
@@ -101,8 +102,9 @@ export default async function AppPrivacyPage({
 
           <h2>Who we are</h2>
           <p>
-            Lampsill is run by Nitu Karan, who decides what is done with your details (in data
-            protection law, the &ldquo;controller&rdquo;). You can reach us at{' '}
+            Lampsill is run by Subhankar Denria, who decides what is done with your details (in data
+            protection law, the &ldquo;controller&rdquo;). On the App Store it is published under
+            Nitu Karan&rsquo;s developer account. You can reach us at{' '}
             <a href="mailto:hello@lampsill.com">hello@lampsill.com</a>.
           </p>
 
