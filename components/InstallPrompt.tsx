@@ -19,9 +19,12 @@ import { PlayBadge } from './PlayBadge';
  *            is set.
  *
  * WHEN. Not on arrival: the card after the visitor has passed "How it works"
- * (they know what it is), the bar after the first screen. It steps aside while
- * the "Get Lampsill" section or the footer is on screen, where the badge is
- * already in front of them. The × hides it for good on that browser.
+ * (they know what it is), the bar after the first screen. Once the visitor
+ * reaches the price, where the badge is already in front of them, it is done
+ * for that visit and does not come back, even scrolling up. (It used to step
+ * aside only while the badge was on screen, and so came and went between the
+ * price, the questions and the footer: owner, 2 Nov 2026, "it comes and goes
+ * in certain area".) The × hides it for good on that browser.
  *
  * Nothing here covers what is being read in the middle of the page, and
  * nothing in it moves for a reader who asked for reduced motion.
@@ -41,7 +44,7 @@ function kindOfDevice(): Kind {
 export default function InstallPrompt() {
   const [kind, setKind] = useState<Kind | null>(null);
   const [past, setPast] = useState(false);
-  const [badgeInView, setBadgeInView] = useState(false);
+  const [done, setDone] = useState(false);
   const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
@@ -62,13 +65,18 @@ export default function InstallPrompt() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Step aside wherever the page already shows the badge.
-    const seen = new Set<Element>();
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) (e.isIntersecting ? seen.add(e.target) : seen.delete(e.target));
-      setBadgeInView(seen.size > 0);
-    });
-    document.querySelectorAll('#get, footer.footer').forEach((el) => io.observe(el));
+    // Done for this visit once the page itself shows the badge: from the
+    // price on. A quarter of the screen in, so brushing the edge doesn't count.
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setDone(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: '0px 0px -25% 0px' },
+    );
+    document.querySelectorAll('#price, #get, footer.footer').forEach((el) => io.observe(el));
 
     return () => {
       window.removeEventListener('scroll', onScroll);
@@ -84,7 +92,7 @@ export default function InstallPrompt() {
   }
 
   if (!kind || hidden) return null;
-  const shown = past && !badgeInView;
+  const shown = past && !done;
 
   if (kind === 'card') {
     return (
