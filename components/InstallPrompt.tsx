@@ -19,15 +19,15 @@ import { PlayBadge } from './PlayBadge';
  *            is set.
  *
  * WHEN. Not on arrival: the card after the visitor has passed "How it works"
- * (they know what it is), the bar after the first screen. Once the visitor
- * reaches the price, where the badge is already in front of them, it is done
- * for that visit and does not come back, even scrolling up. (It used to step
- * aside only while the badge was on screen, and so came and went between the
- * price, the questions and the footer: owner, 2 Nov 2026, "it comes and goes
- * in certain area".) The × hides it for good on that browser.
+ * (they know what it is), the bar after the first screen. From then on it
+ * STAYS until the visitor presses ×, which hides it for good on that browser
+ * (owner, 2 Nov 2026: "this popup should stay until user remove it"). It
+ * used to step aside wherever the page showed the badge, and so came and
+ * went between the price, the questions and the footer.
  *
- * Nothing here covers what is being read in the middle of the page, and
- * nothing in it moves for a reader who asked for reduced motion.
+ * While it shows, the footer gets room under it (sections.css, :has), so the
+ * card or bar never sits for good over the privacy and delete-account links.
+ * Nothing in it moves for a reader who asked for reduced motion.
  */
 const KEY = 'lampsill.install.hidden';
 
@@ -44,7 +44,6 @@ function kindOfDevice(): Kind {
 export default function InstallPrompt() {
   const [kind, setKind] = useState<Kind | null>(null);
   const [past, setPast] = useState(false);
-  const [done, setDone] = useState(false);
   const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
@@ -57,31 +56,18 @@ export default function InstallPrompt() {
     setKind(k);
 
     // The card waits for the end of "How it works"; the bar for one screen.
+    // Once there, it stays: scrolling back up doesn't take it away.
     const how = document.getElementById('how');
     const onScroll = () => {
       const after = k === 'card' && how ? how.offsetTop + how.offsetHeight * 0.6 : window.innerHeight;
-      setPast(window.scrollY > after);
+      if (window.scrollY > after) {
+        setPast(true);
+        window.removeEventListener('scroll', onScroll);
+      }
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-
-    // Done for this visit once the page itself shows the badge: from the
-    // price on. A quarter of the screen in, so brushing the edge doesn't count.
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setDone(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: '0px 0px -25% 0px' },
-    );
-    document.querySelectorAll('#price, #get, footer.footer').forEach((el) => io.observe(el));
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      io.disconnect();
-    };
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   function hide() {
@@ -92,7 +78,7 @@ export default function InstallPrompt() {
   }
 
   if (!kind || hidden) return null;
-  const shown = past && !done;
+  const shown = past;
 
   if (kind === 'card') {
     return (

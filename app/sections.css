@@ -441,6 +441,9 @@
 @media (prefers-reduced-motion: reduce) {
   .install-card, .install-bar { transition: none; transform: none; }
 }
+/* room under the footer while either shows, so it never covers the last links */
+body:has(.install-card.shown) .footer { padding-bottom: 17rem; }
+body:has(.install-bar.shown) .footer { padding-bottom: 6.5rem; }
 
 /* --- footer -------------------------------------------------------------- */
 .footer { border-top: 1px solid var(--line); padding-block: 3.5rem 2rem; position: relative; z-index: 1; }
