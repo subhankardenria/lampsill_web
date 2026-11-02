@@ -139,7 +139,19 @@ export async function GET() {
 const pick = <T extends string>(v: unknown, allowed: readonly T[]): T | null =>
   typeof v === 'string' && (allowed as readonly string[]).includes(v) ? (v as T) : null;
 
+/** The list closed on 2 Nov 2026, when Lampsill came out on Google Play, and
+ *  the form left the page (components/GetIt.tsx). Anything still posting here
+ *  is told so and nothing is stored. GET stays: its visits are what wipe old
+ *  IP hashes, as /privacy promises. */
+const LIST_CLOSED = true;
+
 export async function POST(req: Request) {
+  if (LIST_CLOSED) {
+    return NextResponse.json(
+      { error: 'The early-access list has closed. Lampsill is on Google Play.' },
+      { status: 410 },
+    );
+  }
   let body: Record<string, unknown>;
   try {
     body = await req.json();

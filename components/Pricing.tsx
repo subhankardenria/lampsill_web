@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ALWAYS_FREE, FREE_UNTIL, PRICING_PAUSED, STANDARD, TRIAL_MONTHS } from '@/lib/copy';
 import { Price, TaxNote, usePrice } from './Price';
+import { PlayBadge } from './PlayBadge';
 
 /* WHO PAYS, AND FOR WHAT (decided 6 Oct 2026). Whoever is TOLD pays: being
    told about someone else is Standard, one month free and then paid. One
@@ -37,8 +38,8 @@ import { Price, TaxNote, usePrice } from './Price';
  * — a payment control that appears to work and doesn't is the single worst
  * thing this page could do.
  */
-/** Flip to "1" in the host's settings on launch day, once Dodo is set up. Until
- *  then the button leads to the early-access list, not a checkout. */
+/** Flip to "1" in the host's settings once Dodo is set up. Until then the
+ *  button leads to Google Play, not a checkout. */
 const CHECKOUT_OPEN = process.env.NEXT_PUBLIC_CHECKOUT_OPEN === '1';
 
 export default function Pricing() {
@@ -179,9 +180,7 @@ export default function Pricing() {
                 )}
               </button>
             ) : (
-              <a className="btn lamp" href="#join">
-                Take a free place <span aria-hidden="true">&darr;</span>
-              </a>
+              <PlayBadge height={56} />
             )}
             <a className="btn ghost" href="#how">
               See it work first
@@ -206,7 +205,7 @@ export default function Pricing() {
 
           <p className="price-small">
             Nothing is charged before {FREE_UNTIL}, and only if you choose to carry on.
-            Coming to iPhone and Android.
+            On Android now, and coming to iPhone.
           </p>
         </div>
       </div>
@@ -256,9 +255,7 @@ function FreeForNow() {
             ))}
           </ul>
           <div className="price-cta">
-            <a className="btn lamp" href="#join">
-              Take a free place <span aria-hidden="true">&darr;</span>
-            </a>
+            <PlayBadge height={56} />
             <a className="btn ghost" href="#how">
               See it work first
             </a>

@@ -38,7 +38,7 @@ const UPDATED = '2 November 2026';
 
 export const metadata: Metadata = {
   title: 'Privacy — Lampsill',
-  description: 'What Lampsill keeps when you join the early-access list, why, and how to have it removed.',
+  description: 'What the Lampsill website keeps, what the early-access list kept, and how to have it removed.',
   alternates: { canonical: '/privacy' },
 };
 
@@ -75,8 +75,9 @@ export default async function PrivacyPage({
                 no ads, no tracking.
               </li>
               <li>
-                <strong>Join the list and we keep your email</strong>, plus anything else you chose
-                to tell us, to email you when Lampsill is ready. Nothing else.
+                <strong>If you joined the early-access list, we keep your email</strong>, plus
+                anything else you chose to tell us, to email you about Lampsill. Nothing else. The
+                list closed on 2 November 2026.
               </li>
               <li>
                 <strong>We never sell it or share it</strong> for anyone else&rsquo;s marketing.
@@ -105,13 +106,16 @@ export default async function PrivacyPage({
           </p>
           <p>
             Our hosting provider works out your rough country from your connection so we can show the
-            right details for your country, and prices in your currency if Lampsill ever charges. We don&rsquo;t store that unless you join the list. Like any web
+            right details for your country, and prices in your currency if Lampsill ever charges. We don&rsquo;t store it. Like any web
             host, it keeps short-lived technical logs, which include IP addresses, to keep the site
             running and secure.
           </p>
 
-          <h2>If you join the early-access list</h2>
-          <p>This is everything we keep:</p>
+          <h2>If you joined the early-access list</h2>
+          <p>
+            The list closed on 2 November 2026, when Lampsill came out on Google Play. For the
+            people on it, this is everything we keep:
+          </p>
           <div className="legal-table-wrap">
             <table className="legal-table">
               <thead>

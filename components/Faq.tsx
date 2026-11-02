@@ -98,9 +98,8 @@ const QA: { q: string; a: React.ReactNode }[] = [
               Yes. All of Lampsill is free, for everyone, until {FREE_UNTIL}, with no card
               needed. After that it may stay free, or there may be a small charge: we
               haven&rsquo;t decided. If it changes, you&rsquo;ll be told well before, and
-              nobody is charged without choosing to. The first {EARLY_ACCESS.freeSpots}{' '}
-              people on the early-access list get {EARLY_ACCESS.freeMonths} extra months free
-              if Lampsill ever charges.
+              nobody is charged without choosing to. Everyone who joined the early-access
+              list gets {EARLY_ACCESS.freeMonths} extra months free if Lampsill ever charges.
             </>
           ),
         },
@@ -137,9 +136,8 @@ const QA: { q: string; a: React.ReactNode }[] = [
               Everything is free until {FREE_UNTIL}. After that, looking out for someone is
               Standard: <PlanPrices /> for one account, however many people you look out for.{' '}
               <TaxNote /> Every new account gets a month of Standard free first, with no card
-              needed. The person you look out for never pays. The first{' '}
-              {EARLY_ACCESS.freeSpots} people on the early-access list get{' '}
-              {EARLY_ACCESS.freeMonths} more months on top.
+              needed. The person you look out for never pays. Everyone who joined the
+              early-access list gets {EARLY_ACCESS.freeMonths} more months on top.
             </>
           ),
         },

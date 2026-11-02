@@ -229,3 +229,16 @@ export const EARLY_ACCESS = {
   consent:
     'Email me when Lampsill is ready. Nothing else — and I can ask to be removed any time.',
 } as const;
+
+/**
+ * WHERE TO GET IT. Lampsill went public on Google Play on 2 Nov 2026, and the
+ * early-access form came off the page the same day (owner's choice): there is
+ * nothing left to wait for on Android. iPhone follows once Apple has reviewed
+ * it; until then the page says "coming to iPhone" and gives the email address,
+ * and APP_STORE_URL stays null. Set it the day the App Store page is live.
+ *
+ * The 15 people already on the list keep their promise (EARLY_ACCESS above):
+ * the list never reached 100, so everyone on it is one of the first 100.
+ */
+export const PLAY_URL = 'https://play.google.com/store/apps/details?id=app.lampsill';
+export const APP_STORE_URL: string | null = null;

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { PerPrice } from './Price';
 import { FREE_UNTIL, PRICING_PAUSED } from '@/lib/copy';
+import { PlayBadge } from './PlayBadge';
 
 /** The standard cut of the mark. Same paths, widths and opacities everywhere
  *  it appears; only favicon.svg is allowed to differ, and it says why. */
@@ -71,8 +72,8 @@ export function Masthead({ base = '' }: { base?: string }) {
           <a href={`${base}#how`}>How it works</a>
           <a href={`${base}#story`}>A story</a>
           <a href={`${base}#faq`}>Questions</a>
-          <a className="btn lamp mast-cta" href={`${base}#join`}>
-            Free until January
+          <a className="btn lamp mast-cta" href={`${base}#get`}>
+            Get the app
           </a>
         </nav>
       </div>
@@ -119,9 +120,7 @@ export function Footer({ base = '' }: { base?: string }) {
                 </>
               )}
             </p>
-            <a className="btn lamp footer-cta" href={`${base}#join`}>
-              Join early access
-            </a>
+            <PlayBadge height={52} className="footer-cta" />
           </div>
 
           <nav className="footer-nav" aria-label="Footer">
@@ -135,7 +134,7 @@ export function Footer({ base = '' }: { base?: string }) {
             <div>
               <p className="footer-h">Get it</p>
               <a href={`${base}#price`}>Price</a>
-              <a href={`${base}#join`}>Early access</a>
+              <a href={`${base}#get`}>Get the app</a>
               <a href={`${base}#faq`}>Questions</a>
             </div>
             <div>

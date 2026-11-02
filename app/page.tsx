@@ -7,7 +7,8 @@ import DataModel from '@/components/DataModel';
 import WhatThisIsnt from '@/components/WhatThisIsnt';
 import Pricing from '@/components/Pricing';
 import Faq from '@/components/Faq';
-import EarlyAccess from '@/components/EarlyAccess';
+import GetIt from '@/components/GetIt';
+import InstallPrompt from '@/components/InstallPrompt';
 import Everyday from '@/components/Everyday';
 import { PersonaProvider } from '@/components/Persona';
 import { PriceProvider } from '@/components/Price';
@@ -34,6 +35,7 @@ import { visitorCountry } from '@/lib/geo';
  *   privacy        you see one word, not her day
  *   isn't          the honest edge — including "nothing is automatic after you"
  *   price
+ *   get it         the Google Play button (the early-access form until 2 Nov 2026)
  *   faq
  *
  * "Myself" — for a reader who lives alone — is the third tab on the phones,
@@ -85,10 +87,11 @@ export default async function Page({
         <DataModel />
         <WhatThisIsnt />
         <Pricing />
-        <EarlyAccess />
+        <GetIt />
         <Faq />
       </main>
       <Footer />
+      <InstallPrompt />
     </PriceProvider>
   );
 }
