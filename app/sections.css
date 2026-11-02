@@ -423,7 +423,7 @@
 .install-sub { font-size: .82rem; color: var(--ink3); margin: .15rem 0 0; }
 .install-qr-row { display: flex; gap: 1rem; align-items: center; margin-top: 1rem; }
 .install-qr-row p { margin: 0 0 .4rem; font-size: .84rem; color: var(--ink2); line-height: 1.45; }
-.install-qr { width: 104px; height: 104px; flex: none; padding: 6px; border-radius: 12px; background: #FFF4E0; }
+.install-qr { width: 120px; height: 120px; flex: none; padding: 4px; border-radius: 12px; background: #FFF4E0; }
 
 .install-bar {
   left: .7rem; right: .7rem; bottom: max(.8rem, env(safe-area-inset-bottom));
