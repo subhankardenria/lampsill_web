@@ -14,31 +14,25 @@
     It also fixes a second thing that was already wrong and harder to see: on a
     LIGHT tab strip the pale Vesper frame was pale blue on near white, and the
     icon all but vanished. That is the light ground trap in
-    brand/v2/COLOUR-AND-TYPE.md section 5, arriving by the back door.
+    the brand book, section 09 (brand/Lampsill - Brand Book.html), arriving by the back door.
 
-    THE GROUND IS #0C1317, the same as brand/v2/icon-app.svg, and for the
+    THE GROUND IS #0C1317, the same as brand/logo/icon-app.svg, and for the
     reason that file gives: it separates from a true black tab strip, and on a
     white one it does not read as a hole punched in the screen. Note this is
     NOT the site's own bg (#0A1014). A favicon is a tile like the app icon, not
     a patch of page, and it should match the thing it is a miniature of.
     Corner radius 14.25 on 64 is icon-app.svg's 228 on 1024, to the decimal.
 
-    THE CUT: standard geometry at COMPACT weights, both mullions kept.
+    THE CUT: brand/logo/mark-small.svg, the window at small weights (frame 6,
+    bars 4, both bars kept), on a tile.
 
     A tile costs the mark about a fifth of its height, so at a 16px favicon the
     drawing is around 12px and the standard 4.8 frame renders at 1.2 device
-    pixels, which greys out. The ladder's answer at that size is
-    mark-micro.svg, and it was tried: with no mullions the interior empties and
-    the thing reads as a padlock, exactly as this file's previous comment
-    warned. mark-compact.svg was tried too; its single mullion is mush at 16px
-    and leaves the top half oddly bare.
-
-    So the weights come from the compact cut (6 and 4) and the mullion count
-    from the standard one. The RATIO is what matters and it is exactly 3:2, as
-    brand/v2/COLOUR-AND-TYPE.md requires. Do not read the "do not push the
-    frame past about 5" rule as forbidding this: the ladder itself goes to 6
-    and then 7.5, scaling both strokes together. Breaking the ratio is the
-    thing that is not allowed.
+    pixels, which greys out. Two other small drawings were tried here first:
+    one with no bars read as a padlock, one with a single bar was mush at 16px
+    with a bare top half. What this file settled on became the brand's one
+    small window on 30 Oct 2026: same drawing as the standard, thicker lines.
+    The RATIO stays exactly 3:2; breaking it is the thing that is not allowed.
 
     THE PANE IS RE INSET, NOT COPIED. A heavier frame eats into the opening, so
     the pane from the standard cut would overlap the sill and merge with it.

@@ -20,14 +20,14 @@
          fontconfig has installed. Newsreader and Atkinson Hyperlegible are
          next/font downloads — they are not system fonts on anybody's machine,
          so the export would silently come out in a fallback serif. That is
-         precisely the class of failure brand/v2/export-png.sh warns about:
+         precisely the class of failure brand/build.py warns about:
          artwork that looks deliberate and is wrong.
 
      Chrome renders the real typefaces, which build.sh inlines as data URIs so
      there is no network race between layout and the screenshot.
 
      COLOURS ARE THE SITE'S DARK TOKENS, copied from app/globals.css — not
-     brand/v2/COLOUR-AND-TYPE.md's, which differ slightly (#0C1317 vs #0A1014).
+     the brand book's, which differ slightly (#0C1317 vs #0A1014).
      The card is a preview of THIS page, so it matches this page. Change one,
      change both, or the link preview stops looking like where it lands.
      =========================================================================== -->
@@ -72,7 +72,7 @@
     /* Centred on the lit pane (79% 57%) but lifted to 50%: light leaves a
        window upward and outward, and a wash centred ON the pane reads as a
        ring drawn around the mark. Same reasoning as the aura offset in
-       brand/v2/mark-hero.svg, which that file's comment spells out. */
+       brand/logo/mark-hero.svg, which that file's comment spells out. */
     background: radial-gradient(620px circle at 79% 50%, rgba(245, 201, 123, 0.07), transparent 66%);
   }
 
@@ -150,7 +150,7 @@
     color: var(--ink2);
   }
   /* ink2, not ink3. ink3 is RESTRICTED to information repeated elsewhere in
-     ink or ink2 (COLOUR-AND-TYPE.md §4), and a link preview is often the only
+     ink or ink2 (brand book §09), and a link preview is often the only
      thing a reader ever sees — nothing on it is "repeated elsewhere". */
   .foot .dot { color: rgba(175, 192, 199, 0.45); padding: 0 12px; }
   .foot .url {
@@ -162,11 +162,11 @@
 
   /* --- the mark ---------------------------------------------------------- */
 
-  /* THE HERO CUT — the only one permitted to glow (COLOUR-AND-TYPE.md §1), and
+  /* THE HERO CUT — the only one permitted to glow (brand book §05), and
      at 420px it is far past the 128px floor that cut requires.
 
      The viewBox is -18 -18 100 100 rather than the 0 0 64 64 that
-     brand/v2/mark-hero.svg ships with, and that is deliberate: the aura is a
+     brand/logo/mark-hero.svg ships with, and that is deliberate: the aura is a
      circle of radius 46 centred at (27,36), so the shipped box CLIPS it and
      leaves a faint straight edge of gold down the right side. Invisible on a
      phone screen, obvious at 420px on a dark card. This box contains the whole
@@ -190,7 +190,7 @@
     <defs>
       <!-- THREE WASHES, NOT THE SHIPPED TWO, and the reason is scale.
 
-           brand/v2/mark-hero.svg is drawn to be correct from 128px up, where
+           brand/logo/mark-hero.svg is drawn to be correct from 128px up, where
            its widest wash spans perhaps 90px and the eye reads the whole thing
            as one soft halo. At 420px that same wash spans 300px, and a 13%
            gold spread that thin over that much area stops being light: it is

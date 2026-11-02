@@ -645,27 +645,26 @@ way to decide what is behind the mark.
 
 It fixed a second thing that was already wrong and harder to spot: on a *light*
 tab strip, the pale Vesper frame was pale blue on near-white and the icon all
-but vanished. That is the light-ground trap in `COLOUR-AND-TYPE.md` §5 arriving
+but vanished. That is the light-ground trap in the brand book's §09 arriving
 by the back door.
 
-The ground is `#0C1317` and the radius is `14.25` on 64 — `brand/v2/icon-app.svg`'s
+The ground is `#0C1317` and the radius is `14.25` on 64 — `brand/logo/icon-app.svg`'s
 values to the decimal, because a favicon is a miniature of the app icon and
 should match it. Deliberately **not** the site's own `--bg` (`#0A1014`); a tile
 is not a patch of page.
 
 The tile costs the mark about a fifth of its height, so the cut had to change
 with it. At a 16px favicon the standard 4.8 frame renders at 1.2 device pixels
-and greys out. Both alternatives on the ladder were rendered and looked at:
-`mark-micro.svg` empties the interior and reads as a **padlock**, and
-`mark-compact.svg`'s single mullion is mush at 16px with an oddly bare top
-half. What ships is standard geometry at **compact weights** — 6 and 4, both
-mullions kept, pane re-inset to 1.25 gaps for the heavier frame.
+and greys out. Two other small drawings were rendered and looked at: one with
+no bars empties the interior and reads as a **padlock**, and one with a single
+bar is mush at 16px with an oddly bare top half. What ships is the standard
+geometry at **small weights**, 6 and 4, both bars kept, pane re-inset to 1.25
+gaps for the heavier frame. On 30 Oct 2026 that became the brand's one small
+window, `brand/logo/mark-small.svg`.
 
-That 6∶4 is the point. `COLOUR-AND-TYPE.md`'s "do not push the frame past
-about 5" is not a ceiling the ladder itself respects — compact is 6 and micro
-is 7.5. What the ladder never does is change the **ratio**, which is 3∶2 in
-every cut, and 6∶4 is 3∶2 exactly. An earlier attempt at 5.6∶3.4 looked fine
-and was 1.65∶1, which is the rule that actually matters being broken quietly.
+That 6∶4 is the point: the ratio is 3∶2 in every size, and 6∶4 is 3∶2 exactly.
+An earlier attempt at 5.6∶3.4 looked fine and was 1.65∶1, which is the rule
+that actually matters being broken quietly.
 
 ---
 
@@ -714,7 +713,7 @@ image **by URL and does not come back to check**, so a card whose bytes changed
 under a stable URL is a card that never updates anywhere.
 
 One thing in `card.html` is not a copy of the shipped brand asset and says so
-at length in its own comment: the mark's glow. `brand/v2/mark-hero.svg` is
+at length in its own comment: the mark's glow. `brand/logo/mark-hero.svg` is
 drawn to be correct from 128px up, where its widest wash spans about 90px. At
 the 420px this card uses it spans 300px, and 13% gold spread that thin over
 that much area stops reading as light and becomes a flat grey lift across a
@@ -728,7 +727,7 @@ and both are argued in full in the header of `assets/og/build.sh`:
 
 - **Not `next/og`'s `ImageResponse`.** It would move the card's rendering into
   every production build, where a font fetch turns into a failed deploy. The
-  card changes about twice a year. (`rsvg-convert`, which `brand/v2` uses, is
+  card changes about twice a year. (`rsvg-convert`, which `brand/build.py` uses, is
   out for a different reason: it sets type from fontconfig, and Newsreader and
   Atkinson Hyperlegible are `next/font` downloads rather than system fonts, so
   the card would come out in a fallback serif and look deliberate.)
