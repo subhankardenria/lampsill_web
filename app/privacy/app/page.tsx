@@ -44,10 +44,10 @@ import { Complaint } from '@/components/Complaint';
  *   deletion                          /delete-account, DELETE /v1/account
  *
  * Who runs it: Subhankar Denria, the controller (30 Oct 2026), under "Who we are".
- * The App Store seller is Nitu Karan's account, which the notice says. Email is
- * the contact.
+ * The App Store and Google Play accounts are Nitu Karan's, which the notice
+ * says. Email is the contact.
  */
-const UPDATED = '30 October 2026';
+const UPDATED = '2 November 2026';
 
 export const metadata: Metadata = {
   title: 'App privacy — Lampsill',
@@ -103,8 +103,8 @@ export default async function AppPrivacyPage({
           <h2>Who we are</h2>
           <p>
             Lampsill is run by Subhankar Denria, who decides what is done with your details (in data
-            protection law, the &ldquo;controller&rdquo;). On the App Store it is published under
-            Nitu Karan&rsquo;s developer account. You can reach us at{' '}
+            protection law, the &ldquo;controller&rdquo;). On the App Store and Google Play it is
+            published under Nitu Karan&rsquo;s developer accounts. You can reach us at{' '}
             <a href="mailto:hello@lampsill.com">hello@lampsill.com</a>.
           </p>
 

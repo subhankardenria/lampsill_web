@@ -34,7 +34,7 @@ import { Complaint } from '@/components/Complaint';
  *
  * `UPDATED` is shown on the page. Bump it with any change of substance.
  */
-const UPDATED = '30 October 2026';
+const UPDATED = '2 November 2026';
 
 export const metadata: Metadata = {
   title: 'Privacy — Lampsill',
@@ -92,8 +92,8 @@ export default async function PrivacyPage({
           <h2>Who we are</h2>
           <p>
             Lampsill is run by Subhankar Denria, who is responsible for your details (in data
-            protection law, the &ldquo;controller&rdquo;). On the App Store it is published under
-            Nitu Karan&rsquo;s developer account. You can reach us at{' '}
+            protection law, the &ldquo;controller&rdquo;). On the App Store and Google Play it is
+            published under Nitu Karan&rsquo;s developer accounts. You can reach us at{' '}
             <a href="mailto:hello@lampsill.com">hello@lampsill.com</a> about anything on this page.
           </p>
 
