@@ -1,7 +1,12 @@
 """The QR code on the install card (components/InstallPrompt.tsx).
 
-    pip install segno
-    python3 assets/qr/build.py      # writes public/google-play-qr.svg
+    pip install segno               # and rsvg-convert: brew install librsvg
+    python3 assets/qr/build.py
+
+writes public/google-play-qr.svg for the site, and the same code as pictures
+for posters, flyers and messages (owner, 2 Nov 2026: "you should save the qr
+as image too"): brand/png/lampsill-google-play-qr-1024.png and -2048.png,
+with the full four-module margin a printed code needs.
 
 It opens Lampsill on Google Play. The app icon sits in the middle (owner,
 2 Nov 2026: "in qr code can you add the logo creatively"): the dark tile
@@ -19,6 +24,7 @@ it with a phone.
 """
 
 import os
+import subprocess
 import segno
 
 URL = "https://play.google.com/store/apps/details?id=app.lampsill"
@@ -27,13 +33,15 @@ PAPER = "#FFF4E0"
 TILE = "#0C1317"  # the app icon's ground
 FRAME = "#8FBCE0"
 LAMP = "#F5C97B"
-QUIET = 2  # modules of margin; the card's own cream padding adds to it
+QUIET_WEB = 2  # modules of margin on the site; the card's cream padding adds to it
+QUIET_PRINT = 4  # the margin the QR standard asks for, on paper or in a message
 
-OUT = os.path.join(os.path.dirname(__file__), "..", "..", "public", "google-play-qr.svg")
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.join(HERE, "..", "..", "public", "google-play-qr.svg")
+PNG = os.path.join(HERE, "..", "..", "..", "brand", "png", "lampsill-google-play-qr-{}.png")
 
 
-def main():
-    q = segno.make(URL, error="h", boost_error=False)
+def draw(q, QUIET):
     m = [list(row) for row in q.matrix]
     n = len(m)
     size = n + 2 * QUIET
@@ -83,9 +91,22 @@ def main():
         f'<rect width="{size}" height="{size}" fill="{PAPER}"/>'
         f'<g fill="{INK}">{"".join(dots)}</g>{"".join(eyes)}{icon}</svg>\n'
     )
+    return svg, n, hole
+
+
+def main():
+    q = segno.make(URL, error="h", boost_error=False)
+    svg, n, hole = draw(q, QUIET_WEB)
     with open(OUT, "w") as f:
         f.write(svg)
-    print(f"{OUT}: version {q.version}-{q.error}, {n}x{n} modules, icon {hole}x{hole}")
+    print(f"{os.path.normpath(OUT)}: version {q.version}-{q.error}, {n}x{n} modules, icon {hole}x{hole}")
+
+    printed, _, _ = draw(q, QUIET_PRINT)
+    for width in (1024, 2048):
+        dst = os.path.normpath(PNG.format(width))
+        subprocess.run(["rsvg-convert", "-w", str(width), "-f", "png", "-o", dst, "/dev/stdin"],
+                       input=printed.encode(), check=True)
+        print(dst)
 
 
 if __name__ == "__main__":

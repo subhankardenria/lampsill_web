@@ -54,6 +54,10 @@ export default function GetIt() {
             right reason.
           </p>
           <PlayBadge />
+          {/* The setup, step by step on the real screens (owner, 2 Nov 2026). */}
+          <p className="get-setup">
+            <a href="/setup">See how to set it up, step by step</a>
+          </p>
           <p className="get-small">
             Free until {FREE_UNTIL}.{' '}
             {APP_STORE_URL ? (

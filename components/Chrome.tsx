@@ -135,6 +135,7 @@ export function Footer({ base = '' }: { base?: string }) {
               <p className="footer-h">Get it</p>
               <a href={`${base}#price`}>Price</a>
               <a href={`${base}#get`}>Get the app</a>
+              <a href="/setup">Setting it up</a>
               <a href={`${base}#faq`}>Questions</a>
             </div>
             <div>
