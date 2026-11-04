@@ -1,0 +1,10 @@
+Photographs on the home page, all from Unsplash (https://unsplash.com/license):
+free to use, commercial use included, no attribution required.
+Each was resized/cropped and saved as WebP.
+
+tower-night.webp        https://unsplash.com/photos/jlXe75DNvfA   (photo-1728165562601-f2d00b1f15f4)
+house-lit-window.webp   https://unsplash.com/photos/MzguYL3I668   (photo-1519884534703-ce5da0b790b0)
+you-at-night.webp       https://unsplash.com/photos/1rJdewJPCWE   (photo-1630993094890-f7d47e9dcf56)
+mum-out.webp            https://unsplash.com/photos/PCscaBYC20s   (photo-1764173039390-a48bba2c939e)
+
+app-*.webp are the app's own screens, from dist/screens.
