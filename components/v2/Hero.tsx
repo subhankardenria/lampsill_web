@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   motion,
+  useInView,
   useMotionValue,
   useReducedMotion,
   useScroll,
@@ -33,15 +34,17 @@ export default function Hero() {
   const [w, setW] = useState(0);
   const [n, setN] = useState(0);
 
+  // the lines only change while the hero is on screen
+  const live = useInView(root, { amount: 0.1 });
   useEffect(() => {
-    if (calm) return;
+    if (calm || !live) return;
     const a = window.setInterval(() => setW((x) => (x + 1) % WHY.length), 2800);
     const b = window.setInterval(() => setN((x) => (x + 1) % NEWS.length), 3600);
     return () => {
       window.clearInterval(a);
       window.clearInterval(b);
     };
-  }, [calm]);
+  }, [calm, live]);
 
   // the pointer turns both phones a little, like picking them up
   const px = useMotionValue(0);
@@ -89,10 +92,14 @@ export default function Hero() {
           <h1 className="v2-h1">
             <span className="v2-h1-line">
               {words.map((word, i) => (
-                <span className="v2-mask" key={word}>
-                  <span className="v2-word" style={{ animationDelay: `${0.15 + i * 0.08}s` }}>
-                    {word}
-                  </span>
+                <span key={word}>
+                  {/* a real space between the words, so it reads "They live
+                      alone", not "Theylivealone", to screen readers and search */}
+                  <span className="v2-mask">
+                    <span className="v2-word" style={{ animationDelay: `${0.15 + i * 0.08}s` }}>
+                      {word}
+                    </span>
+                  </span>{' '}
                 </span>
               ))}
             </span>

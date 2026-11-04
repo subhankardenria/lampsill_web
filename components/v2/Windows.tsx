@@ -41,15 +41,16 @@ export default function Windows() {
   const calm = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const seen = useInView(ref, { once: true, amount: 0.35 });
+  const live = useInView(ref, { amount: 0.1 });
   const [at, setAt] = useState(0);
   const [held, setHeld] = useState(false);
 
   // until the reader picks one, the light moves from window to window
   useEffect(() => {
-    if (!seen || held || calm) return;
+    if (!seen || !live || held || calm) return;
     const t = window.setInterval(() => setAt((a) => (a + 1) % PEOPLE.length), 3200);
     return () => window.clearInterval(t);
-  }, [seen, held, calm]);
+  }, [seen, live, held, calm]);
 
   const isPerson = (c: number, r: number) => PEOPLE.findIndex((p) => p.col === c && p.row === r);
 
