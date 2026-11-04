@@ -51,6 +51,8 @@ const STEPS = [
   },
 ];
 
+const SCREENS = STEPS.map((s) => s.src);
+
 export default function How() {
   const calm = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
@@ -119,7 +121,7 @@ export default function How() {
 
           <div className="v2-how-stage" aria-hidden="true">
             <div className="v2-how-glow" />
-            <Phone3D src={STEPS[at].src} rotateX={calm ? 0 : rotateX} rotateY={calm ? 0 : rotateY} className="big" />
+            <Phone3D src={STEPS[at].src} screens={SCREENS} rotateX={calm ? 0 : rotateX} rotateY={calm ? 0 : rotateY} className="big" />
           </div>
         </div>
       </div>
@@ -128,7 +130,7 @@ export default function How() {
       <div className="v2-how-m">
         <div className="v2-how-m-stage" aria-hidden="true">
           <div className="v2-how-glow" />
-          <Phone3D src={STEPS[mAt].src} rotateX={4} rotateY={calm ? 0 : mY} />
+          <Phone3D src={STEPS[mAt].src} screens={SCREENS} rotateX={4} rotateY={calm ? 0 : mY} />
         </div>
         <ol className="v2-steps-m" ref={row}>
           {STEPS.map((s, i) => (

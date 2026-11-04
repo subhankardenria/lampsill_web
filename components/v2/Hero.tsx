@@ -69,40 +69,30 @@ export default function Hero() {
   const phonesY = useTransform(scrollYProgress, [0, 1], [0, 90]);
 
   const words = ['They', 'live', 'alone.'];
-  const rise = (d: number) =>
-    calm ? {} : { initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 }, transition: { delay: d, duration: 0.7 } };
+  /* The first screen's entrance is CSS (v2-rise, v2-word, v2-hero-in in
+     v2.css), not Framer Motion: CSS runs at first paint, while a Framer
+     `initial` keeps the words invisible until the page's script has loaded,
+     which on a slow phone is a blank screen for seconds. */
 
   return (
     <section className="v2-hero" ref={root}>
       {/* a real street at night: every lit window is somebody's evening */}
       <motion.div className="v2-hero-photo" style={calm ? undefined : { y: photoY }} aria-hidden="true">
-        <motion.img
-          src="/v2/tower-night.webp"
-          alt=""
-          initial={calm ? false : { scale: 1.12, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
-        />
+        <img className="v2-hero-in" src="/v2/tower-night.webp" alt="" fetchPriority="high" />
       </motion.div>
       <div className="v2-hero-shade" aria-hidden="true" />
 
       <div className="v2-wrap v2-hero-grid">
         <div className="v2-hero-copy">
-          <motion.p className="v2-eyebrow" {...rise(0)}>
-            For anyone you love who lives alone
-          </motion.p>
+          <p className="v2-eyebrow v2-rise">For anyone you love who lives alone</p>
 
           <h1 className="v2-h1">
             <span className="v2-h1-line">
               {words.map((word, i) => (
                 <span className="v2-mask" key={word}>
-                  <motion.span
-                    initial={calm ? false : { y: '110%' }}
-                    animate={{ y: '0%' }}
-                    transition={{ delay: 0.15 + i * 0.08, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  >
+                  <span className="v2-word" style={{ animationDelay: `${0.15 + i * 0.08}s` }}>
                     {word}
-                  </motion.span>
+                  </span>
                 </span>
               ))}
             </span>
@@ -127,27 +117,23 @@ export default function Hero() {
             </span>
           </h1>
 
-          <motion.p className="v2-lede" {...rise(0.6)}>
+          <p className="v2-lede v2-rise" style={{ animationDelay: '0.6s' }}>
             Lampsill is an app that notices when their phone hasn&rsquo;t been used for a while. It asks them{' '}
             <b>&ldquo;Are you OK?&rdquo;</b> first. If they don&rsquo;t answer, it tells you, with one tap to call
             them or someone nearby.
-          </motion.p>
+          </p>
 
-          <motion.div className="v2-hero-cta" {...rise(0.75)}>
+          <div className="v2-hero-cta v2-rise" style={{ animationDelay: '0.75s' }}>
             <PlayBadge height={56} />
             <a className="v2-ghost" href="#how">
               See how it works <span aria-hidden="true">&darr;</span>
             </a>
-          </motion.div>
-
+          </div>
         </div>
 
         <motion.div
-          className="v2-hero-phones"
+          className="v2-hero-phones v2-hero-pop"
           style={calm ? undefined : { y: phonesY }}
-          initial={calm ? false : { opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
           aria-hidden="true"
         >
           <div className="v2-hero-back">
@@ -160,7 +146,7 @@ export default function Hero() {
           </div>
 
           <div className="v2-news">
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={NEWS[n].k}
                 className={`v2-news-card ${NEWS[n].k}`}
@@ -180,7 +166,7 @@ export default function Hero() {
         </motion.div>
 
         {/* beside the words on a computer; under the phones on a phone */}
-        <motion.ul className="v2-trust" {...rise(0.9)}>
+        <ul className="v2-trust v2-rise" style={{ animationDelay: '0.9s' }}>
           <li>
             <Tick /> Free until {FREE_UNTIL}
           </li>
@@ -190,7 +176,7 @@ export default function Hero() {
           <li>
             <Tick /> No location. No maps.
           </li>
-        </motion.ul>
+        </ul>
       </div>
     </section>
   );

@@ -224,6 +224,7 @@ function AskPhone() {
       >
         <Phone3D
           src={ok ? '/v2/app-their-home.webp' : '/v2/app-are-you-ok.webp'}
+          screens={['/v2/app-are-you-ok.webp', '/v2/app-their-home.webp']}
           alt={ok ? 'Her home screen: your light is on' : "The Are you OK? screen, with I'm OK and I need help buttons"}
           rotateX={calm ? 0 : sx}
           rotateY={calm ? -8 : sy}
