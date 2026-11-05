@@ -143,6 +143,7 @@ export function Footer({ base = '' }: { base?: string }) {
               <a href="mailto:hello@lampsill.com">hello@lampsill.com</a>
               <a href="/privacy">Privacy</a>
               <a href="/privacy/app">App privacy</a>
+              <a href="/terms">Terms</a>
               <a href="/delete-account">Delete your account</a>
             </div>
           </nav>
