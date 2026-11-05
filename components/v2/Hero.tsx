@@ -105,9 +105,9 @@ export default function Hero() {
             </span>
             <span className="v2-why">
               {WHY.map((p) => (
-                <span className="v2-why-size" key={p} aria-hidden="true">
-                  {p}
-                </span>
+                // the sizing lines are drawn by CSS (::before), so they are
+                // not words in the page: search reads one line, not three
+                <span className="v2-why-size" key={p} data-t={p} aria-hidden="true" />
               ))}
               <AnimatePresence initial={false}>
                 <motion.em

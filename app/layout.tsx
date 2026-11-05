@@ -30,14 +30,17 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://lampsill.com'),
+  /* www is the address the site is served from (lampsill.com redirects to
+     it), so canonicals, the share card and the sitemap all say www: a
+     canonical that redirects is a mixed signal to search engines. */
+  metadataBase: new URL('https://www.lampsill.com'),
   title: 'Lampsill — If their phone goes quiet, Lampsill tells you',
   description: `For anyone you love who lives alone. If their phone goes quiet, it rings them first. No answer? You're told, and one tap asks someone nearby to knock.`,
   openGraph: {
     title: 'Lampsill — If their phone goes quiet, Lampsill tells you',
     description: `Their phone rings first. If they don't answer, you're told.`,
     type: 'website',
-    url: 'https://lampsill.com',
+    url: 'https://www.lampsill.com',
     siteName: 'Lampsill',
     locale: 'en_GB',
     /* The share card. It is drawn by assets/og/build.sh, which also writes
