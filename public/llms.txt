@@ -1,0 +1,40 @@
+# Lampsill
+
+> Lampsill is a phone app for anyone you love who lives alone. If their phone isn't used for the time they chose (12, 24 or 48 hours), Lampsill asks them "Are you OK?" on their own phone first. If they don't answer within about 10 minutes, the people they chose are told, with one tap to call them or someone nearby. Free until January 2027. On Android now (Google Play); coming to iPhone.
+
+Lampsill is run by Subhankar Denria and published on Google Play under Nitu Karan's developer account. Contact: hello@lampsill.com.
+
+## What it does
+
+- The person living alone sets it up once: they type in a code from the person looking out for them and tap Yes. After that they use their phone as normal and never need to open Lampsill.
+- Their phone being used (screen on, unlocked, and, if they allow it, walking) is the check-in. There is nothing to press each day.
+- If the phone goes unused for longer than the time chosen (12, 24 or 48 hours; 48 suits most people), their phone asks "Are you OK?". One tap ends it and nobody is told.
+- If there is no answer, the people looking out for them are told inside their own Lampsill app, about 10 minutes later. The alert opens on Call; their nearest person is listed under it, with Call, Text and WhatsApp. Every message is sent by the person looking out, from their own phone.
+- They can turn on sleeping hours so the clock waits while they sleep, or pause it for up to 7 days when they're away. It switches itself back on.
+- Several people can look out for one person. When one of them is checking, the others are told.
+- It works the same way for a parent, a brother or sister, a friend, a son or daughter away for study or work, or for yourself.
+
+## What it doesn't do
+
+- It isn't an emergency service and can't detect a fall or a medical problem. It works in hours, not minutes. In an emergency, call your local emergency number.
+- No location, on either phone. No microphone, camera, messages, photos or contacts.
+- The people looking out see one word for each person (On, Away, Off, Quiet, Needs fix or Removed), never their messages, where they go or when they last used the phone.
+- A phone that is off, flat or out of signal can make a message late, or stop it arriving.
+
+## Price
+
+- All of Lampsill is free, for everyone, until January 2027, with no card needed. After that it may stay free, or there may be a small charge; this hasn't been decided. Users will be told well before, and nobody is charged without choosing to.
+
+## Pages
+
+- [Home](https://www.lampsill.com/): what Lampsill is, how it works, and common questions
+- [Set it up](https://www.lampsill.com/setup): the first-time setup, step by step on the real screens
+- [App privacy](https://www.lampsill.com/privacy/app): what the app reads on the phone, what it sends, who sees it, and how to delete it all
+- [Website privacy](https://www.lampsill.com/privacy): what the website keeps (no cookies, no analytics)
+- [Terms](https://www.lampsill.com/terms): the terms for using the app, in plain words
+- [Delete your account](https://www.lampsill.com/delete-account): how to delete everything
+
+## Get it
+
+- [Google Play](https://play.google.com/store/apps/details?id=app.lampsill): Android
+- iPhone: coming to the App Store

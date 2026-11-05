@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/meta';
 import { headers } from 'next/headers';
 import { Masthead, Footer } from '@/components/Chrome';
 import { PriceProvider } from '@/components/Price';
@@ -12,11 +13,12 @@ import { visitorCountryWith } from '@/lib/geo';
  * dist/setup-demo/, for whoever is setting Lampsill up for Mum or Dad, or
  * for a son or daughter.
  */
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'Set it up — Lampsill',
-  description: 'Setting Lampsill up for Mum or Dad, or for a son or daughter: two phones, about two minutes, step by step.',
-  alternates: { canonical: '/setup' },
-};
+  description:
+    'Setting Lampsill up for Mum or Dad, or for a son or daughter: two phones, about two minutes, step by step.',
+  path: '/setup',
+});
 
 export default async function SetupPage({
   searchParams,

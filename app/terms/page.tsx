@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/meta';
 import { headers } from 'next/headers';
 import { Masthead, Footer, Reveals } from '@/components/Chrome';
 import { PriceProvider } from '@/components/Price';
@@ -30,11 +31,12 @@ import { visitorCountryWith } from '@/lib/geo';
  */
 const UPDATED = '5 November 2026';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'Terms — Lampsill',
-  description: 'The terms for using the Lampsill app, in plain words: what it is, what it isn’t, and what we each agree to.',
-  alternates: { canonical: '/terms' },
-};
+  description:
+    'The terms for using the Lampsill app, in plain words: what it is, what it isn’t, and what we each agree to.',
+  path: '/terms',
+});
 
 export default async function TermsPage({
   searchParams,

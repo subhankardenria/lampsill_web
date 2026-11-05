@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/meta';
 import { headers } from 'next/headers';
 import { Masthead, Footer, Reveals } from '@/components/Chrome';
 import { PriceProvider } from '@/components/Price';
@@ -23,11 +24,12 @@ import { visitorCountry } from '@/lib/geo';
  */
 const UPDATED = '7 October 2026';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'Delete your account — Lampsill',
-  description: 'How to delete your Lampsill account and everything in it, in the app or by email.',
-  alternates: { canonical: '/delete-account' },
-};
+  description:
+    'How to delete your Lampsill account and everything in it, in the app or by email.',
+  path: '/delete-account',
+});
 
 export default async function DeleteAccountPage() {
   const seen = await visitorCountry(await headers());

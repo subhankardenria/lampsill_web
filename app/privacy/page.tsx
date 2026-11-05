@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/meta';
 import { headers } from 'next/headers';
 import { Masthead, Footer, Reveals } from '@/components/Chrome';
 import { PriceProvider } from '@/components/Price';
@@ -36,11 +37,12 @@ import { Complaint } from '@/components/Complaint';
  */
 const UPDATED = '2 November 2026';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'Privacy — Lampsill',
-  description: 'What the Lampsill website keeps, what the early-access list kept, and how to have it removed.',
-  alternates: { canonical: '/privacy' },
-};
+  description:
+    'What the Lampsill website keeps, what the early-access list kept, and how to have it removed.',
+  path: '/privacy',
+});
 
 export default async function PrivacyPage({
   searchParams,

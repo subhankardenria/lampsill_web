@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/meta';
 import { headers } from 'next/headers';
 import { Masthead, Footer, Reveals } from '@/components/Chrome';
 import { PriceProvider } from '@/components/Price';
@@ -49,12 +50,12 @@ import { Complaint } from '@/components/Complaint';
  */
 const UPDATED = '2 November 2026';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'App privacy — Lampsill',
   description:
     'What the Lampsill app reads on your phone, what it sends us, who sees it, and how to delete it all.',
-  alternates: { canonical: '/privacy/app' },
-};
+  path: '/privacy/app',
+});
 
 export default async function AppPrivacyPage({
   searchParams,
