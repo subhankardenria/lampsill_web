@@ -73,7 +73,7 @@ export function Masthead({ base = '' }: { base?: string }) {
           <a href={`${base}#story`}>A story</a>
           <a href={`${base}#faq`}>Questions</a>
           <a className="btn lamp mast-cta" href={`${base}#get`}>
-            Get the app
+            Get Lampsill
           </a>
         </nav>
       </div>
@@ -134,7 +134,7 @@ export function Footer({ base = '' }: { base?: string }) {
             <div>
               <p className="footer-h">Get it</p>
               <a href={`${base}#price`}>Price</a>
-              <a href={`${base}#get`}>Get the app</a>
+              <a href={`${base}#get`}>Get Lampsill</a>
               <a href="/setup">Setting it up</a>
               <a href={`${base}#faq`}>Questions</a>
             </div>

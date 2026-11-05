@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { Footer } from '@/components/Chrome';
+import InstallPrompt from '@/components/InstallPrompt';
 import { PriceProvider } from '@/components/Price';
 import V2Home from '@/components/v2/V2Home';
 import { marketForCountry } from '@/lib/pricing';
@@ -80,6 +81,9 @@ export default async function Page({
       <V2Home>
         <Footer />
       </V2Home>
+      {/* The QR card on a laptop, the slim bar on a phone: the classic page's,
+          approved 2 Nov 2026, missing from this page from 4 to 5 Nov. */}
+      <InstallPrompt />
     </PriceProvider>
   );
 }

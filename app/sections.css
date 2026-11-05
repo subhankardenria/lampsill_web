@@ -443,6 +443,14 @@
 @media (prefers-reduced-motion: reduce) {
   .install-card, .install-bar { transition: none; transform: none; }
 }
+/* The Play badge's PNG is two-thirds badge, one-third clear space (see
+   components/v2/v2.css, THE BADGE'S CLEAR SPACE). At 60px the badge you see
+   is Google's 40px minimum; the negative margins keep the bar slim and line
+   the badge up with the words in the card. */
+.install-qr-row .play-badge img, .install-bar .play-badge img { height: 60px; width: auto; max-width: none; }
+.install-qr-row .play-badge img { margin-left: -9.8px; }
+.install-bar .play-badge img { margin-block: -9.8px; }
+.install-bar .play-badge { flex: none; }
 /* room under the footer while either shows, so it never covers the last links */
 body:has(.install-card.shown) .footer { padding-bottom: 17rem; }
 body:has(.install-bar.shown) .footer { padding-bottom: 6.5rem; }

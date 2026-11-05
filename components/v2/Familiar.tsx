@@ -138,17 +138,23 @@ export default function Familiar() {
           <div className="v2-eve-feed" aria-live="polite">
             <div className="v2-eve-clock" aria-label={`The time: ${clock}`}>
               <span>Tuesday evening</span>
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.b
-                  key={clock}
-                  initial={{ y: '60%', opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: '-60%', opacity: 0 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  {clock}
-                </motion.b>
-              </AnimatePresence>
+              {/* A clipped window one line high: the old time rolls up out of
+                  it as the new one rolls in from below, a full line apart, so
+                  the two never sit on top of each other or on the label. */}
+              <span className="v2-eve-time">
+                <AnimatePresence initial={false}>
+                  <motion.b
+                    key={clock}
+                    initial={{ y: '100%', opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: '-100%', opacity: 0 }}
+                    // One timing for both, so they stay exactly a line apart.
+                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                  >
+                    {clock}
+                  </motion.b>
+                </AnimatePresence>
+              </span>
             </div>
             <ol className="v2-eve-list">
               <AnimatePresence initial={false}>

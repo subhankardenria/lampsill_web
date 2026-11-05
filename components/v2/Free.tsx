@@ -6,7 +6,8 @@ import { PlayBadge } from '../PlayBadge';
 
 /**
  * The price, while payments are paused (PRICING_PAUSED in lib/copy.ts): free
- * until FREE_UNTIL, for everyone, and nothing promised about after it.
+ * until FREE_UNTIL, for everyone. After it, the same words as the FAQ and the
+ * terms: it may stay free or there may be a small charge, never without agreeing.
  */
 const IN_IT = [
   'Told if their phone isn’t used',
@@ -32,8 +33,8 @@ export default function Free() {
             <h2 id="v2-free-h" className="v2-h2">
               Free until <em>{FREE_UNTIL}.</em>
             </h2>
-            <p className="v2-body">All of it, for everyone. No card, no trial to cancel. If that ever changes, you&rsquo;ll hear well before.</p>
-            <PlayBadge height={56} />
+            <p className="v2-body">All of it, for everyone. No card, no trial to cancel. After January it may stay free, or there may be a small charge. You&rsquo;ll hear well before, and nothing is charged unless you agree.</p>
+            <PlayBadge height={60} />
             <p className="v2-free-ios">On Android now. Coming to iPhone soon.</p>
           </div>
           <ul className="v2-free-list">

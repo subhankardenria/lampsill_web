@@ -124,14 +124,14 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="v2-lede v2-rise" style={{ animationDelay: '0.6s' }}>
+          <p className="v2-lede v2-rise" style={{ animationDelay: '0.4s' }}>
             Lampsill is an app that notices when their phone hasn&rsquo;t been used for a while. It asks them{' '}
             <b>&ldquo;Are you OK?&rdquo;</b> first. If they don&rsquo;t answer, it tells you, with one tap to call
             them or someone nearby.
           </p>
 
-          <div className="v2-hero-cta v2-rise" style={{ animationDelay: '0.75s' }}>
-            <PlayBadge height={56} />
+          <div className="v2-hero-cta v2-rise" style={{ animationDelay: '0.45s' }}>
+            <PlayBadge height={76} />
             <a className="v2-ghost" href="#how">
               See how it works <span aria-hidden="true">&darr;</span>
             </a>
@@ -173,7 +173,7 @@ export default function Hero() {
         </motion.div>
 
         {/* beside the words on a computer; under the phones on a phone */}
-        <ul className="v2-trust v2-rise" style={{ animationDelay: '0.9s' }}>
+        <ul className="v2-trust v2-rise" style={{ animationDelay: '0.6s' }}>
           <li>
             <Tick /> Free until {FREE_UNTIL}
           </li>

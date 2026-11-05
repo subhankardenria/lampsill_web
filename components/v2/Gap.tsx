@@ -135,7 +135,7 @@ export default function Gap() {
           </div>
 
           <div className="v2-gap-cta">
-            <PlayBadge height={48} />
+            <PlayBadge height={60} />
             <span>Free until {FREE_UNTIL}. Two minutes to set up.</span>
           </div>
         </div>

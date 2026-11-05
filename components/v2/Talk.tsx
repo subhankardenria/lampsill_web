@@ -124,7 +124,7 @@ export default function Talk() {
           </p>
         </div>
 
-        <div className="v2-chat" ref={box} aria-label="An example conversation between you and your mum">
+        <div className="v2-chat" ref={box} role="group" aria-label="An example conversation between you and your mum">
           <div className="v2-chat-top" aria-hidden="true">
             <span className="v2-chat-av">M</span>
             <div>

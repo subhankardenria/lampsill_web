@@ -18,7 +18,7 @@ import { PlayBadge } from './PlayBadge';
  *            "iPhone soon" and offers the email address, until APP_STORE_URL
  *            is set.
  *
- * WHEN. Not on arrival: the card after the visitor has passed "How it works"
+ * WHEN. Not on arrival: the card once the visitor has passed "How it works"
  * (they know what it is), the bar after the first screen. From then on it
  * STAYS until the visitor presses ×, which hides it for good on that browser
  * (owner, 2 Nov 2026: "this popup should stay until user remove it"). It
@@ -59,7 +59,11 @@ export default function InstallPrompt() {
     // Once there, it stays: scrolling back up doesn't take it away.
     const how = document.getElementById('how');
     const onScroll = () => {
-      const after = k === 'card' && how ? how.offsetTop + how.offsetHeight * 0.6 : window.innerHeight;
+      // The end of "How it works", less half a screen. On the motion home
+      // that section is three screens tall with its phone pinned, and the
+      // card must not sit over that phone; on /classic it ends as before.
+      const after =
+        k === 'card' && how ? how.offsetTop + how.offsetHeight - window.innerHeight / 2 : window.innerHeight;
       if (window.scrollY > after) {
         setPast(true);
         window.removeEventListener('scroll', onScroll);

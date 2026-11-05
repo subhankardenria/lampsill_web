@@ -63,11 +63,14 @@ html:has(.v2) .lightfield { display: none; }
   background: linear-gradient(90deg, var(--vesper), var(--lamp));
   transform-origin: 0 50%;
 }
+/* NO HAND-WRITTEN -webkit-backdrop-filter, here or anywhere in this file.
+   The build adds the prefix itself; when both were written, the minifier
+   kept only the prefixed one, which Chrome and Android ignore, and the bar
+   went see-through on phones (found 5 Nov 2026). */
 .v2-top {
   position: fixed; inset: 0 0 auto; z-index: 50;
   background: linear-gradient(180deg, rgba(7,11,14,.88), rgba(7,11,14,.55));
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255,255,255,.04);
 }
 .v2-top-row { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
@@ -164,6 +167,29 @@ html:has(.v2) .lightfield { display: none; }
 .v2-lede b { color: var(--ink); }
 .v2-hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; margin-top: 1.8rem; }
 .v2-hero-cta .play-badge img, .v2 .play-badge img { display: block; }
+/* THE BADGE'S CLEAR SPACE. Google's PNG carries a transparent margin, 16.4%
+   of its height on every side (41px of 250), which is never cropped. So the
+   badge you see is only two-thirds of the image's height: at 56px it read as
+   smaller than "See how it works", the main button looking like the lesser
+   one, and under Google's 40px minimum. --bh is the image's height; the badge
+   you see is 0.672 of it. The negative left margin lines the badge up with the
+   words above it; in the hero the top and bottom margins are cancelled too, so
+   it sits level with the button beside it. */
+.v2-hero-cta, .v2-free-card, .v2-gap-cta { --bh: 60px; }
+.v2-hero-cta { --bh: 76px; }
+.v2-hero-cta .play-badge img, .v2-free-card .play-badge img, .v2-gap-cta .play-badge img {
+  height: var(--bh); width: auto; max-width: none; margin-left: calc(var(--bh) * -0.164);
+}
+/* max-width: none, or the shared max-width: 100% measures the box the negative
+   margin has already narrowed and squeezes the badge out of shape. */
+.v2-hero-cta .play-badge { flex: none; }
+/* 360px Android phones: badge at Google's 40px minimum, button a little
+   narrower, so the pair still sits inside the 20px gutter. */
+@media (max-width: 380px) {
+  .v2 .v2-hero-cta { --bh: 60px; gap: 0.6rem; }
+  .v2 .v2-hero-cta .v2-ghost { padding-inline: 0.85rem; }
+}
+.v2-hero-cta .play-badge img { margin-block: calc(var(--bh) * -0.164); }
 .v2-ghost {
   display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px;
   color: var(--ink); text-decoration: none; font-weight: 700;
@@ -187,7 +213,7 @@ html:has(.v2) .lightfield { display: none; }
   display: flex; gap: 0.75rem; align-items: flex-start;
   padding: 0.85rem 1rem; border-radius: 1rem;
   background: rgba(24,36,43,.78); border: 1px solid rgba(255,255,255,.1);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   box-shadow: 0 20px 50px rgba(0,0,0,.45);
 }
 .v2-news-dot { flex: none; width: 0.6rem; height: 0.6rem; margin-top: 0.4rem; border-radius: 50%; background: var(--lamp); box-shadow: 0 0 12px var(--lamp); }
@@ -204,7 +230,7 @@ html:has(.v2) .lightfield { display: none; }
   .v2-h1 { font-size: clamp(2.5rem, 11.5vw, 3.6rem); margin-bottom: 0.9rem; }
   .v2-lede { font-size: 1rem; }
   .v2-hero-cta { margin-top: 1.3rem; gap: 0.75rem; flex-wrap: nowrap; }
-  .v2-hero-cta .play-badge img { height: 50px; width: auto; }
+  .v2-hero-cta { --bh: 64px; }
   .v2-ghost { padding: 0.6rem 1rem; font-size: 0.95rem; white-space: nowrap; }
   .v2-hero-phones { height: 31.5rem; max-width: 24rem; justify-self: center; margin-top: 1.6rem; }
   .v2-hero-back { left: 0; top: 0; }
@@ -232,17 +258,23 @@ html:has(.v2) .lightfield { display: none; }
 .v2-eve-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,16,20,.55), transparent 30%, transparent 70%, rgba(10,16,20,.6)); }
 .v2-eve-photo figcaption {
   position: absolute; left: 1rem; top: 1rem; z-index: 1; padding: 0.4rem 0.75rem; border-radius: 999px;
-  font-size: 0.8rem; color: var(--ink2); background: rgba(10,16,20,.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  font-size: 0.8rem; color: var(--ink2); background: rgba(10,16,20,.6); backdrop-filter: blur(8px);
 }
 .v2-eve-photo figcaption b { color: var(--ink); }
 .v2-eve-feed { grid-area: feed; display: flex; flex-direction: column; height: 30rem; padding: 1.1rem; border-radius: 1.4rem; background: var(--night); border: 1px solid var(--line); }
 .v2-eve-clock { display: grid; justify-items: center; padding-bottom: 0.9rem; margin-bottom: 0.9rem; border-bottom: 1px solid var(--line); overflow: hidden; }
-.v2-eve-clock span { font-family: var(--font-mono), monospace; font-size: 0.68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink3); }
+.v2-eve-clock > span:not(.v2-eve-time) { font-family: var(--font-mono), monospace; font-size: 0.68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink3); }
+.v2-eve-time { display: grid; overflow: hidden; }
+.v2-eve-time > b { grid-area: 1 / 1; }
 .v2-eve-clock b { display: block; font-family: var(--font-display), Georgia, serif; font-weight: 400; font-size: 2.2rem; line-height: 1.15; font-variant-numeric: tabular-nums; }
 .v2-eve-list {
   list-style: none; margin: 0; padding: 0.4rem 0 0; flex: 1; min-height: 0; overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-end; gap: 0.55rem;
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 3.5rem); mask-image: linear-gradient(180deg, transparent, #000 3.5rem);
+  /* Older messages fade out under the clock, as in a chat app, over about
+     one card's height, so the top never looks sliced off. No inner scroll:
+     on a phone a scrolling box inside the page traps the thumb, and
+     "Play the evening again" replays it. */
+  mask-image: linear-gradient(180deg, transparent 0, transparent 0.4rem, #000 6rem);
 }
 .v2-eve-list li { flex: none; }
 .v2-eve-list li { display: grid; gap: 0.25rem; max-width: 88%; }
@@ -281,6 +313,7 @@ html:has(.v2) .lightfield { display: none; }
   .v2-eve-photo img { object-position: 50% 30%; }
   .v2-eve-photo figcaption { left: 0.5rem; top: auto; bottom: 0.5rem; font-size: 0.72rem; padding: 0.3rem 0.6rem; }
   .v2-eve-feed { height: 21.5rem; padding: 0.8rem; }
+  .v2-eve-list { mask-image: linear-gradient(180deg, transparent 0, transparent 0.3rem, #000 4.75rem); }
   .v2-eve-clock { padding-bottom: 0.5rem; margin-bottom: 0.2rem; }
   .v2-eve-clock b { font-size: 1.7rem; }
   .v2-eve-list li { max-width: 92%; }
@@ -416,12 +449,12 @@ html:has(.v2) .lightfield { display: none; }
   display: grid; gap: 0.5rem; padding: 0.85rem; border-radius: 1.2rem;
   background: url(/v2/tower-night.webp) center / cover;
 }
-.v2-lock::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgba(10,16,20,.45); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.v2-lock::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgba(10,16,20,.45); backdrop-filter: blur(12px); }
 .v2-lock-k { margin: 0 0 0.1rem; font-family: var(--font-mono), monospace !important; font-size: 0.64rem !important; letter-spacing: .14em; text-transform: uppercase; color: var(--ink2); }
 .v2-notif {
   display: flex; gap: 0.65rem; align-items: flex-start; padding: 0.65rem 0.75rem; border-radius: 0.95rem;
   background: rgba(46,58,66,.78); border: 1px solid rgba(255,255,255,.08);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 8px 20px rgba(0,0,0,.25);
+  backdrop-filter: blur(10px); box-shadow: 0 8px 20px rgba(0,0,0,.25);
 }
 .v2-notif-ic { width: 34px; height: 34px; border-radius: 0.55rem; flex: none; background: #0A1014; padding: 3px; }
 .v2-notif div { display: grid; gap: 0.05rem; min-width: 0; flex: 1; }
@@ -579,7 +612,7 @@ html:has(.v2) .lightfield { display: none; }
 @media (max-width: 760px) {
   .v2-gap-switch { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; }
   .v2-gap-switch button { padding-inline: 0.4rem; font-size: 0.8rem; }
-  .v2-gap-days { margin-left: 0; font-size: 0.58rem; letter-spacing: .04em; }
+  .v2-gap-days { margin-left: 0; font-size: 0.72rem; letter-spacing: .02em; }
   .v2-gap-days span { padding-left: 0.25rem; }
   .v2-gap-lane { grid-template-columns: 1fr; gap: 0.35rem; }
   .v2-gap-ask { margin-bottom: 1.3rem; }
