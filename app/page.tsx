@@ -6,7 +6,7 @@ import { PriceProvider } from '@/components/Price';
 import V2Home from '@/components/v2/V2Home';
 import { marketForCountry } from '@/lib/pricing';
 import { visitorCountryWith } from '@/lib/geo';
-import { PLAY_URL } from '@/lib/copy';
+import { PLAY_URL, APP_STORE_URL } from '@/lib/copy';
 import '@/components/v2/v2.css';
 
 /**
@@ -29,6 +29,9 @@ export const metadata: Metadata = {
  * anywhere (free-until-january-2027). Every line must stay true to the page.
  */
 const SITE = 'https://www.lampsill.com';
+// Both stores since 9 Nov 2026 (App Store follows APP_STORE_URL).
+const STORES = APP_STORE_URL ? [PLAY_URL, APP_STORE_URL] : [PLAY_URL];
+
 const LD = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -47,17 +50,17 @@ const LD = {
       url: SITE,
       logo: `${SITE}/icon.svg`,
       email: 'hello@lampsill.com',
-      sameAs: [PLAY_URL],
+      sameAs: STORES,
     },
     {
       '@type': 'MobileApplication',
       name: 'Lampsill',
-      operatingSystem: 'Android',
+      operatingSystem: APP_STORE_URL ? 'Android, iOS' : 'Android',
       applicationCategory: 'LifestyleApplication',
       description:
         'For anyone you love who lives alone. If their phone isn’t used for a while, Lampsill asks them “Are you OK?” first. If they don’t answer, you’re told, with one tap to call them or someone nearby.',
-      url: PLAY_URL,
-      installUrl: PLAY_URL,
+      url: SITE,
+      installUrl: STORES,
       publisher: { '@id': `${SITE}/#org` },
     },
   ],

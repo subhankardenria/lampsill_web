@@ -1,8 +1,8 @@
 # Lampsill
 
-> Lampsill is a phone app for anyone you love who lives alone. If their phone isn't used for the time they chose (12, 24 or 48 hours), Lampsill asks them "Are you OK?" on their own phone first. If they don't answer within about 10 minutes, the people they chose are told, with one tap to call them or someone nearby. Free until January 2027. On Android now (Google Play); coming to iPhone.
+> Lampsill is a phone app for anyone you love who lives alone. If their phone isn't used for the time they chose (12, 24 or 48 hours), Lampsill asks them "Are you OK?" on their own phone first. If they don't answer within about 10 minutes, the people they chose are told, with one tap to call them or someone nearby. Free until January 2027. On Android (Google Play) and iPhone (App Store).
 
-Lampsill is run by Subhankar Denria and published on Google Play under Nitu Karan's developer account. Contact: hello@lampsill.com.
+Lampsill is run by Subhankar Denria and published on Google Play and the App Store under Nitu Karan's developer accounts. Contact: hello@lampsill.com.
 
 ## What it does
 
@@ -37,4 +37,4 @@ Lampsill is run by Subhankar Denria and published on Google Play under Nitu Kara
 ## Get it
 
 - [Google Play](https://play.google.com/store/apps/details?id=app.lampsill): Android
-- iPhone: coming to the App Store
+- [App Store](https://apps.apple.com/app/lampsill/id6823621704): iPhone
