@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
 import { Footer } from '@/components/Chrome';
 import InstallPrompt from '@/components/InstallPrompt';
@@ -18,6 +18,11 @@ import '@/components/v2/v2.css';
  * (/#how, /#story, /#privacy, /#what-this-isnt, /#price, /#get, /#faq): every
  * one of those ids exists on this page too.
  */
+/* The home page is night whatever the phone's theme, so the browser's own
+   bars are tinted night too; the layout's light-mode cream would frame a dark
+   page in a pale bar. Other pages keep following the phone. */
+export const viewport: Viewport = { themeColor: '#0A1014' };
+
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
 };
@@ -83,10 +88,12 @@ export default async function Page({
       />
       <V2Home>
         <Footer />
+        {/* The QR card on a laptop, the slim bar on a phone: the classic
+            page's, approved 2 Nov 2026. Inside V2Home so it takes the home
+            page's night colours: outside it, a phone in light mode drew it
+            cream with the name in white, nearly invisible (9 Nov 2026). */}
+        <InstallPrompt />
       </V2Home>
-      {/* The QR card on a laptop, the slim bar on a phone: the classic page's,
-          approved 2 Nov 2026, missing from this page from 4 to 5 Nov. */}
-      <InstallPrompt />
     </PriceProvider>
   );
 }
