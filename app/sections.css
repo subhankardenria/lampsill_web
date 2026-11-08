@@ -1286,3 +1286,19 @@ body:has(.install-bar.shown) .footer { padding-bottom: 6.5rem; }
   .demo-ring { animation: none; box-shadow: 0 0 0 .5rem rgba(245, 201, 123, .25); }
   .demo-phone, .demo-progress span { transition: none; }
 }
+
+/* BOTH STORES (components/StoreBadges.tsx). --vh is the badge height you see,
+   the same for both. Google's image is drawn at --vh / 0.668 and its own
+   transparent margin pulled back, so the two line up edge to edge; the gap is
+   the clear space both companies ask for, a quarter of the height or more. */
+.store-badges-row { display: flex; flex-wrap: wrap; align-items: center; gap: calc(var(--vh) * .3); }
+.store-badges .app-store-badge, .store-badges .play-badge { flex: none; display: inline-block; line-height: 0; border-radius: calc(var(--vh) * .18); }
+.store-badges .app-store-badge img { display: block; height: var(--vh); width: auto; }
+.store-badges .play-badge img {
+  display: block; height: calc(var(--vh) / .668); width: auto; max-width: none;
+  margin: calc(var(--vh) / .668 * -.164) calc(var(--vh) / .668 * -.168) calc(var(--vh) / .668 * -.168) calc(var(--vh) / .668 * -.164);
+}
+.store-badges .app-store-badge:focus-visible { outline: 2px solid var(--lamp); outline-offset: 2px; }
+.store-pair { display: flex; align-items: center; gap: .6rem; margin: calc(var(--vh) * .4) 0 0; font-size: .9rem; line-height: 1.35; color: var(--ink2); }
+.store-pair em { font-style: normal; color: var(--ink); }
+.store-pair-mark { flex: none; }

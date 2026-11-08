@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { LayoutGroup, motion, useInView } from 'framer-motion';
 import { FREE_UNTIL, GRACE_MINUTES } from '@/lib/copy';
-import { PlayBadge } from '../PlayBadge';
+import { StoreBadges } from '../StoreBadges';
 
 /**
  * THE GAP. The worry isn't the phone call; it's the days between calls. The
@@ -135,7 +135,7 @@ export default function Gap() {
           </div>
 
           <div className="v2-gap-cta">
-            <PlayBadge height={60} />
+            <StoreBadges size={40} />
             <span>Free until {FREE_UNTIL}. Two minutes to set up.</span>
           </div>
         </div>

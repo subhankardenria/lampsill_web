@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { APP_STORE_URL, FREE_UNTIL } from '@/lib/copy';
-import { PlayBadge } from '../PlayBadge';
+import { StoreBadges } from '../StoreBadges';
 
 /**
  * The price, while payments are paused (PRICING_PAUSED in lib/copy.ts): free
@@ -34,20 +34,8 @@ export default function Free() {
               Free until <em>{FREE_UNTIL}.</em>
             </h2>
             <p className="v2-body">All of it, for everyone. No card, no trial to cancel. After January it may stay free, or there may be a small charge. You&rsquo;ll hear well before, and nothing is charged unless you agree.</p>
-            <PlayBadge height={60} />
-            {/* Follows APP_STORE_URL, so the day it is set this line says so. */}
-            <p className="v2-free-ios">
-              {APP_STORE_URL ? (
-                <>
-                  On iPhone?{' '}
-                  <a href={APP_STORE_URL} target="_blank" rel="noopener">
-                    Get it on the App Store
-                  </a>
-                </>
-              ) : (
-                'On Android now. Coming to iPhone soon.'
-              )}
-            </p>
+            <StoreBadges size={40} pair />
+            {APP_STORE_URL ? null : <p className="v2-free-ios">On Android now. Coming to iPhone soon.</p>}
           </div>
           <ul className="v2-free-list">
             {IN_IT.map((x, i) => (

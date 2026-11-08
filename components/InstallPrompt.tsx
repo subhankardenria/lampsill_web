@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { APP_STORE_URL, FREE_UNTIL } from '@/lib/copy';
 import { Mark } from './Chrome';
 import { PlayBadge } from './PlayBadge';
+import { StoreBadges } from './StoreBadges';
 
 /**
  * THE WAY TO DOWNLOAD FROM ANYWHERE ON THE PAGE (owner, 2 Nov 2026, drawings
@@ -106,7 +107,7 @@ export default function InstallPrompt() {
           <img className="install-qr" src="/get-qr.svg" width={120} height={120} alt="QR code for Lampsill" />
           <div>
             <p>Point your phone&rsquo;s camera here. Lampsill opens in your phone&rsquo;s app store.</p>
-            <PlayBadge height={46} />
+            <StoreBadges size={40} />
           </div>
         </div>
       </aside>

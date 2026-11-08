@@ -12,7 +12,7 @@ import {
   useTransform,
 } from 'framer-motion';
 import Phone3D from './Phone3D';
-import { PlayBadge } from '../PlayBadge';
+import { StoreBadges, StorePair } from '../StoreBadges';
 import { FREE_UNTIL } from '@/lib/copy';
 
 /* The line that changes. All of them sit in one grid cell, so the box is as
@@ -131,10 +131,15 @@ export default function Hero() {
           </p>
 
           <div className="v2-hero-cta v2-rise" style={{ animationDelay: '0.45s' }}>
-            <PlayBadge height={76} />
+            {/* App Store first (Apple's rule), the same height you see as Google's */}
+            <StoreBadges size={50} className="v2-hero-stores" />
             <a className="v2-ghost" href="#how">
               See how it works <span aria-hidden="true">&darr;</span>
             </a>
+            {/* The two phones beside this are hers and yours: the line under
+                the badges says they needn't be the same kind. On a computer it
+                runs under the whole row; on a phone, straight under the badges. */}
+            <StorePair className="v2-hero-pair" />
           </div>
         </div>
 

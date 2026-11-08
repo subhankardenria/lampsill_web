@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { animate, motion, useMotionValue, useReducedMotion, useTransform } from 'framer-motion';
-import { PlayBadge } from '../PlayBadge';
+import { StoreBadges } from '../StoreBadges';
 
 /**
  * The last screen: a house at night, and a pull cord — the same cord that
@@ -86,7 +86,7 @@ export default function LampCta() {
           animate={on && !calm ? { scale: [1, 1.06, 1] } : { scale: 1 }}
           transition={{ duration: 0.6 }}
         >
-          <PlayBadge height={64} />
+          <StoreBadges size={46} pair />
         </motion.div>
         <p className="v2-fine">
           Lampsill is not an emergency service. It can&rsquo;t tell why a phone isn&rsquo;t used. If you&rsquo;re
