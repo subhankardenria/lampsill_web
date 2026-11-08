@@ -1,5 +1,16 @@
 # lampsill.com
 
+The website for **Lampsill**, an app for anyone you love who lives alone. If
+their phone goes quiet, Lampsill asks them "Are you OK?" first. If they don't
+answer, you're told.
+
+**Get the app:**
+[App Store (iPhone)](https://apps.apple.com/app/lampsill/id6823621704) ·
+[Google Play (Android)](https://play.google.com/store/apps/details?id=app.lampsill) ·
+[lampsill.com](https://www.lampsill.com)
+
+---
+
 Next.js 16 (App Router) + GSAP + Lenis. Deploys to Vercel with the default
 settings — root directory `lampsill_web`, framework preset **Next.js**.
 
