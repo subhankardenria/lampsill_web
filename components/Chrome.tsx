@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { PerPrice } from './Price';
 import { FREE_UNTIL, PRICING_PAUSED } from '@/lib/copy';
-import { PlayBadge } from './PlayBadge';
+import { StoreBadges } from './StoreBadges';
 
 /** The standard cut of the mark. Same paths, widths and opacities everywhere
  *  it appears; only favicon.svg is allowed to differ, and it says why. */
@@ -120,7 +120,7 @@ export function Footer({ base = '' }: { base?: string }) {
                 </>
               )}
             </p>
-            <PlayBadge height={52} className="footer-cta" />
+            <StoreBadges size={40} className="footer-cta" />
           </div>
 
           <nav className="footer-nav" aria-label="Footer">

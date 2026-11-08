@@ -1,6 +1,6 @@
 import { APP_STORE_URL, FREE_UNTIL } from '@/lib/copy';
 import { Mark } from './Chrome';
-import { PlayBadge } from './PlayBadge';
+import { StoreBadges } from './StoreBadges';
 
 /** The week before Lampsill: the calls made only to hear that all was well. */
 const CALLS = ['Mon', 'Wed', 'Fri'] as const;
@@ -53,18 +53,14 @@ export default function GetIt() {
             If their phone goes quiet, you&rsquo;re told. If it doesn&rsquo;t, you can call for the
             right reason.
           </p>
-          <PlayBadge />
+          <StoreBadges size={44} pair />
           {/* The setup, step by step on the real screens (owner, 2 Nov 2026). */}
           <p className="get-setup">
             <a href="/setup">See how to set it up, step by step</a>
           </p>
           <p className="get-small">
             Free until {FREE_UNTIL}.{' '}
-            {APP_STORE_URL ? (
-              <a href={APP_STORE_URL} target="_blank" rel="noopener">
-                Also on the App Store
-              </a>
-            ) : (
+            {APP_STORE_URL ? null : (
               <>
                 On an iPhone? Email{' '}
                 <a href="mailto:hello@lampsill.com?subject=Tell%20me%20when%20Lampsill%20is%20on%20iPhone">

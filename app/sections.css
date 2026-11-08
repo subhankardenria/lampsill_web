@@ -362,7 +362,7 @@
 .get-copy .lede { margin: 1.2rem auto 0; }
 .get-copy h2 em { color: var(--lamp); font-weight: 400; }
 @media (min-width: 52rem) { .get-copy { text-align: left; } .get-copy .lede { margin-left: 0; } }
-.get-copy .play-badge { margin-top: 1.6rem; }
+.get-copy .play-badge, .get-copy .store-badges { margin-top: 1.6rem; }
 .get-setup { margin: 1rem 0 0; font-weight: 700; }
 .get-setup a { color: var(--vesper); text-underline-offset: 3px; }
 .get-small { margin: .7rem 0 0; font-size: .86rem; color: var(--ink3); }

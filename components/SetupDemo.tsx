@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { PlayBadge } from './PlayBadge';
+import { StoreBadges } from './StoreBadges';
 
 /**
  * THE SETUP, TAPPED THROUGH (owner, 2 Nov 2026: "create a actual setup demo
@@ -166,7 +166,7 @@ export default function SetupDemo({ children }: { children?: React.ReactNode }) 
             <>
               <p className="demo-tag">That&rsquo;s it</p>
               <p className="demo-line">{path.after}</p>
-              <PlayBadge height={56} />
+              <StoreBadges size={40} />
               <p className="demo-other">
                 <button type="button" className="demo-link" onClick={() => choose(path.key === 'parent' ? 'child' : 'parent')}>
                   {path.key === 'parent' ? 'Now see it for a son or daughter' : 'Now see it for Mum or Dad'}

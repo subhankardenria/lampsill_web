@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { ALWAYS_FREE, APP_STORE_URL, FREE_UNTIL, PRICING_PAUSED, STANDARD, TRIAL_MONTHS } from '@/lib/copy';
 import { Price, TaxNote, usePrice } from './Price';
-import { PlayBadge } from './PlayBadge';
+import { StoreBadges } from './StoreBadges';
 
 /* WHO PAYS, AND FOR WHAT (decided 6 Oct 2026). Whoever is TOLD pays: being
    told about someone else is Standard, one month free and then paid. One
@@ -180,7 +180,7 @@ export default function Pricing() {
                 )}
               </button>
             ) : (
-              <PlayBadge height={56} />
+              <StoreBadges size={40} />
             )}
             <a className="btn ghost" href="#how">
               See it work first
@@ -255,7 +255,7 @@ function FreeForNow() {
             ))}
           </ul>
           <div className="price-cta">
-            <PlayBadge height={56} />
+            <StoreBadges size={40} />
             <a className="btn ghost" href="#how">
               See it work first
             </a>
