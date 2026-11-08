@@ -28,6 +28,10 @@ import subprocess
 import segno
 
 URL = "https://play.google.com/store/apps/details?id=app.lampsill"
+# The site's install card (8 Nov 2026, iPhone out): through /get, so an iPhone
+# camera lands on the App Store and an Android one on Play (app/get/route.ts).
+SITE_URL = "https://www.lampsill.com/get?from=site"
+SITE_OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "public", "get-qr.svg")
 INK = "#0A1014"
 PAPER = "#FFF4E0"
 TILE = "#0C1317"  # the app icon's ground
@@ -100,6 +104,12 @@ def main():
     with open(OUT, "w") as f:
         f.write(svg)
     print(f"{os.path.normpath(OUT)}: version {q.version}-{q.error}, {n}x{n} modules, icon {hole}x{hole}")
+
+    site = segno.make(SITE_URL, error="h", boost_error=False)
+    svg, n, hole = draw(site, QUIET_WEB)
+    with open(SITE_OUT, "w") as f:
+        f.write(svg.replace('aria-label="QR code for Lampsill on Google Play"', 'aria-label="QR code for Lampsill"'))
+    print(f"{os.path.normpath(SITE_OUT)}: version {site.version}-{site.error}, {n}x{n} modules")
 
     printed, _, _ = draw(q, QUIET_PRINT)
     for width in (1024, 2048):

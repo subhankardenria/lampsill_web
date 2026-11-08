@@ -233,12 +233,13 @@ export const EARLY_ACCESS = {
 /**
  * WHERE TO GET IT. Lampsill went public on Google Play on 2 Nov 2026, and the
  * early-access form came off the page the same day (owner's choice): there is
- * nothing left to wait for on Android. iPhone follows once Apple has reviewed
- * it; until then the page says "coming to iPhone" and gives the email address,
- * and APP_STORE_URL stays null. Set it the day the App Store page is live.
+ * nothing left to wait for on Android. Apple approved the iPhone app and the
+ * owner released it on 8 Nov 2026 (Apple ID 6823621704). Setting
+ * APP_STORE_URL is what switches the site: /get, the install bar, the Get
+ * section and the price line all follow it. null puts back "coming to iPhone".
  *
  * The 15 people already on the list keep their promise (EARLY_ACCESS above):
  * the list never reached 100, so everyone on it is one of the first 100.
  */
 export const PLAY_URL = 'https://play.google.com/store/apps/details?id=app.lampsill';
-export const APP_STORE_URL: string | null = null;
+export const APP_STORE_URL: string | null = 'https://apps.apple.com/app/lampsill/id6823621704';

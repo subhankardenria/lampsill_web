@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ALWAYS_FREE, FREE_UNTIL, PRICING_PAUSED, STANDARD, TRIAL_MONTHS } from '@/lib/copy';
+import { ALWAYS_FREE, APP_STORE_URL, FREE_UNTIL, PRICING_PAUSED, STANDARD, TRIAL_MONTHS } from '@/lib/copy';
 import { Price, TaxNote, usePrice } from './Price';
 import { PlayBadge } from './PlayBadge';
 
@@ -205,7 +205,7 @@ export default function Pricing() {
 
           <p className="price-small">
             Nothing is charged before {FREE_UNTIL}, and only if you choose to carry on.
-            On Android now, and coming to iPhone.
+            {APP_STORE_URL ? 'On Android and iPhone.' : 'On Android now, and coming to iPhone.'}
           </p>
         </div>
       </div>

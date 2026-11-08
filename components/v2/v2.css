@@ -722,6 +722,7 @@ html:has(.v2) .lightfield { display: none; }
   box-shadow: 0 40px 100px rgba(0,0,0,.4);
 }
 .v2-free-ios { color: var(--ink3); font-size: 0.88rem; margin: 0.8rem 0 0; }
+.v2-free-ios a { color: var(--vesper); }
 .v2-free-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.8rem; }
 .v2-free-list li { display: flex; gap: 0.7rem; align-items: center; font-size: 1.02rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--line); }
 .v2-free-list li:last-child { border-bottom: 0; }

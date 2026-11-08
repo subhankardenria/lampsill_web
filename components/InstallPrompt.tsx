@@ -103,9 +103,9 @@ export default function InstallPrompt() {
         </div>
         <div className="install-qr-row">
           {/* eslint-disable-next-line @next/next/no-img-element -- a fixed QR code */}
-          <img className="install-qr" src="/google-play-qr.svg" width={120} height={120} alt="QR code for Lampsill on Google Play" />
+          <img className="install-qr" src="/get-qr.svg" width={120} height={120} alt="QR code for Lampsill" />
           <div>
-            <p>Point your phone&rsquo;s camera here. Google Play opens on Lampsill.</p>
+            <p>Point your phone&rsquo;s camera here. Lampsill opens in your phone&rsquo;s app store.</p>
             <PlayBadge height={46} />
           </div>
         </div>

@@ -4,7 +4,8 @@ import { headers } from 'next/headers';
 import { Masthead, Footer, Reveals } from '@/components/Chrome';
 import { PriceProvider } from '@/components/Price';
 import { PlayBadge } from '@/components/PlayBadge';
-import { FREE_UNTIL } from '@/lib/copy';
+import { redirect } from 'next/navigation';
+import { APP_STORE_URL, FREE_UNTIL } from '@/lib/copy';
 import { marketForCountry } from '@/lib/pricing';
 import { visitorCountry } from '@/lib/geo';
 
@@ -27,6 +28,8 @@ export const metadata: Metadata = {
 };
 
 export default async function IphonePage() {
+  // Out on the App Store: anyone holding an old link goes straight there.
+  if (APP_STORE_URL) redirect(APP_STORE_URL);
   const seen = await visitorCountry(await headers());
   const market = marketForCountry(seen.country);
 
