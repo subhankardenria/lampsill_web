@@ -57,15 +57,25 @@ export function StorePair({ className = '' }: { className?: string }) {
   );
 }
 
-/* Two windows, one lit, one framed: their phone and yours, whichever each is. */
+/* Two Lampsill windows, theirs and yours, whichever phone each is: the
+   brand's small cut (brand/logo/mark-small.svg, for under 48px: frame 6,
+   bars 4, pane re-inset), drawn twice, joined by a dotted line. */
+function SmallMark({ x = 0 }: { x?: number }) {
+  return (
+    <g transform={`translate(${x},0)`}>
+      <path d="M16 52 L16 28 A16 16 0 0 1 48 28 L48 52 Z" fill="none" stroke="var(--vesper)" strokeWidth="6" strokeLinejoin="round" />
+      <path d="M32 14 L32 52 M18 34 L46 34" fill="none" stroke="var(--vesper)" strokeWidth="4" strokeLinecap="round" opacity="0.5" />
+      <rect x="20.25" y="37.25" width="8.5" height="10.5" rx="1" fill="var(--lamp)" />
+    </g>
+  );
+}
+
 function PairMark() {
   return (
-    <svg className="store-pair-mark" viewBox="0 0 44 20" width="44" height="20" aria-hidden="true">
-      <path d="M3 18V9a6 6 0 0 1 12 0v9Z" fill="none" stroke="#8FBCE0" strokeWidth="1.6" strokeLinejoin="round" />
-      <rect x="5" y="12" width="3.6" height="4.4" rx=".5" fill="#F5C97B" />
-      <path d="M17.5 13h9" stroke="#8FBCE0" strokeWidth="1.4" strokeLinecap="round" strokeDasharray="0.1 3" />
-      <path d="M29 18V9a6 6 0 0 1 12 0v9Z" fill="none" stroke="#8FBCE0" strokeWidth="1.6" strokeLinejoin="round" />
-      <rect x="35.4" y="12" width="3.6" height="4.4" rx=".5" fill="#F5C97B" />
+    <svg className="store-pair-mark" viewBox="12 8 102 48" width="46" height="22" aria-hidden="true">
+      <SmallMark />
+      <path d="M58 43 H68" stroke="var(--vesper)" strokeWidth="4" strokeLinecap="round" strokeDasharray="0.1 5" opacity="0.7" />
+      <SmallMark x={62} />
     </svg>
   );
 }
