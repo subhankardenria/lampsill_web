@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { APP_STORE_URL, FREE_UNTIL } from '@/lib/copy';
 import { Mark } from './Chrome';
 import { PlayBadge } from './PlayBadge';
-import { StoreBadges } from './StoreBadges';
+import { AppStoreBadge, StoreBadges } from './StoreBadges';
 
 /**
  * THE WAY TO DOWNLOAD FROM ANYWHERE ON THE PAGE (owner, 2 Nov 2026, drawings
@@ -114,9 +114,10 @@ export default function InstallPrompt() {
     );
   }
 
-  // Android gets Google's own badge (owner, 2 Nov 2026: "instead of install
-  // can we put google button there too"); an iPhone gets a plain button,
-  // since a Play badge is no use to it.
+  // Each phone gets its own store's badge: Android Google's (owner, 2 Nov
+  // 2026), iPhone Apple's (owner, 9 Nov 2026, in place of a plain "Get it").
+  // Not bare store icons: Google forbids its icon in marketing and Apple
+  // allows only its badge artwork.
   const iphoneSoon = kind === 'iphone' && !APP_STORE_URL;
   return (
     <aside className={`install-bar${shown ? ' shown' : ''}`} aria-label="Get Lampsill" inert={!shown}>
@@ -132,9 +133,7 @@ export default function InstallPrompt() {
           Tell me
         </a>
       ) : (
-        <a className="install-go" href={APP_STORE_URL!} target="_blank" rel="noopener">
-          Get it
-        </a>
+        <AppStoreBadge />
       )}
       <button className="install-x" type="button" onClick={hide} aria-label="Hide">
         &times;

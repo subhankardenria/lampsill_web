@@ -451,6 +451,9 @@
 .install-qr-row .play-badge img { margin-left: -9.8px; }
 .install-bar .play-badge img { margin-block: -9.8px; }
 .install-bar .play-badge { flex: none; }
+/* Apple's badge at its 40px minimum on screen */
+.install-bar .app-store-badge { flex: none; line-height: 0; border-radius: 7px; }
+.install-bar .app-store-badge img { display: block; height: 40px; width: auto; }
 .legal .play-badge img { height: 60px; width: auto; max-width: none; margin-left: -9.8px; }
 /* room under the footer while either shows, so it never covers the last links */
 body:has(.install-card.shown) .footer { padding-bottom: 17rem; }
