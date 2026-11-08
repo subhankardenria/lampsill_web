@@ -185,35 +185,69 @@ export default function Familiar() {
           </figure>
         </div>
 
-        <motion.div
-          className="v2-eve-end"
-          initial={false}
-          animate={{ opacity: done ? 1 : 0, y: done ? 0 : 20 }}
-          transition={{ duration: 0.7, delay: calm ? 0 : 0.6 }}
-          aria-hidden={!done}
-        >
-          <p className="v2-eve-moral">
+        {/* THE ENDING, there from the start (owner, 9 Nov 2026: it used to
+            appear only after the whole evening, leaving the space empty for
+            ~13 seconds). The moral is the section's point, so it shows as soon
+            as it is reached. The card starts as the evening you're living,
+            the phone you keep ringing, and turns into the lit window when
+            Mum's reply lands. No window is drawn for "without": by the app's
+            window rules an unlit or dark one means something else. */}
+        <div className="v2-eve-end">
+          <motion.p
+            className="v2-eve-moral"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 0.7 }}
+          >
             Most nights it&rsquo;s nothing. <em>But from two hours away, nothing and something look the same.</em>
-          </p>
-          <div className="v2-eve-lamp">
-            <Arch className="v2-eve-win" pane={1} frame={VESPER} />
-            <div>
-              <b>With Lampsill: Mum&rsquo;s light is on</b>
-              <span>Her phone is being used as usual. No ringing round to find out.</span>
+          </motion.p>
+          <div className={`v2-eve-lamp ${done ? 'with' : 'without'}`} aria-live="polite">
+            <span className="v2-eve-lamp-ic" aria-hidden="true">
+              <motion.span animate={{ opacity: done ? 0 : 1, scale: done ? 0.8 : 1 }} transition={{ duration: 0.5 }}>
+                <span className="v2-ev-ic">
+                  <PhoneIcon />
+                </span>
+              </motion.span>
+              <motion.span
+                initial={false}
+                animate={{ opacity: done ? 1 : 0, scale: done ? 1 : 0.8 }}
+                transition={{ duration: 0.6, delay: done && !calm ? 0.3 : 0 }}
+              >
+                <Arch className="v2-eve-win" pane={1} frame={VESPER} />
+              </motion.span>
+            </span>
+            <div className="v2-eve-lamp-txt">
+              <motion.div animate={{ opacity: done ? 0 : 1 }} transition={{ duration: 0.4 }} aria-hidden={done}>
+                <b>Without Lampsill: you&rsquo;re left guessing</b>
+                <span>Ringing again, texting again, wondering about the neighbours.</span>
+              </motion.div>
+              <motion.div
+                initial={false}
+                animate={{ opacity: done ? 1 : 0 }}
+                transition={{ duration: 0.6, delay: done && !calm ? 0.3 : 0 }}
+                aria-hidden={!done}
+              >
+                <b>With Lampsill: Mum&rsquo;s light is on</b>
+                <span>Her phone is being used as usual. No ringing round to find out.</span>
+              </motion.div>
             </div>
           </div>
           <button
             type="button"
             className="v2-link v2-eve-again"
             onClick={() => {
-              setN(0);
-              setRound((r) => r + 1);
+              if (done) {
+                setN(0);
+                setRound((r) => r + 1);
+              } else {
+                setN(EVENING.length);
+              }
             }}
-            tabIndex={done ? 0 : -1}
           >
-            Play the evening again
+            {done ? 'Play the evening again' : 'Skip to the end'}
           </button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

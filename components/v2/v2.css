@@ -296,7 +296,14 @@ html:has(.v2) .lightfield { display: none; }
 .v2-eve-moral em { color: var(--lamp); }
 .v2-eve-lamp { display: flex; align-items: center; gap: 0.9rem; text-align: left; padding: 0.9rem 1.2rem; border-radius: 1.1rem; background: var(--surface); border: 1px solid color-mix(in srgb, var(--lamp) 35%, var(--line)); box-shadow: 0 0 40px rgba(245,201,123,.08); }
 .v2-eve-win { width: 2.2rem; height: auto; flex: none; filter: drop-shadow(0 0 10px rgba(245,201,123,.4)); }
-.v2-eve-lamp div { display: grid; }
+.v2-eve-lamp { transition: border-color .6s, box-shadow .6s; }
+.v2-eve-lamp.without { border-color: var(--line); box-shadow: none; }
+/* both states share one cell, so the card never changes size when it turns */
+.v2-eve-lamp-ic, .v2-eve-lamp-txt { display: grid; }
+.v2-eve-lamp-ic > *, .v2-eve-lamp-txt > * { grid-area: 1 / 1; }
+.v2-eve-lamp-ic { place-items: center; flex: none; }
+.v2-eve-lamp-txt > div { display: grid; }
+.v2-eve-lamp.without b { color: var(--ink); }
 .v2-eve-lamp b { color: var(--lamp); }
 .v2-eve-lamp span { font-size: 0.9rem; color: var(--ink2); }
 .v2-eve-again { background: none; border: 0; font: inherit; cursor: pointer; border-bottom: 1px solid color-mix(in srgb, var(--lamp) 40%, transparent); }
