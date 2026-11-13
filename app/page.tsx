@@ -9,6 +9,9 @@ import { visitorCountryWith } from '@/lib/geo';
 import { PLAY_URL, APP_STORE_URL } from '@/lib/copy';
 import '@/components/v2/v2.css';
 
+const PRODUCT_HUNT_URL = 'https://www.producthunt.com/products/lampsill?launch=lampsill';
+const PRODUCT_HUNT_UNTIL = Date.UTC(2026, 10, 15, 8, 1); // 24 hours after 12:01am PT, 14 Nov
+
 /**
  * THE HOME PAGE (since 4 Nov 2026): the Framer Motion page, built at /v2 and
  * made home by the owner. The page before it is kept, whole, at /classic.
@@ -79,6 +82,10 @@ export default async function Page({
   const seen = await visitorCountryWith((await searchParams).country, await headers());
   const market = marketForCountry(seen.country);
 
+  // Launch day (14 Nov 2026): one quiet link to the Product Hunt page, gone
+  // 24 hours after it went live. A plain link: nothing loads from them.
+  const productHunt = Date.now() < PRODUCT_HUNT_UNTIL ? PRODUCT_HUNT_URL : null;
+
   return (
     <PriceProvider initialMarket={market.key} country={seen.country} guessed={!seen.certain}>
       <script
@@ -86,7 +93,7 @@ export default async function Page({
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(LD) }}
       />
-      <V2Home>
+      <V2Home productHunt={productHunt}>
         <Footer />
         {/* The QR card on a laptop, the slim bar on a phone: the classic
             page's, approved 2 Nov 2026. Inside V2Home so it takes the home

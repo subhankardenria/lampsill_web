@@ -28,7 +28,7 @@ const NEWS = [
   { k: 'ok', t: 'I’m OK', d: 'One tap from her, and nobody is told' },
 ];
 
-export default function Hero() {
+export default function Hero({ productHunt = null }: { productHunt?: string | null }) {
   const calm = useReducedMotion() ?? false;
   const root = useRef<HTMLElement>(null);
   const [w, setW] = useState(0);
@@ -87,6 +87,11 @@ export default function Hero() {
 
       <div className="v2-wrap v2-hero-grid">
         <div className="v2-hero-copy">
+          {productHunt && (
+            <a className="v2-ph" href={productHunt} target="_blank" rel="noopener">
+              Lampsill is on Product Hunt today <span aria-hidden="true">&rarr;</span>
+            </a>
+          )}
           <p className="v2-eyebrow v2-rise">For anyone you love who lives alone</p>
 
           <h1 className="v2-h1">

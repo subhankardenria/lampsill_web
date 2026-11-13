@@ -36,7 +36,7 @@ import Windows from './Windows';
  * MotionConfig reducedMotion="user" turns every transform into a jump for
  * readers who ask for less motion; the perpetual ones check for themselves.
  */
-export default function V2Home({ children }: { children?: React.ReactNode }) {
+export default function V2Home({ children, productHunt = null }: { children?: React.ReactNode; productHunt?: string | null }) {
   const { scrollYProgress } = useScroll();
   const bar = useSpring(scrollYProgress, { stiffness: 140, damping: 30 });
 
@@ -63,7 +63,7 @@ export default function V2Home({ children }: { children?: React.ReactNode }) {
           </div>
         </header>
         <main id="main">
-          <Hero />
+          <Hero productHunt={productHunt} />
           <Familiar />
           <Gap />
           <How />
