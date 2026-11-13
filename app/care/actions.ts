@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { care, EMAIL_COOKIE, SESSION_COOKIE, type Code } from '@/lib/care';
+import { care, EMAIL_COOKIE, SESSION_COOKIE, type Answer, type CarePage, type Code } from '@/lib/care';
 
 /**
  * Everything the care page can do. Each one is checked by Lampsill's server
@@ -18,7 +18,7 @@ const cookie = {
   path: '/care',
 };
 
-export type FormState = { message?: string; said?: string; codes?: Code[]; names?: string; tries?: number };
+export type FormState = { message?: string; said?: string };
 
 async function signedOut(): Promise<never> {
   (await cookies()).delete({ name: SESSION_COOKIE, path: '/care' });
@@ -65,63 +65,64 @@ export async function signOut(): Promise<void> {
   await signedOut();
 }
 
-export async function addClients(before: FormState, form: FormData): Promise<FormState> {
-  const names = String(form.get('names') ?? '');
-  const tries = (before.tries ?? 0) + 1;
-  const res = await care<{ codes: Code[] }>('POST', '/clients', {
-    names,
-    window_hours: Number(form.get('window_hours')),
-  });
-  if (!res.ok && res.status === 401) return signedOut();
-  // Refused: the names come back, so nothing typed is lost.
-  if (!res.ok) return { message: res.message, names, tries };
+/*
+ * The signed-in page's actions (14 Nov 2026). They never redirect or reload:
+ * each answers with the team's fresh page (or why not), and the page in the
+ * browser puts it on screen. A signed-out answer says so, and the page sends
+ * the person to sign in.
+ */
 
-  revalidatePath('/care');
-  return { codes: res.data.codes, tries };
+export type Result = {
+  page?: CarePage;
+  message?: string;
+  codes?: Code[];
+  said?: string;
+  signedOut?: true;
+};
+
+async function answer(res: Answer<unknown>, extra: Partial<Result> = {}): Promise<Result> {
+  if (!res.ok && res.status === 401) return { signedOut: true };
+  if (!res.ok) return { message: res.message };
+
+  const page = await care<CarePage>('GET', '');
+  if (!page.ok && page.status === 401) return { signedOut: true };
+  return { ...extra, page: page.ok ? page.data : undefined };
 }
 
-export type StaffState = { message?: string; said?: string; emails?: string; tries?: number };
+export async function addClients(names: string, windowHours: number): Promise<Result> {
+  const res = await care<{ codes: Code[] }>('POST', '/clients', { names, window_hours: windowHours });
+  return answer(res, res.ok ? { codes: res.data.codes } : {});
+}
+
+export async function newCode(inviteId: string): Promise<Result> {
+  const res = await care<{ codes: Code[] }>('POST', `/invites/${encodeURIComponent(inviteId)}/code`);
+  return answer(res, res.ok ? { codes: res.data.codes } : {});
+}
+
+/** "I'm checking", "They're OK", "Stop looking out", "Remove" (an invite). */
+export async function act(path: string): Promise<Result> {
+  const allowed = /^\/(clients\/[0-9a-f-]{36}\/(checking|ok|stop)|invites\/[0-9a-f-]{36}\/remove)$/;
+  if (!allowed.test(path)) return { message: "That didn't work. Reload the page." };
+
+  return answer(await care('POST', path));
+}
 
 /** Colleagues' emails, one a line; each is sent a link to this page. */
-export async function addStaff(before: StaffState, form: FormData): Promise<StaffState> {
-  const emails = String(form.get('emails') ?? '');
-  const tries = (before.tries ?? 0) + 1;
+export async function addStaff(emails: string): Promise<Result> {
   const res = await care<{ added: string[]; skipped: string[]; unsent: string[] }>('POST', '/staff', { emails });
-  if (!res.ok && res.status === 401) return signedOut();
-  if (!res.ok) return { message: res.message, emails, tries };
+  if (!res.ok) return answer(res);
 
   const { added, skipped, unsent } = res.data;
   const said = [
     added.length === 0 ? 'They were already on the list.' : `Added ${added.join(', ')}.`,
-    added.length > 0 && unsent.length === 0 ? (added.length === 1 ? "They've been sent a link to this page." : "Each has been sent a link to this page.") : '',
+    added.length > 0 && unsent.length === 0 ? (added.length === 1 ? "They've been sent a link to this page." : 'Each has been sent a link to this page.') : '',
     unsent.length ? `The email didn't go to ${unsent.join(', ')}. They can sign in here with a code instead.` : '',
     skipped.length ? `Not emails, so skipped: ${skipped.join(', ')}.` : '',
   ].filter(Boolean).join(' ');
-  revalidatePath('/care');
-  return { said, tries };
+
+  return answer(res, { said });
 }
 
-export async function removeStaff(email: string): Promise<void> {
-  const res = await care('POST', '/staff/remove', { email });
-  if (!res.ok && res.status === 401) await signedOut();
-  revalidatePath('/care');
-}
-
-export async function newCode(inviteId: string): Promise<FormState> {
-  const res = await care<{ codes: Code[] }>('POST', `/invites/${encodeURIComponent(inviteId)}/code`);
-  if (!res.ok && res.status === 401) return signedOut();
-  if (!res.ok) return { message: res.message };
-
-  revalidatePath('/care');
-  return { codes: res.data.codes };
-}
-
-/** "I'm checking", "They're OK", "Stop looking out", "Remove" (an invite). */
-export async function act(path: string): Promise<void> {
-  const allowed = /^\/(clients\/[0-9a-f-]{36}\/(checking|ok|stop)|invites\/[0-9a-f-]{36}\/remove)$/;
-  if (!allowed.test(path)) return;
-
-  const res = await care('POST', path);
-  if (!res.ok && res.status === 401) await signedOut();
-  revalidatePath('/care');
+export async function removeStaff(email: string): Promise<Result> {
+  return answer(await care('POST', '/staff/remove', { email }));
 }
