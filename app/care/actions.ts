@@ -2,8 +2,9 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { after } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { care, EMAIL_COOKIE, SESSION_COOKIE, type Answer, type CarePage, type Code } from '@/lib/care';
+import { care, careLater, EMAIL_COOKIE, SESSION_COOKIE, type Answer, type CarePage, type Code } from '@/lib/care';
 
 /**
  * Everything the care page can do. Each one is checked by Lampsill's server
@@ -60,8 +61,9 @@ export async function differentEmail(): Promise<void> {
   redirect('/care');
 }
 
+/** Leaves at once; Lampsill's server ends the session just after. */
 export async function signOut(): Promise<void> {
-  await care('POST', '/sign-out');
+  after(await careLater('POST', '/sign-out'));
   await signedOut();
 }
 

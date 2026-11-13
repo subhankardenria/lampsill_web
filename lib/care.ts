@@ -72,8 +72,27 @@ export async function care<T = unknown>(
   path: string,
   body?: Record<string, unknown>,
 ): Promise<Answer<T>> {
-  const base = (process.env.LAMPSILL_API_URL || 'https://api.lampsill.com').replace(/\/$/, '');
+  return send<T>(method, path, body, (await cookies()).get(SESSION_COOKIE)?.value, await clientIp());
+}
+
+/**
+ * The same call, to make once the reply has gone (with next/server's after):
+ * who is asking is read now, while the request is still here.
+ */
+export async function careLater(method: 'GET' | 'POST', path: string): Promise<() => Promise<unknown>> {
   const session = (await cookies()).get(SESSION_COOKIE)?.value;
+  const ip = await clientIp();
+  return () => send(method, path, undefined, session, ip);
+}
+
+async function send<T>(
+  method: 'GET' | 'POST',
+  path: string,
+  body: Record<string, unknown> | undefined,
+  session: string | undefined,
+  ip: string,
+): Promise<Answer<T>> {
+  const base = (process.env.LAMPSILL_API_URL || 'https://api.lampsill.com').replace(/\/$/, '');
 
   try {
     const res = await fetch(`${base}/api/v1/care${path}`, {
@@ -84,7 +103,7 @@ export async function care<T = unknown>(
         ...(body ? { 'Content-Type': 'application/json' } : {}),
         'X-Lampsill-Care-Key': process.env.LAMPSILL_CARE_KEY ?? '',
         ...(session ? { 'X-Lampsill-Care-Session': session } : {}),
-        'X-Lampsill-Client-Ip': await clientIp(),
+        'X-Lampsill-Client-Ip': ip,
       },
       body: body ? JSON.stringify(body) : undefined,
       signal: AbortSignal.timeout(15000),

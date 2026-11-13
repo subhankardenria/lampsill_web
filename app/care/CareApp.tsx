@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { Mark } from '@/components/Chrome';
 import type { CarePage, Code, Invite, Person } from '@/lib/care';
 import { act, addClients, addStaff, newCode, removeStaff, signOut, type Result } from './actions';
@@ -211,11 +212,17 @@ export function CareApp({ initial }: { initial: CarePage }) {
         />
         <form action={signOut} className="care-signout">
           <span className="care-quiet care-small care-email-full">Signed in as {me.email}</span>
-          <button className="care-btn" type="submit">Sign out</button>
+          <SignOutButton />
         </form>
       </Sheet>
     </>
   );
+}
+
+/** Says so the moment it's pressed, so nobody presses it twice. */
+function SignOutButton() {
+  const { pending } = useFormStatus();
+  return <button className="care-btn" type="submit" disabled={pending}>{pending ? 'Signing out…' : 'Sign out'}</button>;
 }
 
 function AlertBlock({ p, onChecking, onOk }: { p: Person; onChecking: () => void; onOk: () => void }) {
