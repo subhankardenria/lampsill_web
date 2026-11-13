@@ -11,7 +11,7 @@ export function SignIn({ email }: { email: string | null }) {
   return (
     <>
       <h1 className="care-title">Your clients, <em>at a glance.</em></h1>
-      <p className="care-quiet">The same list your duty phone shows. Sign in with your work email.</p>
+      <p className="care-quiet">Who&rsquo;s fine, and whose phone has gone quiet. Sign in with your work email.</p>
 
       <div className="care-card care-space">
         {sent.said && <p className="care-said" role="status">{sent.said}</p>}

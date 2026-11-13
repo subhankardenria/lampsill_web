@@ -46,6 +46,15 @@ export async function signIn(_: FormState, form: FormData): Promise<FormState> {
   redirect('/care');
 }
 
+/** The emailed link (14 Nov 2026): opening it signs in, once. */
+export async function openLink(token: string): Promise<FormState> {
+  const res = await care<{ session: string }>('POST', '/link', { token });
+  if (!res.ok) return { message: res.message };
+
+  (await cookies()).set(SESSION_COOKIE, res.data.session, { ...cookie, maxAge: 12 * 60 * 60 });
+  redirect('/care');
+}
+
 export async function differentEmail(): Promise<void> {
   (await cookies()).delete({ name: EMAIL_COOKIE, path: '/care' });
   redirect('/care');
@@ -69,6 +78,33 @@ export async function addClients(before: FormState, form: FormData): Promise<For
 
   revalidatePath('/care');
   return { codes: res.data.codes, tries };
+}
+
+export type StaffState = { message?: string; said?: string; emails?: string; tries?: number };
+
+/** Colleagues' emails, one a line; each is sent a link to this page. */
+export async function addStaff(before: StaffState, form: FormData): Promise<StaffState> {
+  const emails = String(form.get('emails') ?? '');
+  const tries = (before.tries ?? 0) + 1;
+  const res = await care<{ added: string[]; skipped: string[]; unsent: string[] }>('POST', '/staff', { emails });
+  if (!res.ok && res.status === 401) return signedOut();
+  if (!res.ok) return { message: res.message, emails, tries };
+
+  const { added, skipped, unsent } = res.data;
+  const said = [
+    added.length === 0 ? 'They were already on the list.' : `Added ${added.join(', ')}.`,
+    added.length > 0 && unsent.length === 0 ? (added.length === 1 ? "They've been sent a link to this page." : "Each has been sent a link to this page.") : '',
+    unsent.length ? `The email didn't go to ${unsent.join(', ')}. They can sign in here with a code instead.` : '',
+    skipped.length ? `Not emails, so skipped: ${skipped.join(', ')}.` : '',
+  ].filter(Boolean).join(' ');
+  revalidatePath('/care');
+  return { said, tries };
+}
+
+export async function removeStaff(email: string): Promise<void> {
+  const res = await care('POST', '/staff/remove', { email });
+  if (!res.ok && res.status === 401) await signedOut();
+  revalidatePath('/care');
 }
 
 export async function newCode(inviteId: string): Promise<FormState> {

@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { cache } from 'react';
 import { cookies } from 'next/headers';
-import { Mark } from '@/components/Chrome';
 import { care, careIsOpen, EMAIL_COOKIE, SESSION_COOKIE, type CarePage, type Person } from '@/lib/care';
-import { act, signOut } from './actions';
+import { act, removeStaff } from './actions';
+import { Frame } from './Frame';
 import { SignIn } from './SignIn';
-import { AddClients, NewCode, Refresher } from './Live';
+import { AddClients, AddStaff, NewCode, Refresher } from './Live';
 import './care.css';
 
 /**
@@ -66,7 +66,7 @@ export default async function CarePageRoute() {
     );
   }
 
-  const { team, me, people, pending, windows } = page.data;
+  const { team, me, staff, people, pending, windows } = page.data;
   const alerts = people.filter((p) => p.status === 'alert').length;
 
   return (
@@ -80,7 +80,7 @@ export default async function CarePageRoute() {
       ) : (
         people.length > 0 && <p className="care-quiet">Everyone is Normal or paused. You&rsquo;d be told if a phone isn&rsquo;t used.</p>
       )}
-      {!team.has_duty && <p className="care-said">This team has no duty account yet. Ask Lampsill to link one.</p>}
+      {!team.has_duty && <p className="care-said">This team isn&rsquo;t fully set up yet. Write to <a href="mailto:hello@lampsill.com">hello@lampsill.com</a>.</p>}
 
       <h2 className="care-h2">Clients</h2>
       <div className="care-card">
@@ -129,30 +129,33 @@ export default async function CarePageRoute() {
         </>
       )}
 
+      <h2 className="care-h2">Your team</h2>
+      <details className="care-card care-more care-team">
+        <summary>{staff.length === 1 ? 'Only you so far' : `${staff.length} people can open this page`} · add a colleague</summary>
+        <div className="care-gap">
+          {staff.map((s) => (
+            <div className="care-row care-staff" key={s.email}>
+              <div className="care-who">
+                <div className="care-email-full">{s.email}</div>
+                <div className="care-small care-quiet">
+                  {s.me ? 'You' : ''}{s.me && s.team_email ? ' · ' : ''}{s.team_email ? 'Team email: alerts go here' : ''}
+                </div>
+              </div>
+              {!s.me && !s.team_email && (
+                <form action={removeStaff.bind(null, s.email)}>
+                  <button className="care-btn" type="submit" aria-label={`Remove ${s.email}`}>Remove</button>
+                </form>
+              )}
+            </div>
+          ))}
+          <AddStaff />
+        </div>
+      </details>
+
       <p className="care-quiet care-small care-foot">
         Your team sees what a family member sees: Normal, paused, or that a phone hasn&rsquo;t been used. Never when or how anyone used their phone.
       </p>
     </Frame>
-  );
-}
-
-function Frame({ children, me }: { children: React.ReactNode; me?: string }) {
-  return (
-    <main className="care">
-      <div className="care-top">
-        <a className="lockup" href="/" aria-label="Lampsill, home">
-          <Mark />
-          <span className="wordmark">Lampsill</span>
-        </a>
-        {me && (
-          <form action={signOut} className="care-me">
-            <span className="care-quiet care-small care-email">{me}</span>
-            <button className="care-link" type="submit">Sign out</button>
-          </form>
-        )}
-      </div>
-      {children}
-    </main>
   );
 }
 

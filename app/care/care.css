@@ -57,3 +57,12 @@
 
 @media (max-width: 520px) { .care-email { display: none; } .care-row { gap: .75rem; } }
 @media print { .care-top form, .care-actions, .care-more, .care-foot { display: none; } }
+
+/* Your team (14 Nov 2026): the people who can open this page. */
+.care-team > summary { list-style: none; display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--ink2); }
+.care-team > summary::-webkit-details-marker { display: none; }
+.care-team > summary::after { content: '+'; margin-left: auto; padding-left: 1rem; color: var(--ink3); font-size: 1.25rem; }
+.care-team[open] > summary::after { content: '–'; }
+.care-staff { align-items: center; }
+.care-email-full { overflow-wrap: anywhere; }
+.care-team.care-more { font-size: 1rem; margin-top: 0; }

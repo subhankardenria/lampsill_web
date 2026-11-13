@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { addClients, newCode, type FormState } from './actions';
+import { addClients, addStaff, newCode, type FormState, type StaffState } from './actions';
 import type { Code } from '@/lib/care';
 
 const hours = (h: number) => (h === 1 ? '1 hour' : `${h} hours`);
@@ -80,6 +80,22 @@ export function NewCode({ inviteId }: { inviteId: string }) {
   );
 }
 
+/** Colleagues' emails, one a line. Each is sent a link to this page. */
+export function AddStaff() {
+  const [state, add, adding] = useActionState<StaffState, FormData>(addStaff, {});
+
+  return (
+    <form action={add} key={state.tries ?? 0} className="care-gap">
+      <label className="care-label" htmlFor="staff-emails">Add a colleague</label>
+      <p className="care-small care-quiet care-line">Their work email, one a line. Each is sent a link to this page.</p>
+      <textarea className="care-input" id="staff-emails" name="emails" rows={2} defaultValue={state.emails} maxLength={10000} />
+      {state.message && <p className="care-error" role="alert">{state.message}</p>}
+      {state.said && <p className="care-said" role="status">{state.said}</p>}
+      <button className="care-btn primary care-gap" type="submit" disabled={adding}>Add</button>
+    </form>
+  );
+}
+
 /** Fresh every minute, unless someone is typing or codes are on screen. */
 export function Refresher() {
   const router = useRouter();
@@ -88,7 +104,8 @@ export function Refresher() {
       const names = document.getElementById('names') as HTMLTextAreaElement | null;
       const busy = document.querySelector('[data-busy]')
         || (names && (names.value.trim() !== '' || document.activeElement === names))
-        || document.querySelector('details.care-more[open]');
+        || document.querySelector('details.care-more[open]')
+        || (document.getElementById('staff-emails') as HTMLTextAreaElement | null)?.value.trim();
       if (!busy && document.visibilityState === 'visible') router.refresh();
     }, 60_000);
     return () => clearInterval(id);

@@ -40,9 +40,12 @@ export type Person = {
 
 export type Invite = { id: string; name: string; window_hours: number; expires_at: string };
 
+export type Staff = { email: string; team_email: boolean; me: boolean };
+
 export type CarePage = {
-  team: { name: string; has_duty: boolean; seats: number | null; counted: number; seats_left: number | null };
+  team: { name: string; email: string | null; has_duty: boolean; seats: number | null; counted: number; seats_left: number | null };
   me: { email: string };
+  staff: Staff[];
   people: Person[];
   pending: Invite[];
   windows: number[];
