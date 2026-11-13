@@ -489,19 +489,34 @@ function Chevron() {
  * = waiting for a yes.
  */
 function Window({ kind }: { kind: string }) {
+  const clip = `glass${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const warn = kind === 'quiet' || kind === 'open-warn';
   const stroke = kind === 'lit' ? 'var(--vesper)' : warn ? 'var(--ember)' : 'var(--ink3)';
   const open = kind === 'open' || kind === 'open-warn';
+  const glass = 'M16 52 L16 28 A16 16 0 0 1 48 28 L48 52 Z';
   return (
     <svg className="care-win" viewBox="0 0 64 64" aria-hidden="true">
-      {kind === 'quiet' && <path d="M16 52 L16 28 A16 16 0 0 1 48 28 L48 52 Z" fill="color-mix(in srgb, var(--ember) 22%, transparent)" />}
+      {kind === 'quiet' && <path d={glass} fill="color-mix(in srgb, var(--ember) 22%, transparent)" />}
+      {kind === 'lit' && <rect x="20" y="37.5" width="9" height="10.5" rx="1" fill="var(--lamp)" />}
+      {kind !== 'waiting' && (
+        // With the crown open, the upright hangs from below the break.
+        <path d={`M32 ${open ? 20 : 14} L32 52 M17 34 L47 34`} fill="none" stroke={stroke} strokeWidth="3.2" opacity="0.5" />
+      )}
+      {kind === 'curtains' && (
+        // As the app draws it: two drapes across the glass, gathered to the
+        // sides at the foot, as a house looks when nobody is home.
+        <>
+          <clipPath id={clip}><path d={glass} /></clipPath>
+          <g clipPath={`url(#${clip})`} fill={stroke} opacity="0.55">
+            <path d="M16 12 L31 12 Q26 34 21 52 L16 52 Z" />
+            <path d="M48 12 L33 12 Q38 34 43 52 L48 52 Z" />
+          </g>
+        </>
+      )}
       <path
-        d={open ? 'M16 52 L16 28 A16 16 0 0 1 26 13.2 M38 13.2 A16 16 0 0 1 48 28 L48 52 Z' : 'M16 52 L16 28 A16 16 0 0 1 48 28 L48 52 Z'}
+        d={open ? 'M26 13.2 A16 16 0 0 0 16 28 L16 52 L48 52 L48 28 A16 16 0 0 0 38 13.2' : glass}
         fill="none" stroke={stroke} strokeWidth="4.8" strokeLinejoin="round" strokeLinecap="round"
       />
-      {kind !== 'waiting' && <path d="M32 13 L32 52 M17 34 L47 34" fill="none" stroke={stroke} strokeWidth="3.2" strokeLinecap="round" opacity="0.5" />}
-      {kind === 'lit' && <rect x="20" y="37.5" width="9" height="10.5" rx="1" fill="var(--lamp)" />}
-      {kind === 'curtains' && <path d="M20 30 Q24 42 20 50 M44 30 Q40 42 44 50" fill="none" stroke="var(--ink3)" strokeWidth="3" strokeLinecap="round" />}
       {kind === 'waiting' && [24, 32, 40].map((x) => <circle key={x} cx={x} cy="38" r="2.6" fill="var(--ink3)" />)}
     </svg>
   );
