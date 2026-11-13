@@ -1,0 +1,59 @@
+/* lampsill.com/care. The site's own tokens (globals.css), so light and dark
+   follow the visitor's setting like every other page. Calm: no light field
+   effects, no reveals, nothing that moves except what changed. */
+
+.care { max-width: 48rem; margin: 0 auto; padding: 2rem var(--pad) 4rem; }
+.care a { color: var(--vesper); }
+.care-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+.care-me { display: flex; align-items: center; gap: .75rem; }
+.care-title { font: 500 clamp(1.8rem, 5vw, 2.2rem)/1.15 var(--font-display), Georgia, serif; margin: 0 0 .4rem; letter-spacing: -.01em; }
+.care-title em { color: var(--lamp); }
+.care-h2 { font: 700 .8rem/1 var(--font-body), sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--vesper); margin: 2.25rem 0 .75rem; }
+.care p { margin: 0 0 .75rem; }
+.care-quiet { color: var(--ink2); }
+.care-small { font-size: .9rem; }
+.care-flush { margin: 0 !important; }
+.care-gap { margin-top: 1rem !important; }
+.care-space { margin-top: 1.5rem; }
+.care-foot { margin-top: 2rem !important; }
+.care-line { margin: .25rem 0 0 !important; }
+
+.care-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.1rem 1.25rem; }
+.care-row { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 0; border-top: 1px solid var(--line); }
+.care-row:first-child { border-top: 0; }
+.care-row.is-alert { background: color-mix(in srgb, var(--ember) 13%, var(--surface)); margin: 0 -.5rem .5rem; padding: 1rem .75rem; border-radius: 12px; border-top-color: transparent; }
+.care-row.is-alert + .care-row { border-top-color: transparent; }
+.care-who { flex: 1; min-width: 0; }
+.care-name { font-weight: 700; font-size: 1.05rem; }
+.care-status { font-weight: 700; }
+.care-status.ok { color: var(--lamp); }
+.care-status.alert { color: var(--ember); }
+.care-status.off { color: var(--ink2); }
+.care-win { flex: none; width: 36px; height: 36px; margin-top: 2px; }
+
+.care-actions { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-top: .6rem; }
+.care-actions form { margin: 0; }
+.care-btn { font: 700 1rem var(--font-body), sans-serif; border-radius: 999px; padding: .6rem 1.1rem; min-height: 44px; border: 1px solid var(--ink3); background: transparent; color: var(--ink); cursor: pointer; }
+.care-btn.primary { background: var(--vesper); border-color: var(--vesper); color: var(--bg); }
+.care-btn.warn { background: var(--ember); border-color: var(--ember); color: var(--bg); }
+.care-btn:disabled { opacity: .6; cursor: progress; }
+.care-link { font: inherit; border: 0; padding: 0; background: none; color: var(--vesper); text-decoration: underline; cursor: pointer; }
+.care :is(button, input, textarea, select, summary, a):focus-visible { outline: 3px solid var(--vesper); outline-offset: 2px; }
+
+.care-label { display: block; font-weight: 700; margin: 0 0 .4rem; }
+.care-input { width: 100%; font: 400 1rem var(--font-body), sans-serif; color: var(--ink); background: var(--surfaceHi); border: 1px solid var(--ink3); border-radius: 12px; padding: .75rem .9rem; }
+.care-names { min-height: 8rem; resize: vertical; }
+.care-error { color: var(--alarm); margin: .4rem 0 0 !important; }
+.care-said { background: color-mix(in srgb, var(--vesper) 12%, var(--surface)); border: 1px solid var(--line); border-radius: 12px; padding: .75rem 1rem; }
+
+.care-codes { background: var(--surfaceHi); border: 1px solid var(--lamp); border-radius: var(--radius); padding: 1.1rem 1.25rem; margin-bottom: 1rem; }
+.care-code { font: 500 1.35rem/1.2 var(--font-mono), ui-monospace, monospace; letter-spacing: .12em; color: var(--lamp); }
+.care-codes .care-row { align-items: center; }
+.care-wide { flex-basis: 100%; }
+
+.care-more { margin-top: .4rem; font-size: .9rem; }
+.care-more summary { color: var(--ink2); cursor: pointer; }
+.care-more form { margin-top: .5rem; }
+
+@media (max-width: 520px) { .care-email { display: none; } .care-row { gap: .75rem; } }
+@media print { .care-top form, .care-actions, .care-more, .care-foot { display: none; } }
