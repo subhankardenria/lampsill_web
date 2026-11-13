@@ -1,7 +1,6 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { after } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { care, careLater, EMAIL_COOKIE, SESSION_COOKIE, type Answer, type CarePage, type Code } from '@/lib/care';
@@ -19,12 +18,9 @@ const cookie = {
   path: '/care',
 };
 
-export type FormState = { message?: string; said?: string };
+/** go: signed in (or out); the page then loads /care afresh. Actions never redirect. */
+export type FormState = { message?: string; said?: string; go?: true };
 
-async function signedOut(): Promise<never> {
-  (await cookies()).delete({ name: SESSION_COOKIE, path: '/care' });
-  redirect('/care');
-}
 
 export async function sendCode(_: FormState, form: FormData): Promise<FormState> {
   const email = String(form.get('email') ?? '').trim();
@@ -44,7 +40,7 @@ export async function signIn(_: FormState, form: FormData): Promise<FormState> {
 
   jar.delete({ name: EMAIL_COOKIE, path: '/care' });
   jar.set(SESSION_COOKIE, res.data.session, { ...cookie, maxAge: 12 * 60 * 60 });
-  redirect('/care');
+  return { go: true };
 }
 
 /** The emailed link (14 Nov 2026): opening it signs in, once. */
@@ -53,18 +49,19 @@ export async function openLink(token: string): Promise<FormState> {
   if (!res.ok) return { message: res.message };
 
   (await cookies()).set(SESSION_COOKIE, res.data.session, { ...cookie, maxAge: 12 * 60 * 60 });
-  redirect('/care');
+  return { go: true };
 }
 
-export async function differentEmail(): Promise<void> {
+export async function differentEmail(): Promise<FormState> {
   (await cookies()).delete({ name: EMAIL_COOKIE, path: '/care' });
-  redirect('/care');
+  return { go: true };
 }
 
 /** Leaves at once; Lampsill's server ends the session just after. */
-export async function signOut(): Promise<void> {
+export async function signOut(): Promise<FormState> {
   after(await careLater('POST', '/sign-out'));
-  await signedOut();
+  (await cookies()).delete({ name: SESSION_COOKIE, path: '/care' });
+  return { go: true };
 }
 
 /*

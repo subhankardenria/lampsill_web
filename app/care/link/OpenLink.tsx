@@ -2,9 +2,13 @@
 
 import { useActionState } from 'react';
 import { openLink, type FormState } from '../actions';
+import { go, safely } from '../stale';
 
 export function OpenLink({ token }: { token: string }) {
-  const [state, open, opening] = useActionState<FormState, FormData>(() => openLink(token), {});
+  const [state, open, opening] = useActionState<FormState, FormData>(async () => {
+    const r = await safely(() => openLink(token), (message): FormState => ({ message }));
+    return r.go ? go('/care') : r;
+  }, {});
   const broken = !token || !!state.message;
 
   return (
@@ -22,7 +26,7 @@ export function OpenLink({ token }: { token: string }) {
       ) : (
         <form action={open} className="care-card care-space">
           <p className="care-quiet care-flush">Who&rsquo;s fine, and whose phone has gone quiet. This signs you in on this computer for 12 hours.</p>
-          <button className="care-btn primary care-gap" type="submit" disabled={opening} autoFocus>Open my care page</button>
+          <button className="care-btn primary care-gap" type="submit" disabled={opening} autoFocus>{opening ? 'Opening…' : 'Open my care page'}</button>
         </form>
       )}
     </>

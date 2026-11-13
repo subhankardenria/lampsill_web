@@ -4,7 +4,8 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { Mark } from '@/components/Chrome';
 import type { CarePage, Code, Invite, Person } from '@/lib/care';
-import { act, addClients, addStaff, newCode, removeStaff, signOut, type Result } from './actions';
+import { act, addClients, addStaff, newCode, removeStaff, signOut, type FormState, type Result } from './actions';
+import { go, safely } from './stale';
 
 /**
  * The signed-in care page: look A, "one calm list" (14 Nov 2026).
@@ -86,14 +87,10 @@ export function CareApp({ initial }: { initial: CarePage }) {
     busy.current += 1;
     setError(null);
     if (guess) setPage((p) => guess(p));
-    let r: Result;
-    try {
-      r = await call();
-      setOffline(false);
-    } catch {
-      r = { message: "Can't reach Lampsill right now. Try again in a moment." };
-      setOffline(true);
-    }
+    // A page open since lampsill.com was updated reloads itself here.
+    let failed = false;
+    const r = await safely(call, (message): Result => { failed = true; return { message }; });
+    setOffline(failed);
     busy.current = Math.max(0, busy.current - 1);
 
     if (r.signedOut) signedOut();
@@ -210,7 +207,14 @@ export function CareApp({ initial }: { initial: CarePage }) {
           onAdd={(emails) => run(null, () => addStaff(emails))}
           onRemove={(email) => run((pg) => ({ ...pg, staff: (pg.staff ?? []).filter((s) => s.email !== email) }), () => removeStaff(email))}
         />
-        <form action={signOut} className="care-signout">
+        <form
+          className="care-signout"
+          action={async () => {
+            const r = await safely(signOut, (message): FormState => ({ message }));
+            if (r.go) return go('/care');
+            setError(r.message ?? null);
+          }}
+        >
           <span className="care-quiet care-small care-email-full">Signed in as {me.email}</span>
           <SignOutButton />
         </form>

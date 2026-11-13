@@ -2,11 +2,20 @@
 
 import { useActionState } from 'react';
 import { differentEmail, sendCode, signIn, type FormState } from './actions';
+import { go, safely } from './stale';
+
+const failed = (message: string): FormState => ({ message });
+/** Signed in: load /care afresh, so the page is always the newest site. */
+const onward = (r: FormState) => (r.go ? go('/care') : r);
 
 /** Email, then the emailed code. The pending email is a cookie, so a reload keeps the step. */
 export function SignIn({ email }: { email: string | null }) {
-  const [sent, send, sending] = useActionState<FormState, FormData>(sendCode, {});
-  const [tried, enter, entering] = useActionState<FormState, FormData>(signIn, {});
+  const [sent, send, sending] = useActionState<FormState, FormData>((s, f) => safely(() => sendCode(s, f), failed), {});
+  const [tried, enter, entering] = useActionState<FormState, FormData>(
+    async (s, f) => onward(await safely(() => signIn(s, f), failed)),
+    {},
+  );
+  const [other, switchEmail, switching] = useActionState<FormState>(async () => onward(await safely(differentEmail, failed)), {});
 
   return (
     <>
@@ -21,16 +30,16 @@ export function SignIn({ email }: { email: string | null }) {
             <form action={enter}>
               <label className="care-label" htmlFor="code">Code from your email</label>
               <input className="care-input" id="code" name="code" inputMode="numeric" autoComplete="one-time-code" autoFocus required maxLength={20} />
-              {tried.message && <p className="care-error" role="alert">{tried.message}</p>}
-              <button className="care-btn primary care-gap" type="submit" disabled={entering}>Sign in</button>
+              {(tried.message || other.message) && <p className="care-error" role="alert">{tried.message || other.message}</p>}
+              <button className="care-btn primary care-gap" type="submit" disabled={entering}>{entering ? 'Signing in…' : 'Sign in'}</button>
             </form>
             <div className="care-actions care-gap">
               <form action={send}>
                 <input type="hidden" name="email" value={email} />
                 <button className="care-link" type="submit" disabled={sending}>Send a new code</button>
               </form>
-              <form action={differentEmail}>
-                <button className="care-link" type="submit">Use a different email</button>
+              <form action={switchEmail}>
+                <button className="care-link" type="submit" disabled={switching}>Use a different email</button>
               </form>
             </div>
           </>
@@ -39,7 +48,7 @@ export function SignIn({ email }: { email: string | null }) {
             <label className="care-label" htmlFor="email">Work email</label>
             <input className="care-input" id="email" name="email" type="email" autoComplete="email" autoFocus required maxLength={190} />
             {sent.message && <p className="care-error" role="alert">{sent.message}</p>}
-            <button className="care-btn primary care-gap" type="submit" disabled={sending}>Send me a code</button>
+            <button className="care-btn primary care-gap" type="submit" disabled={sending}>{sending ? 'Sending…' : 'Send me a code'}</button>
           </form>
         )}
       </div>
